@@ -1,4 +1,4 @@
-﻿namespace MFIGamepadFeeder
+﻿namespace MFIGamepadFeeder.Gamepads.Configuration
 {
     public enum GamepadItemType
     {
