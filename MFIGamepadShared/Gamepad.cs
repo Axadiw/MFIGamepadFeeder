@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using MFIGamepadFeeder.Gamepads.Configuration;
+using MFIGamepadShared.Configuration;
 using vJoyInterfaceWrap;
 
 public delegate void ErorOccuredEventHandler(object sender, string errorMessage);
 
 namespace MFIGamepadFeeder
 {
-    internal class Gamepad
+    public class Gamepad
     {
         private readonly GamepadConfiguration _config;
         private readonly uint _gamepadId;

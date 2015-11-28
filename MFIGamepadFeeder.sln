@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFIGamepadFeeder", "MFIGamepadFeeder\MFIGamepadFeeder.csproj", "{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFIGamepadShared", "MFIGamepadShared\MFIGamepadShared.csproj", "{35C01170-5735-4AAC-BB97-AA52A735B5A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFIGamepadConfigCreator", "MFIGamepadConfigCreator\MFIGamepadConfigCreator.csproj", "{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
