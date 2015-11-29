@@ -6,16 +6,16 @@
         xmlns:local="clr-namespace:MFIGamepadFeeder"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="MFI Gamepad" Width="800" Height="200"  SizeToContent="WidthAndHeight"
+        Title="MFI Gamepad Feeder" Width="800" Height="200"  SizeToContent="WidthAndHeight"
         ResizeMode="CanMinimize" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged">
     <Grid Loaded="Grid_Loaded">
         <StackPanel>
             <tb:TaskbarIcon x:Name="NotifyIcon"
                     Visibility="Collapsed"
-                    ToolTipText="MFI Gamepad"
+                    ToolTipText="MFI Gamepad Feeder"
                     IconSource="Icon.ico"
                     MenuActivation="LeftClick"
-                    PopupActivation="RightClick" ToolTip="MFI Gamepad" TrayLeftMouseDown="NotifyIcon_TrayLeftMouseDown"/>
+                    PopupActivation="RightClick" ToolTip="MFI Gamepad" TrayLeftMouseDown="NotifyIcon_TrayLeftMouseDown" TrayRightMouseDown="NotifyIcon_TrayLeftMouseDown"/>
             
             <StackPanel Orientation="Horizontal">
                 <StackPanel Margin="10,0,0,0">
