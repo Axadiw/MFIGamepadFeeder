@@ -30,17 +30,13 @@ Application was tested on WIndows 10, but it should work on older systems as wel
 	2. 7 Buttons
 	3. 1 continous POV
 	4. Disable all force feedback effects
-
 ![](Doc/vjoyConfig.png)
-
 4. Launch *MFI Gamepad Feeder* application, click it's icon in the taskbar in order to maximize it, and select:
 	1. Your gamepad from "Gamepad device" list. In my case (Steelseries Nimbus gamepad), gamepad wasn't advertising itself with correct Product name / Manufacturer Name, so I've had to guess which one it was
 	2. ID of your vJoy ("1" in most cases)
 	3. Correct configuration file (All configuration files are stored in the "Configs" folder in the application folder
 	4. Hit Refresh
-
 ![](Doc/MFIGamepadFeeder.png)
-
 5. Play your favorite games!
 
 I've successfulyl tested this app with [TocaEdit Xbox 360 Controller Emulator](http://www.x360ce.com/default.aspx "TocaEdit Xbox 360 Controller Emulator"), so you can use your MFI gamepads as Xbox 360 controller!
