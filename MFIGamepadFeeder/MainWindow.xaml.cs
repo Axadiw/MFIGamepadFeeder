@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using HidSharp;
-using MFIGamepadShared.Configuration;
+using System.Windows.Controls;
+using MFIGamepadFeeder.Gamepads;
+using MFIGamepadFeeder.Properties;
+using Newtonsoft.Json;
 
 namespace MFIGamepadFeeder
 {
@@ -14,56 +15,42 @@ namespace MFIGamepadFeeder
         public MainWindow()
         {
             InitializeComponent();
+            CurrentGamepadManager = new GamepadManager();
+            CurrentGamepadManager.ErrorOccuredEvent += CurrentGamepadManager_ErrorOccuredEvent;
         }
 
-        private async void SetupGamepad(int? vendorId, int? productId, int? productVersion, string serialNumber,
-            uint gamePadId)
+        private GamepadManager CurrentGamepadManager { get; }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            var loader = new HidDeviceLoader();
+            WindowState = WindowState.Minimized;
 
-            var device = loader.GetDevices(vendorId, productId, productVersion, serialNumber).First();
-            if (device == null)
-            {
-                ShowErrorDialog(@"Failed to open device.");
-                return;
-            }
+            HidDeviceCombobox.ItemsSource = CurrentGamepadManager.FoundDevices;
+            HidDeviceCombobox.SelectedItem = CurrentGamepadManager.SelectedDevice;
 
-            HidStream stream;
-            if (!device.TryOpen(out stream))
-            {
-                ShowErrorDialog("Failed to open device.");
-                return;
-            }
+            DeviceIdTextBox.Text = Settings.Default.SelectedJoyId.ToString();
 
-            var gamepad = new Gamepad(await GetConfigFromFilePath("Configs/Nimbus.mficonfiguration"), gamePadId);
-            gamepad.ErrorOccuredEvent += Gamepad_ErrorOccuredEvent;
+            var configFiles =
+                Directory.GetFiles("Configs", "*.*", SearchOption.AllDirectories)
+                    .Where(s => s.EndsWith(".mficonfiguration"));
+            ConfigFileCombobox.ItemsSource = configFiles;
+            ConfigFileCombobox.SelectedItem = Settings.Default.SelectedConfigFile;
 
-            using (stream)
-            {
-                while (true)
-                {
-                    var bytes = new byte[device.MaxInputReportLength];
-                    int count;
-                    try
-                    {
-                        count = stream.Read(bytes, 0, bytes.Length);
-                    }
-                    catch (TimeoutException)
-                    {
-                        continue;
-                    }
-
-                    if (count > 0)
-                    {
-                        gamepad.UpdateState(bytes);
-                    }
-                }
-            }
+            CurrentGamepadManager.Refresh();
         }
 
-        private void Gamepad_ErrorOccuredEvent(object sender, string errorMessage)
+        private void CurrentGamepadManager_ErrorOccuredEvent(object sender, string errorMessage)
         {
-            ShowErrorDialog(errorMessage);
+            Log(errorMessage);
+        }
+
+        private void Log(string message)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                LogLabel.Text += $"{DateTime.Now}: {message}{Environment.NewLine}";
+                LogLabel.ScrollToEnd();
+            });
         }
 
         private void ShowErrorDialog(string message)
@@ -71,21 +58,59 @@ namespace MFIGamepadFeeder
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                SetupGamepad(null, null, null, "289a4b11e297", 1);
-            }).Start();
+            CurrentGamepadManager.Refresh();
         }
 
-        private async Task<GamepadConfiguration> GetConfigFromFilePath(string filePath)
+        private void DeviceIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            using (var reader = File.OpenText(filePath))
+            try
             {
-                var fileText = await reader.ReadToEndAsync();
-                return new GamepadConfiguration(fileText);
+                Settings.Default.SelectedJoyId = Convert.ToUInt32(DeviceIdTextBox.Text);
+                Settings.Default.Save();
+            }
+            catch (Exception exception)
+            {
+                Log($"Wrong vJoy Id: {exception.Message}");
+            }
+        }
+
+        private void HidDeviceCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Settings.Default.SelectedHidDevice = JsonConvert.SerializeObject(HidDeviceCombobox.SelectedItem);
+            Settings.Default.Save();
+        }
+
+        private void ConfigFileCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Settings.Default.SelectedConfigFile = ConfigFileCombobox.SelectedItem as string;
+            Settings.Default.Save();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            CurrentGamepadManager.DisposeAllThreads();
+        }
+
+        private void NotifyIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        {            
+            WindowState = WindowState.Normal;
+            Show();
+            Activate();
+            Focus();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState.Minimized == WindowState)
+            {
+                NotifyIcon.Visibility = Visibility.Visible;
+                Hide();
+            }
+            else if (WindowState.Normal == WindowState)
+            {
+                NotifyIcon.Visibility = Visibility.Collapsed;
             }
         }
     }

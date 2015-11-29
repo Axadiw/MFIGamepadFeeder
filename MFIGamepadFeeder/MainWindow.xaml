@@ -4,11 +4,37 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFIGamepadFeeder"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MFI Gamepad" Width="800" Height="200"  SizeToContent="WidthAndHeight"
+        ResizeMode="CanMinimize" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged">
     <Grid Loaded="Grid_Loaded">
-        <Button x:Name="button" Content="Start" HorizontalAlignment="Left" Margin="205,147,0,0" VerticalAlignment="Top" Width="75"/>
-
+        <StackPanel>
+            <tb:TaskbarIcon x:Name="NotifyIcon"
+                    Visibility="Collapsed"
+                    ToolTipText="MFI Gamepad"
+                    IconSource="Icon.ico"
+                    MenuActivation="LeftClick"
+                    PopupActivation="RightClick" ToolTip="MFI Gamepad" TrayLeftMouseDown="NotifyIcon_TrayLeftMouseDown"/>
+            
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="10,0,0,0">
+                    <Label x:Name="HidDeviceLabel" Content="Gamepad device" HorizontalAlignment="Center" />
+                    <ComboBox x:Name="HidDeviceCombobox" Width="350" SelectionChanged="HidDeviceCombobox_SelectionChanged" />
+                </StackPanel>
+                <StackPanel Margin="10,0">
+                    <Label x:Name="DeviceIdLabel" Content="vJoy Id" HorizontalAlignment="Center" />
+                    <TextBox x:Name="DeviceIdTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"
+                             Width="59" TextChanged="DeviceIdTextBox_TextChanged" />
+                </StackPanel>
+                <StackPanel Margin="0,0,10,0">
+                    <Label x:Name="ConfigFileLabel" Content="Configuration file" HorizontalAlignment="Center" />
+                    <ComboBox x:Name="ConfigFileCombobox" Width="340" SelectionChanged="ConfigFileCombobox_SelectionChanged" />
+                </StackPanel>
+            </StackPanel>
+            <Button Content="Refresh" Margin="10" Click="Button_Click" />
+            <TextBox x:Name="LogLabel" Text="" Height="100" Background="#FFF3F3F3" Width="800" TextWrapping="Wrap" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True" />
+        </StackPanel>
 
     </Grid>
 </Window>

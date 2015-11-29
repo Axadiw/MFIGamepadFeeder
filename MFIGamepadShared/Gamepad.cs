@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using MFIGamepadFeeder.Gamepads.Configuration;
 using MFIGamepadShared.Configuration;
 using vJoyInterfaceWrap;
@@ -21,7 +23,7 @@ namespace MFIGamepadFeeder
 
             if (!_vJoy.vJoyEnabled())
             {
-                LogError(@"vJoy driver not enabled: Failed Getting vJoy attributes.");
+                Log(@"vJoy driver not enabled: Failed Getting vJoy attributes.");
                 return;
             }
 
@@ -29,14 +31,14 @@ namespace MFIGamepadFeeder
             var match = _vJoy.DriverMatch(ref dllVer, ref drvVer);
             if (!match)
             {
-                LogError($@"Version of Driver ({drvVer:X}) does NOT match DLL Version ({dllVer:X})\n");
+                Log($@"Version of Driver ({drvVer:X}) does NOT match DLL Version ({dllVer:X})\n");
                 return;
             }
 
             var status = _vJoy.GetVJDStatus(_gamepadId);
             if ((status == VjdStat.VJD_STAT_OWN) || ((status == VjdStat.VJD_STAT_FREE) && !_vJoy.AcquireVJD(_gamepadId)))
             {
-                LogError($@"Failed to acquire vJoy device number {_gamepadId}.\n");
+                Log($@"Failed to acquire vJoy device number {_gamepadId}.\n");
                 return;
             }
 
@@ -45,7 +47,7 @@ namespace MFIGamepadFeeder
 
         public event ErorOccuredEventHandler ErrorOccuredEvent;
 
-        private void LogError(string message)
+        private void Log(string message)
         {
             ErrorOccuredEvent?.Invoke(this, message);
         }
@@ -64,12 +66,8 @@ namespace MFIGamepadFeeder
         }
 
         public void UpdateState(byte[] state)
-        {
-//            for (var i = 0; i < 18; i++)
-//            {
-//                Console.Write("{0} ", (int) state[i]);
-//            }
-//            Console.WriteLine();
+        {            
+//            Log(string.Join(" ", state));
 
             for (var i = 0; i < _config.ConfigItems.Count; i++)
             {
