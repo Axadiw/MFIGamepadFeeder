@@ -38,7 +38,9 @@ Application was tested on WIndows 10, but it should work on older systems as wel
 	2. ID of your vJoy ("1" in most cases)
 	3. Correct configuration file (All configuration files are stored in the "Configs" folder in the application folder
 	4. Hit Refresh
+
 ![](Doc/MFIGamepadFeeder.png)
+
 5. Play your favorite games!
 
 I've successfulyl tested this app with [TocaEdit Xbox 360 Controller Emulator](http://www.x360ce.com/default.aspx "TocaEdit Xbox 360 Controller Emulator"), so you can use your MFI gamepads as Xbox 360 controller!
