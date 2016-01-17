@@ -99,13 +99,16 @@ namespace MFIGamepadFeeder.Gamepads
         public void SetupGamepad(HidDeviceRepresentation hidDeviceRepresentation, uint gamePadId,
             GamepadConfiguration config)
         {
-            var device =
-                _hidDeviceLoader.GetDevices(
-                    hidDeviceRepresentation.VendorId,
-                    hidDeviceRepresentation.ProductId,
-                    hidDeviceRepresentation.ProductVersion,
-                    hidDeviceRepresentation.SerialNumber
-                    ).First();
+            try
+            {
+                var device =
+                    _hidDeviceLoader.GetDevices(
+                        hidDeviceRepresentation.VendorId,
+                        hidDeviceRepresentation.ProductId,
+                        hidDeviceRepresentation.ProductVersion,
+                        hidDeviceRepresentation.SerialNumber
+                        ).First();
+
 
             if (device == null)
             {
@@ -139,12 +142,22 @@ namespace MFIGamepadFeeder.Gamepads
                     {
                         continue;
                     }
+                        catch (Exception ex)
+                        {
+                            Log(ex.Message);
+                            break;
+                        }
 
                     if (count > 0)
                     {
                         gamepad.UpdateState(bytes);
                     }
                 }
+            }
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
             }
         }
 
