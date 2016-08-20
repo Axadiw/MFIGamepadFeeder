@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using MFIGamepadFeeder.Gamepads.Configuration;
 using MFIGamepadShared.Configuration;
+using vXbox;
 
 namespace MFIGamepadConfigCreator
 {
@@ -8,6 +9,7 @@ namespace MFIGamepadConfigCreator
     {
         public GamepadConfiguration GetNimbusConfiguration()
         {
+            var _vBox = new IWrapper();
             var configItems = new Collection<GamepadConfigurationItem>
             {
                 new GamepadConfigurationItem
@@ -100,7 +102,7 @@ namespace MFIGamepadConfigCreator
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_SL0,
+                    TargetUsage = _vBox.hid_SL0,
                     InvertAxis = false,
                     ConvertAxis = false,
                     TargetButtonId = null,
@@ -108,7 +110,7 @@ namespace MFIGamepadConfigCreator
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_SL1,
+                    TargetUsage = _vBox.hid_SL1,
                     InvertAxis = false,
                     ConvertAxis = false,
                     TargetButtonId = null,
@@ -124,7 +126,7 @@ namespace MFIGamepadConfigCreator
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_X,
+                    TargetUsage = _vBox.hid_X,
                     InvertAxis = false,
                     ConvertAxis = true,
                     TargetButtonId = null,
@@ -132,7 +134,7 @@ namespace MFIGamepadConfigCreator
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_Y,
+                    TargetUsage = _vBox.hid_Y,
                     InvertAxis = true,
                     ConvertAxis = true,
                     TargetButtonId = null,
@@ -140,7 +142,7 @@ namespace MFIGamepadConfigCreator
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_RX,
+                    TargetUsage = _vBox.hid_RX,
                     InvertAxis = false,
                     ConvertAxis = true,
                     TargetButtonId = null,
@@ -148,7 +150,7 @@ namespace MFIGamepadConfigCreator
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_RY,
+                    TargetUsage = _vBox.hid_RY,
                     InvertAxis = true,
                     ConvertAxis = true,
                     TargetButtonId = null,

@@ -3,7 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using MFIGamepadFeeder.Gamepads.Configuration;
 using MFIGamepadShared.Configuration;
-using vJoyInterfaceWrap;
+using vXbox;
+using static vXbox.IWrapper;
 
 public delegate void ErorOccuredEventHandler(object sender, string errorMessage);
 
@@ -13,30 +14,35 @@ namespace MFIGamepadFeeder
     {
         private readonly GamepadConfiguration _config;
         private readonly uint _gamepadId;
-        private readonly vJoy _vJoy;
+        private readonly IWrapper _vBox;
 
         public Gamepad(GamepadConfiguration config, uint gamepadId)
         {
             _config = config;
-            _vJoy = new vJoy();
+            _vBox = new IWrapper();
             _gamepadId = gamepadId;
 
-            if (!_vJoy.vJoyEnabled())
+            // Test if bus exists
+            bool bus = _vBox.isVBusExists();
+            if (bus)
+                Log(@"Virtual Xbox bus exists\n\n");
+            else
             {
-                Log(@"vJoy driver not enabled: Failed Getting vJoy attributes.");
+                Log(@"Virtual Xbox bus does NOT exist - Aborting\n\n");
                 return;
             }
 
-            uint dllVer = 0, drvVer = 0;
-            var match = _vJoy.DriverMatch(ref dllVer, ref drvVer);
-            if (!match)
-            {
-                Log($@"Version of Driver ({drvVer:X}) does NOT match DLL Version ({dllVer:X})\n");
-                return;
-            }
 
-            var status = _vJoy.GetVJDStatus(_gamepadId);
-            if ((status == VjdStat.VJD_STAT_OWN) || ((status == VjdStat.VJD_STAT_FREE) && !_vJoy.AcquireVJD(_gamepadId)))
+            //uint dllVer = 0, drvVer = 0;
+            //var match = _vBox.DriverMatch(ref dllVer, ref drvVer);
+            //if (!match)
+            //{
+            //    Log($@"Version of Driver ({drvVer:X}) does NOT match DLL Version ({dllVer:X})\n");
+            //    return;
+            //}
+
+            var status = _vBox.GetVJDStatus(_gamepadId);
+            if ((status == VJD_STAT_OWN) || ((status == VJD_STAT_FREE) && !_vBox.AcquireVJD(_gamepadId)))
             {
                 Log($@"Failed to acquire vJoy device number {_gamepadId}.\n");
                 return;
@@ -54,7 +60,7 @@ namespace MFIGamepadFeeder
 
         private void ResetGamepad(uint id)
         {
-            _vJoy.ResetVJD(id);
+            _vBox.ResetVJD(id);
             var zeroState = new byte[_config.ConfigItems.Count];
 
             for (var i = 0; i < _config.ConfigItems.Count; i++)
@@ -77,14 +83,14 @@ namespace MFIGamepadFeeder
             SetDPad(state, _config.ConfigItems);
         }
 
-        private void SetGamepadItem(byte[] values, int index, GamepadConfigurationItem config)
+        private unsafe void SetGamepadItem(byte[] values, int index, GamepadConfigurationItem config)
         {
             double value = values[index];
             if (config.Type == GamepadItemType.Axis)
             {
-                long maxAxisValue = 0;
-                var targetAxis = config.TargetUsage ?? HID_USAGES.HID_USAGE_X;
-                _vJoy.GetVJDAxisMax(_gamepadId, targetAxis, ref maxAxisValue);
+                int maxAxisValue = 0;
+                var targetAxis = config.TargetUsage ?? _vBox.hid_X;
+                _vBox.GetVJDAxisMax(_gamepadId, targetAxis, &maxAxisValue);
                 value = NormalizeAxis((byte) value, config.ConvertAxis ?? false);
 
                 if (config.InvertAxis ?? false)
@@ -92,11 +98,11 @@ namespace MFIGamepadFeeder
                     value = InvertNormalizedAxis(value);
                 }
 
-                _vJoy.SetAxis((int) (value*maxAxisValue), _gamepadId, targetAxis);
+                _vBox.SetAxis((int) (value*maxAxisValue), _gamepadId, targetAxis);
             }
             else if (config.Type == GamepadItemType.Button)
             {
-                _vJoy.SetBtn(ConvertToButtonState((byte) value), _gamepadId, config.TargetButtonId ?? 0);
+                _vBox.SetBtn(ConvertToButtonState((byte) value), _gamepadId, (byte)(config.TargetButtonId ?? 0));
             }
         }
 
@@ -130,43 +136,40 @@ namespace MFIGamepadFeeder
                 }
             }
 
-            var angle = -1;
 
             if (dPadUp && dPadRight)
             {
-                angle = 4500;
+                _vBox.SetDpadUpRight(_gamepadId);
             }
             else if (dPadRight && dPadDown)
             {
-                angle = 13500;
+                _vBox.SetDpadDownRight(_gamepadId);
             }
             else if (dPadDown && dPadLeft)
             {
-                angle = 22500;
+                _vBox.SetDpadDownLeft(_gamepadId);
             }
             else if (dPadLeft && dPadUp)
             {
-                angle = 31500;
+                _vBox.SetDpadUpLeft(_gamepadId);
             }
             else if (dPadUp)
             {
-                angle = 0;
+                _vBox.SetDpadUp(_gamepadId);
             }
             else if (dPadRight)
             {
-                angle = 9000;
+                _vBox.SetDpadRight(_gamepadId);
             }
             else if (dPadDown)
             {
-                angle = 18000;
+                _vBox.SetDpadDown(_gamepadId);
             }
             else if (dPadLeft)
             {
-                angle = 27000;
+                _vBox.SetDpadLeft(_gamepadId);
             }
-
-
-            _vJoy.SetContPov(angle, _gamepadId, 1);
+            _vBox.SetDpadOff(_gamepadId);
         }
 
 

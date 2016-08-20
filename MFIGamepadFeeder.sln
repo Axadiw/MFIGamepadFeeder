@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFIGamepadFeeder", "MFIGamepadFeeder\MFIGamepadFeeder.csproj", "{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}"
 EndProject
@@ -12,21 +12,49 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|x64.ActiveCfg = Debug|x64
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|x64.Build.0 = Debug|x64
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|x86.ActiveCfg = Debug|x86
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Debug|x86.Build.0 = Debug|x86
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|x64.ActiveCfg = Release|x64
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|x64.Build.0 = Release|x64
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|x86.ActiveCfg = Release|x86
+		{C404217C-9FA4-461C-8AEB-3BDEBD0A4B00}.Release|x86.Build.0 = Release|x86
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|x64.ActiveCfg = Debug|x64
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|x64.Build.0 = Debug|x64
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|x86.ActiveCfg = Debug|x86
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Debug|x86.Build.0 = Debug|x86
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|x64.ActiveCfg = Release|x64
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|x64.Build.0 = Release|x64
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|x86.ActiveCfg = Release|x86
+		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release|x86.Build.0 = Release|x86
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|x64.ActiveCfg = Debug|x64
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|x64.Build.0 = Debug|x64
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|x86.ActiveCfg = Debug|x86
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug|x86.Build.0 = Debug|x86
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|x64.ActiveCfg = Release|x64
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|x64.Build.0 = Release|x64
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|x86.ActiveCfg = Release|x86
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
