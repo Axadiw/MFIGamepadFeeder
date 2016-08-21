@@ -84,6 +84,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="VboxWrap, Version=1.0.6090.30449, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\vJoy\x64\Release-Xbox\VboxWrap.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\GamepadConfiguration.cs" />
@@ -94,12 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\vJoy\apps\common\vXboxInterfaceCppWrap\vXboxInterfaceCppWrap\vXboxInterfaceCppWrap.vcxproj">
-      <Project>{a2977561-932d-48d1-bdfc-30346b745478}</Project>
-      <Name>vXboxInterfaceCLR</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

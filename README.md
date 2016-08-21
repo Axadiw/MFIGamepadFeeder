@@ -4,43 +4,35 @@ Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller unde
 
 ## How it works?
 
-*MFI Gamepad Feeder* is a special program that needs to be used in tandem with [vJoy](http://vjoystick.sourceforge.net "vJoy") that creates virtual joystick/gamepad device in your system.
+*MFI Gamepad Feeder* is a special program that needs to be used in tandem with [ScpVbus](https://github.com/shauleiz/ScpVBus) that creates virtual joystick/gamepad device in your system.
 
-After installing *vJoy* you will recieve dummy joystick device that won't do actually anything fancy. In order to control it, you'll have to use special kind of programs, called *feeders*, in our case *MFI Gamepad Feeder*.
+After installing *ScpVbus*, you'll have to use special kind of programs, called *vJoy feeders*, in our case *MFI Gamepad Feeder*.
 
-It looks like modern MFI game controllers are recognized as standrad HID gamepads under Windows, but they're not visible in "USB Game Controllers", so games won't be able to use them. *MFI Gamepad Feeder* is connecing to these "HID gamepads", and it's redirecting raw input from them, directly to the vJoy devices.
+It looks like modern MFI game controllers are recognized as standrad HID gamepads under Windows, but they're not visible in "USB Game Controllers", so games won't be able to use them. *MFI Gamepad Feeder* is connecting to these "HID gamepads", and it's redirecting raw input from them, directly to the vJoy devices.
 
-On this page I will guide you how to install and configure *vJoy*, and how to pair it with *MFI Gamepad Feeder*  
+On this page I will guide you how to pair it with *MFI Gamepad Feeder*  
 
 ## Requirements
 
 Current version of *MFI Gamepad Feeder* requires
 
-* installed vJoy driver (v2.1.6)
+* installed [ScpVBus](https://github.com/shauleiz/ScpVBus/releases)
+* installed .Net Framework 4.5.2
 * supported MFI Gamepad (see list of supported gamepads is listed below)
 
 Application was tested on WIndows 10, but it should work on older systems as well.
 
 ## Installation
 
-1. Download and install [vJoy 2.1.6 ](http://vjoystick.sourceforge.net "vJoy") 
-2. Download and install [MFI Gamepad Feeder](https://github.com/Axadiw/MFIGamepadFeeder/releases/latest "MFI Gamepad Feeder")
-3. Launch *Configure vJoy* application and select: 
-	1. Axis X,Y,Rx,Ry.Sliter1 and Slider2
-	2. 7 Buttons
-	3. 1 continous POV
-	4. Disable all force feedback effects <br/>
-![](Doc/vjoyConfig.png)
-4. Launch *MFI Gamepad Feeder* application, click it's icon in the taskbar in order to maximize it, and select:
+1. Download and install [MFI Gamepad Feeder](https://github.com/Axadiw/MFIGamepadFeeder/releases/latest "MFI Gamepad Feeder")
+2. (optional) Download and install .Net Framework if you don't already have it on your system.
+3. Launch *MFI Gamepad Feeder* application, click it's icon in the taskbar in order to maximize it, and select:
 	1. Your gamepad from "Gamepad device" list. In my case (Steelseries Nimbus gamepad), gamepad wasn't advertising itself with correct Product name / Manufacturer Name, so I've had to guess which one it was
-	2. ID of your vJoy ("1" in most cases)
+	2. ID of your vJoy("1" in most cases, 1-4 are possible values)
 	3. Correct configuration file (All configuration files are stored in the "Configs" folder in the application folder
-	4. Hit Refresh <br/>
+	4. Hit Plug/Unplug devices <br/>
 ![](Doc/MFIGamepadFeeder.png)
-5. Play your favorite games!
-
-I've successfulyl tested this app with [TocaEdit Xbox 360 Controller Emulator](http://www.x360ce.com/default.aspx "TocaEdit Xbox 360 Controller Emulator"), so you can use your MFI gamepads as Xbox 360 controller!
-
+5. Play your favorite games !
 
 # Application development
 

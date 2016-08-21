@@ -9,7 +9,22 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="SelectedConfigFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Configs/Nimbus.mficonfiguration</Value>
+    </Setting>
+    <Setting Name="SelectedHidDevice2" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SelectedJoyId2" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="SelectedConfigFile2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Configs/Nimbus.mficonfiguration</Value>
+    </Setting>
+    <Setting Name="CheckedLTRT" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CheckedBack" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

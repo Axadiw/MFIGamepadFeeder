@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("MFIGamepadConfigCreator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("GitHub.com/b23prodtm/MFIGamepadFeeder")]
 [assembly: AssemblyProduct("MFIGamepadConfigCreator")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
