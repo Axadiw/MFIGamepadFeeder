@@ -27,7 +27,7 @@ namespace MFIGamepadShared
 
         public override bool Equals(object obj)
         {
-            return obj == null ? false : ToString() == obj.ToString();
+            return ToString() == obj.ToString();
         }
 
         public override int GetHashCode()
