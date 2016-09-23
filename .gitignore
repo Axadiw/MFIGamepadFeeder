@@ -194,5 +194,3 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-/MFIGamepadFeeder.VC.VC.opendb
-/Doc/Thumbs.db

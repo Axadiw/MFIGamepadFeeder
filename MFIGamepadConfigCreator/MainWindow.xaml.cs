@@ -16,9 +16,9 @@ namespace MFIGamepadConfigCreator
         private async void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             var configCreator = new ConfigCreator();
-            Log("Nimbus config file save...");
+            Log("Will save Nimbus config file");
             await SaveConfigurationToFile(configCreator.GetNimbusConfiguration(), "Nimbus");
-            Log("Success!");
+            Log("Save successful");
         }
 
         private void Log(string message)
@@ -26,14 +26,12 @@ namespace MFIGamepadConfigCreator
             logLabel.Content += message + "\n";
         }
 
-        private async Task SaveConfigurationToFile(GamepadConfiguration configuration, string filename)
+        private static async Task SaveConfigurationToFile(GamepadConfiguration configuration, string filename)
         {
             var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            var path = desktopPath + $"\\{filename}.mficonfiguration";
-            using (var outputFile = new StreamWriter(path))
+            using (var outputFile = new StreamWriter(desktopPath + $"\\{filename}.mficonfiguration"))
             {
-                Log("Write " + path + "...");
-                await outputFile.WriteAsync(configuration.GetJsonRepresentation());                
+                await outputFile.WriteAsync(configuration.GetJsonRepresentation());
             }
         }
     }

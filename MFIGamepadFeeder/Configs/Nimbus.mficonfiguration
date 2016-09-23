@@ -40,42 +40,42 @@
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 4096
+      "TargetButtonId": 1
     },
     {
       "Type": 1,
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 8192
+      "TargetButtonId": 2
     },
     {
       "Type": 1,
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 16384
+      "TargetButtonId": 3
     },
     {
       "Type": 1,
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 32768
+      "TargetButtonId": 4
     },
     {
       "Type": 1,
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 256
+      "TargetButtonId": 5
     },
     {
       "Type": 1,
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 512
+      "TargetButtonId": 6
     },
     {
       "Type": 0,
@@ -96,7 +96,7 @@
       "InvertAxis": null,
       "ConvertAxis": null,
       "TargetUsage": null,
-      "TargetButtonId": 16
+      "TargetButtonId": 7
     },
     {
       "Type": 0,
@@ -107,7 +107,7 @@
     },
     {
       "Type": 0,
-      "InvertAxis": false,
+      "InvertAxis": true,
       "ConvertAxis": true,
       "TargetUsage": 49,
       "TargetButtonId": null
@@ -121,7 +121,7 @@
     },
     {
       "Type": 0,
-      "InvertAxis": false,
+      "InvertAxis": true,
       "ConvertAxis": true,
       "TargetUsage": 52,
       "TargetButtonId": null

@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("MFIGamepadFeeder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("GitHub.com/b23prodtm/MFIGamepadFeeder")]
+[assembly: AssemblyCompany("Michał Mizera")]
 [assembly: AssemblyProduct("MFIGamepadFeeder")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
