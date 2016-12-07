@@ -1,0 +1,3 @@
+[submodule "ScpVBus"]
+	path = ScpVBus
+	url = https://github.com/shauleiz/ScpVBus.git
