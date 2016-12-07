@@ -51,7 +51,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="vJoyInterfaceWrap">
-      <HintPath>..\..\..\..\..\..\Downloads\vJoy216SDK-191015\SDK\c#\x64\vJoyInterfaceWrap.dll</HintPath>
+      <HintPath>..\MFIGamepadShared\vJoyInterfaceWrap.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />

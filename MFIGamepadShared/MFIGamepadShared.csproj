@@ -47,7 +47,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="vJoyInterfaceWrap">
-      <HintPath>..\..\..\..\..\..\Downloads\vJoy216SDK-191015\SDK\c#\x64\vJoyInterfaceWrap.dll</HintPath>
+      <HintPath>.\vJoyInterfaceWrap.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
