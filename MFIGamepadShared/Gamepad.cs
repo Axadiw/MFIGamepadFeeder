@@ -3,9 +3,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using MFIGamepadFeeder.Gamepads.Configuration;
 using MFIGamepadShared.Configuration;
+using vGenWrapper;
 using vJoyInterfaceWrap;
 
-public delegate void ErorOccuredEventHandler(object sender, string errorMessage);
+public delegate void ErrorOccuredEventHandler(object sender, string errorMessage);
 
 namespace MFIGamepadFeeder
 {
@@ -14,11 +15,14 @@ namespace MFIGamepadFeeder
         private readonly GamepadConfiguration _config;
         private readonly uint _gamepadId;
         private readonly vJoy _vJoy;
+        private readonly VGenWrapper _vGenWrapper;
 
-        public Gamepad(GamepadConfiguration config, uint gamepadId)
+        public Gamepad(GamepadConfiguration config, uint gamepadId, ErrorOccuredEventHandler gamepadErrorOccuredEvent)
         {
+            ErrorOccuredEvent += gamepadErrorOccuredEvent;
             _config = config;
             _vJoy = new vJoy();
+            _vGenWrapper = new VGenWrapper();
             _gamepadId = gamepadId;
 
             if (!_vJoy.vJoyEnabled())
@@ -43,9 +47,15 @@ namespace MFIGamepadFeeder
             }
 
             ResetGamepad(_gamepadId);
+
+            Log("VBusExists: " + _vGenWrapper.vbox_isVBusExist());
+            Log("NumOfEmptyBusSlots: " + _vGenWrapper.vbox_GetNumEmptyBusSlots());
+            Log("UnPlug 1: " + (_vGenWrapper.vbox_UnPlug(2)));
+            Log("UnPlugForce 1: " + (_vGenWrapper.vbox_ForceUnPlug(2)));
+            Log("PlugIn 1: " + (_vGenWrapper.vbox_PlugIn(2)));
         }
 
-        public event ErorOccuredEventHandler ErrorOccuredEvent;
+        public event ErrorOccuredEventHandler ErrorOccuredEvent;
 
         private void Log(string message)
         {
@@ -96,7 +106,13 @@ namespace MFIGamepadFeeder
             }
             else if (config.Type == GamepadItemType.Button)
             {
-                _vJoy.SetBtn(ConvertToButtonState((byte) value), _gamepadId, config.TargetButtonId ?? 0);
+                var buttonState = ConvertToButtonState((byte)value);
+                _vJoy.SetBtn(buttonState, _gamepadId, config.TargetButtonId ?? 0);
+
+                if (config.TargetButtonId == 1)
+                {
+                    _vGenWrapper.vbox_SetBtn(2, 2, buttonState);
+                }
             }
         }
 

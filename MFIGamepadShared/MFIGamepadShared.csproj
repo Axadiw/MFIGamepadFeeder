@@ -136,7 +136,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />    
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Platform)' == 'x64' ">
     <Reference Include="vJoyInterfaceWrap">
@@ -157,6 +157,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\vGenWrapper\vGenWrapper.csproj">
+      <Project>{2e0670a9-6fe6-47b0-ad7a-e6c245522d8b}</Project>
+      <Name>vGenWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

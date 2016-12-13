@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace vGenWrapper
@@ -43,24 +44,32 @@ namespace vGenWrapper
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern NtStatus PlugIn(uint UserIndex);
 
-        public bool vbox_PlugIn(uint id)
+        public NtStatus vbox_PlugIn(uint id)
         {
-            var returnValue = PlugIn(id);
-            return returnValue != 0;
+            return PlugIn(id);
         }
 
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern NtStatus UnPlug(uint UserIndex);
 
-        public bool vbox_UnPlug(uint id)
+        public NtStatus vbox_UnPlug(uint id)
         {
-            return UnPlug(id) != 0;
+            return UnPlug(id);
         }
 
 
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern bool SetButton(uint UserIndex, int button, bool pressed);
-        public bool vbox_SetBtn(uint id, int button, bool pressed)
+        private static extern NtStatus UnPlugForce(uint UserIndex);
+
+        public NtStatus vbox_ForceUnPlug(uint id)
+        {
+            return UnPlugForce(id);
+        }
+
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetButton(uint UserIndex, short button, bool pressed);
+        public NtStatus vbox_SetBtn(uint id, short button, bool pressed)
         {
             return SetButton(id, button, pressed);
         }

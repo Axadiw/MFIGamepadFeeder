@@ -55,7 +55,7 @@ namespace MFIGamepadFeeder.Gamepads
         public ObservableCollection<HidDeviceRepresentation> FoundDevices { get; }
         public HidDeviceRepresentation SelectedDevice { get; set; }
 
-        public event ErorOccuredEventHandler ErrorOccuredEvent;
+        public event ErrorOccuredEventHandler ErrorOccuredEvent;
 
         public void Refresh()
         {
@@ -123,8 +123,7 @@ namespace MFIGamepadFeeder.Gamepads
                 return;
             }
 
-            var gamepad = new Gamepad(config, gamePadId);
-            gamepad.ErrorOccuredEvent += Gamepad_ErrorOccuredEvent;
+            var gamepad = new Gamepad(config, gamePadId, Gamepad_ErrorOccuredEvent);
 
             Log("Successfully initialized gamepad");
 
