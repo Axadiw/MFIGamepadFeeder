@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using MFIGamepadFeeder.Gamepads;
 using MFIGamepadFeeder.Properties;
 using Newtonsoft.Json;
+using vGenWrapper;
 
 namespace MFIGamepadFeeder
 {
@@ -23,7 +24,7 @@ namespace MFIGamepadFeeder
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+//            WindowState = WindowState.Minimized;
 
             HidDeviceCombobox.ItemsSource = CurrentGamepadManager.FoundDevices;
             HidDeviceCombobox.SelectedItem = CurrentGamepadManager.SelectedDevice;
@@ -37,6 +38,12 @@ namespace MFIGamepadFeeder
             ConfigFileCombobox.SelectedItem = Settings.Default.SelectedConfigFile;
 
             CurrentGamepadManager.Refresh();
+
+            var wrapper = new vGenWrapper.VGenWrapper();
+            Log("VBusExists: " + wrapper.vbox_isVBusExist().ToString());
+            Log("NumOfEmptyBusSlots: " + wrapper.vbox_GetNumEmptyBusSlots().ToString());
+            Log("PlugIn 0: " + (wrapper.vbox_PlugIn(1).ToString()));
+            Log("Setted Button A: " + (wrapper.vbox_SetBtn(1, 0x1000, false).ToString()));
         }
 
         private void CurrentGamepadManager_ErrorOccuredEvent(object sender, string errorMessage)
@@ -94,7 +101,7 @@ namespace MFIGamepadFeeder
         }
 
         private void NotifyIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
-        {            
+        {
             WindowState = WindowState.Normal;
             Show();
             Activate();

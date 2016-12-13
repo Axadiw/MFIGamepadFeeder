@@ -7,3 +7,5 @@ MFIGamepadFeeder/bin/
 packages/
 MFIGamepadConfigCreator/obj
 MFIGamepadConfigCreator/bin/
+vGenWrapper/obj/
+vGenWrapper/bin/
