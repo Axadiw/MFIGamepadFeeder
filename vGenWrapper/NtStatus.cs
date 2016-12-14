@@ -1,4 +1,6 @@
-﻿namespace vGenWrapper
+﻿using System;
+
+namespace vGenWrapper
 {
     public enum NtStatus : uint
     {

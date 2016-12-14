@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using MFIGamepadFeeder.Gamepads.Configuration;
 using MFIGamepadShared.Configuration;
 using vGenWrapper;
@@ -14,8 +12,8 @@ namespace MFIGamepadFeeder
     {
         private readonly GamepadConfiguration _config;
         private readonly uint _gamepadId;
-        private readonly vJoy _vJoy;
         private readonly VGenWrapper _vGenWrapper;
+        private readonly vJoy _vJoy;
 
         public Gamepad(GamepadConfiguration config, uint gamepadId, ErrorOccuredEventHandler gamepadErrorOccuredEvent)
         {
@@ -50,9 +48,9 @@ namespace MFIGamepadFeeder
 
             Log("VBusExists: " + _vGenWrapper.vbox_isVBusExist());
             Log("NumOfEmptyBusSlots: " + _vGenWrapper.vbox_GetNumEmptyBusSlots());
-            Log("UnPlug 1: " + (_vGenWrapper.vbox_UnPlug(2)));
-            Log("UnPlugForce 1: " + (_vGenWrapper.vbox_ForceUnPlug(2)));
-            Log("PlugIn 1: " + (_vGenWrapper.vbox_PlugIn(2)));
+            Log("UnPlug 1: " + _vGenWrapper.vbox_UnPlug(2));
+            Log("UnPlugForce 1: " + _vGenWrapper.vbox_ForceUnPlug(2));
+            Log("PlugIn 1: " + _vGenWrapper.vbox_PlugIn(2));
         }
 
         public event ErrorOccuredEventHandler ErrorOccuredEvent;
@@ -68,21 +66,17 @@ namespace MFIGamepadFeeder
             var zeroState = new byte[_config.ConfigItems.Count];
 
             for (var i = 0; i < _config.ConfigItems.Count; i++)
-            {
                 zeroState[i] = 0;
-            }
 
             UpdateState(zeroState);
         }
 
         public void UpdateState(byte[] state)
-        {            
+        {
 //            Log(string.Join(" ", state));
 
             for (var i = 0; i < _config.ConfigItems.Count; i++)
-            {
                 SetGamepadItem(state, i, _config.ConfigItems[i]);
-            }
 
             SetDPad(state, _config.ConfigItems);
         }
@@ -98,21 +92,17 @@ namespace MFIGamepadFeeder
                 value = NormalizeAxis((byte) value, config.ConvertAxis ?? false);
 
                 if (config.InvertAxis ?? false)
-                {
                     value = InvertNormalizedAxis(value);
-                }
 
                 _vJoy.SetAxis((int) (value*maxAxisValue), _gamepadId, targetAxis);
             }
             else if (config.Type == GamepadItemType.Button)
             {
-                var buttonState = ConvertToButtonState((byte)value);
+                var buttonState = ConvertToButtonState((byte) value);
                 _vJoy.SetBtn(buttonState, _gamepadId, config.TargetButtonId ?? 0);
 
                 if (config.TargetButtonId == 1)
-                {
-                    _vGenWrapper.vbox_SetBtn(2, 2, buttonState);
-                }
+                    _vGenWrapper.vbox_SetBtn(2, XInputGamepadButtons.A, buttonState);
             }
         }
 
@@ -126,60 +116,36 @@ namespace MFIGamepadFeeder
             for (var i = 0; i < config.Count; i++)
             {
                 if (config[i].Type == GamepadItemType.DPadUp)
-                {
                     dPadUp = ConvertToButtonState(values[i]);
-                }
 
                 if (config[i].Type == GamepadItemType.DPadRight)
-                {
                     dPadRight = ConvertToButtonState(values[i]);
-                }
 
                 if (config[i].Type == GamepadItemType.DPadDown)
-                {
                     dPadDown = ConvertToButtonState(values[i]);
-                }
 
                 if (config[i].Type == GamepadItemType.DPadLeft)
-                {
                     dPadLeft = ConvertToButtonState(values[i]);
-                }
             }
 
             var angle = -1;
 
             if (dPadUp && dPadRight)
-            {
                 angle = 4500;
-            }
             else if (dPadRight && dPadDown)
-            {
                 angle = 13500;
-            }
             else if (dPadDown && dPadLeft)
-            {
                 angle = 22500;
-            }
             else if (dPadLeft && dPadUp)
-            {
                 angle = 31500;
-            }
             else if (dPadUp)
-            {
                 angle = 0;
-            }
             else if (dPadRight)
-            {
                 angle = 9000;
-            }
             else if (dPadDown)
-            {
                 angle = 18000;
-            }
             else if (dPadLeft)
-            {
                 angle = 27000;
-            }
 
 
             _vJoy.SetContPov(angle, _gamepadId, 1);
@@ -191,9 +157,7 @@ namespace MFIGamepadFeeder
             if (shouldConvert)
             {
                 if (valueToNormalize < byte.MaxValue/2.0)
-                {
                     return (valueToNormalize + byte.MaxValue/2.0)/byte.MaxValue;
-                }
                 return (valueToNormalize - byte.MaxValue/2.0)/byte.MaxValue;
             }
 

@@ -131,6 +131,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XInputGamepadButtons.cs" />
     <Compile Include="NtStatus.cs" />
     <Compile Include="vGenWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,23 +141,9 @@
     <Content Include="vGenSDK\x64\vGenInterface.dll" Condition="'$(Platform)' == 'x64'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="vGenSDK\x64\vGenInterface.pdb" Condition="'$(Platform)' == 'x64'">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="vGenSDK\x86\vGenInterface.dll" Condition="'$(Platform)' == 'x86'">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="vGenSDK\x86\vGenInterface.pdb" Condition="'$(Platform)' == 'x86'">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="vGenSDK\x64\vGenInterface.lib" Condition="'$(Platform)' == 'x64'">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="vGenSDK\x86\vGenInterface.lib" Condition="'$(Platform)' == 'x86'">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

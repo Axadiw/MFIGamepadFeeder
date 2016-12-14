@@ -67,11 +67,11 @@ namespace vGenWrapper
         }
 
 
-        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern NtStatus SetButton(uint UserIndex, short button, bool pressed);
-        public NtStatus vbox_SetBtn(uint id, short button, bool pressed)
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        private static extern NtStatus SetButton(uint UserIndex,  ushort button, bool pressed);
+        public NtStatus vbox_SetBtn(UInt16 id, XInputGamepadButtons button, bool pressed)
         {
-            return SetButton(id, button, pressed);
+            return SetButton(id, (ushort) button, pressed);
         }
     }
 }
