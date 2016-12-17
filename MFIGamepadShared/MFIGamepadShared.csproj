@@ -138,11 +138,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
-    <Reference Include="vJoyInterfaceWrap">
-      <HintPath>vJoyInterfaceWrap\x64\vJoyInterfaceWrap.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <ItemGroup Condition=" '$(Platform)' == 'x86' ">
     <Reference Include="vJoyInterfaceWrap">
       <HintPath>vJoyInterfaceWrap\x86\vJoyInterfaceWrap.dll</HintPath>

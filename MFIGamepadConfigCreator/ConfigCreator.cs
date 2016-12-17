@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using MFIGamepadFeeder.Gamepads.Configuration;
 using MFIGamepadShared.Configuration;
+using vGenWrapper;
 
 namespace MFIGamepadConfigCreator
 {
@@ -12,147 +12,100 @@ namespace MFIGamepadConfigCreator
             {
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
                     Type = GamepadItemType.Empty
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadUp
+                    Type = GamepadItemType.DPad,
+                    DPadType = XInputGamepadDPadButtons.DpadUp
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadRight
+                    Type = GamepadItemType.DPad,
+                    DPadType = XInputGamepadDPadButtons.DpadRight
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadDown
+                    Type = GamepadItemType.DPad,
+                    DPadType = XInputGamepadDPadButtons.DpadDown
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadLeft
+                    Type = GamepadItemType.DPad,
+                    DPadType = XInputGamepadDPadButtons.DpadLeft
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 1,
-                    Type = GamepadItemType.Button
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.A
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 2,
-                    Type = GamepadItemType.Button
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.B
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 3,
-                    Type = GamepadItemType.Button
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.X
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 4,
-                    Type = GamepadItemType.Button
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.Y
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 5,
-                    Type = GamepadItemType.Button
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.LBumper
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 6,
-                    Type = GamepadItemType.Button
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.RBumper
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_SL0,
+                    Type = GamepadItemType.Axis,
+                    AxisType = AxisType.LTrigger
+                },
+                new GamepadConfigurationItem
+                {
+                    Type = GamepadItemType.Axis,
+                    AxisType = AxisType.RTrigger
+                },
+                new GamepadConfigurationItem
+                {
+                    Type = GamepadItemType.Button,
+                    ButtonType = XInputGamepadButtons.Start
+                },
+                new GamepadConfigurationItem
+                {
+                    Type = GamepadItemType.Axis,
+                    AxisType = AxisType.Lx,
                     InvertAxis = false,
-                    ConvertAxis = false,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_SL1,
-                    InvertAxis = false,
-                    ConvertAxis = false,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
-                },
-                new GamepadConfigurationItem
-                {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 7,
-                    Type = GamepadItemType.Button
-                },
-                new GamepadConfigurationItem
-                {
-                    TargetUsage = HID_USAGES.HID_USAGE_X,
-                    InvertAxis = false,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
-                },
-                new GamepadConfigurationItem
-                {
-                    TargetUsage = HID_USAGES.HID_USAGE_Y,
+                    Type = GamepadItemType.Axis,
+                    AxisType = AxisType.Ly,
                     InvertAxis = true,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_RX,
+                    Type = GamepadItemType.Axis,
+                    AxisType = AxisType.Rx,
                     InvertAxis = false,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 },
                 new GamepadConfigurationItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_RY,
+                    Type = GamepadItemType.Axis,
+                    AxisType = AxisType.Ry,
                     InvertAxis = true,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 }
             };
 

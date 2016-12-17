@@ -1,8 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using MFIGamepadFeeder.Gamepads.Configuration;
-using MFIGamepadShared.Configuration;
+﻿using MFIGamepadShared.Configuration;
 using vGenWrapper;
-using vJoyInterfaceWrap;
 
 public delegate void ErrorOccuredEventHandler(object sender, string errorMessage);
 
@@ -13,44 +10,46 @@ namespace MFIGamepadFeeder
         private readonly GamepadConfiguration _config;
         private readonly uint _gamepadId;
         private readonly VGenWrapper _vGenWrapper;
-        private readonly vJoy _vJoy;
 
-        public Gamepad(GamepadConfiguration config, uint gamepadId, ErrorOccuredEventHandler gamepadErrorOccuredEvent)
+        public Gamepad(GamepadConfiguration config, uint gamepadId, VGenWrapper vGenWrapper,
+            ErrorOccuredEventHandler gamepadErrorOccuredEvent)
         {
             ErrorOccuredEvent += gamepadErrorOccuredEvent;
             _config = config;
-            _vJoy = new vJoy();
-            _vGenWrapper = new VGenWrapper();
+            _vGenWrapper = vGenWrapper;
             _gamepadId = gamepadId;
 
-            if (!_vJoy.vJoyEnabled())
+            var controllerPluggedIn = false;
+            var checkIfPluggedIn = vGenWrapper.vbox_isControllerPluggedIn(_gamepadId, ref controllerPluggedIn);
+
+            if (checkIfPluggedIn != NtStatus.Success)
             {
-                Log(@"vJoy driver not enabled: Failed Getting vJoy attributes.");
+                Log($"Failed to check if controller plugged in {_gamepadId} ({checkIfPluggedIn})!");
                 return;
             }
 
-            uint dllVer = 0, drvVer = 0;
-            var match = _vJoy.DriverMatch(ref dllVer, ref drvVer);
-            if (!match)
+            if (controllerPluggedIn)
             {
-                Log($@"Version of Driver ({drvVer:X}) does NOT match DLL Version ({dllVer:X})\n");
+                var unplugStatus = vGenWrapper.vbox_UnPlug(_gamepadId);
+                if (unplugStatus != NtStatus.Success)
+                {
+                    var forceUnplugStatus = vGenWrapper.vbox_ForceUnPlug(_gamepadId);
+                    if (forceUnplugStatus != NtStatus.Success)
+                    {
+                        Log($"Failed to force unplug gamepad {_gamepadId} ({forceUnplugStatus})!");
+                        return;
+                    }
+                }
+            }
+
+            var plugInStatus = vGenWrapper.vbox_PlugIn(_gamepadId);
+            if (plugInStatus != NtStatus.Success)
+            {
+                Log($"Failed to plug in gamepad {_gamepadId} ({plugInStatus})!");
                 return;
             }
 
-            var status = _vJoy.GetVJDStatus(_gamepadId);
-            if ((status == VjdStat.VJD_STAT_OWN) || ((status == VjdStat.VJD_STAT_FREE) && !_vJoy.AcquireVJD(_gamepadId)))
-            {
-                Log($@"Failed to acquire vJoy device number {_gamepadId}.\n");
-                return;
-            }
-
-            ResetGamepad(_gamepadId);
-
-            Log("VBusExists: " + _vGenWrapper.vbox_isVBusExist());
-            Log("NumOfEmptyBusSlots: " + _vGenWrapper.vbox_GetNumEmptyBusSlots());
-            Log("UnPlug 1: " + _vGenWrapper.vbox_UnPlug(2));
-            Log("UnPlugForce 1: " + _vGenWrapper.vbox_ForceUnPlug(2));
-            Log("PlugIn 1: " + _vGenWrapper.vbox_PlugIn(2));
+            vGenWrapper.vbox_ResetController(_gamepadId);
         }
 
         public event ErrorOccuredEventHandler ErrorOccuredEvent;
@@ -60,116 +59,88 @@ namespace MFIGamepadFeeder
             ErrorOccuredEvent?.Invoke(this, message);
         }
 
-        private void ResetGamepad(uint id)
-        {
-            _vJoy.ResetVJD(id);
-            var zeroState = new byte[_config.ConfigItems.Count];
-
-            for (var i = 0; i < _config.ConfigItems.Count; i++)
-                zeroState[i] = 0;
-
-            UpdateState(zeroState);
-        }
-
         public void UpdateState(byte[] state)
         {
 //            Log(string.Join(" ", state));
 
+            XInputGamepadButtons buttonsState = 0;
+            XInputGamepadDPadButtons dPadState = 0;
+
             for (var i = 0; i < _config.ConfigItems.Count; i++)
-                SetGamepadItem(state, i, _config.ConfigItems[i]);
+            {
+                var configForCurrentItem = _config.ConfigItems[i];
+                var itemValue = state[i];
 
-            SetDPad(state, _config.ConfigItems);
+                if (configForCurrentItem.Type == GamepadItemType.Axis)
+                    UpdateAxis(itemValue, configForCurrentItem);
+                else if ((configForCurrentItem.Type == GamepadItemType.DPad) && ConvertToButtonState(itemValue) &&
+                         (configForCurrentItem.DPadType != null))
+                    dPadState |= configForCurrentItem.DPadType.Value;
+                else if ((configForCurrentItem.Type == GamepadItemType.Button) && ConvertToButtonState(itemValue) &&
+                         (configForCurrentItem.ButtonType != null))
+                    buttonsState |= configForCurrentItem.ButtonType.Value;
+            }
+
+            var buttonPressState = _vGenWrapper.vbox_SetButton(_gamepadId, buttonsState, true);
+            var buttonReleaseState = _vGenWrapper.vbox_SetButton(_gamepadId, ~buttonsState, false);
+            var dPadStatus = _vGenWrapper.vbox_SetDpad(_gamepadId, dPadState);
+
+            if (dPadStatus != NtStatus.Success)
+                Log($"Failed to set DPad {dPadStatus} (${dPadStatus})");
+            if (buttonPressState != NtStatus.Success)
+                Log($"Failed to set buttons (Press) {buttonsState} (${buttonPressState})");
+            if (buttonReleaseState != NtStatus.Success)
+                Log($"Failed to set buttons (Release) {~buttonsState} (${buttonReleaseState})");
         }
 
-        private void SetGamepadItem(byte[] values, int index, GamepadConfigurationItem config)
+        private void UpdateAxis(double itemValue, GamepadConfigurationItem configForCurrentItem)
         {
-            double value = values[index];
-            if (config.Type == GamepadItemType.Axis)
+            var value = NormalizeAxis(itemValue, configForCurrentItem.ConvertAxis ?? false);
+
+            if (configForCurrentItem.InvertAxis ?? false)
+                value = InvertNormalizedAxis(value);
+
+            var axisSetStatus = NtStatus.Success;
+            switch (configForCurrentItem.AxisType)
             {
-                long maxAxisValue = 0;
-                var targetAxis = config.TargetUsage ?? HID_USAGES.HID_USAGE_X;
-                _vJoy.GetVJDAxisMax(_gamepadId, targetAxis, ref maxAxisValue);
-                value = NormalizeAxis((byte) value, config.ConvertAxis ?? false);
-
-                if (config.InvertAxis ?? false)
-                    value = InvertNormalizedAxis(value);
-
-                _vJoy.SetAxis((int) (value*maxAxisValue), _gamepadId, targetAxis);
+                case AxisType.Rx:
+                    axisSetStatus = _vGenWrapper.vbox_SetAxisRx(_gamepadId, (short) (value*short.MaxValue));
+                    break;
+                case AxisType.Ry:
+                    axisSetStatus = _vGenWrapper.vbox_SetAxisRy(_gamepadId, (short) (value*short.MaxValue));
+                    break;
+                case AxisType.Lx:
+                    axisSetStatus = _vGenWrapper.vbox_SetAxisLx(_gamepadId, (short) (value*short.MaxValue));
+                    break;
+                case AxisType.Ly:
+                    axisSetStatus = _vGenWrapper.vbox_SetAxisLy(_gamepadId, (short) (value*short.MaxValue));
+                    break;
+                case AxisType.LTrigger:
+                    axisSetStatus = _vGenWrapper.vbox_SetTriggerL(_gamepadId, (byte) (value*byte.MaxValue));
+                    break;
+                case AxisType.RTrigger:
+                    axisSetStatus = _vGenWrapper.vbox_SetTriggerR(_gamepadId, (byte) (value*byte.MaxValue));
+                    break;
             }
-            else if (config.Type == GamepadItemType.Button)
-            {
-                var buttonState = ConvertToButtonState((byte) value);
-                _vJoy.SetBtn(buttonState, _gamepadId, config.TargetButtonId ?? 0);
 
-                if (config.TargetButtonId == 1)
-                    _vGenWrapper.vbox_SetBtn(2, XInputGamepadButtons.A, buttonState);
-            }
+            if (axisSetStatus != NtStatus.Success)
+                Log($"Failed to set axis {configForCurrentItem.AxisType} (${axisSetStatus})");
         }
 
-        private void SetDPad(byte[] values, Collection<GamepadConfigurationItem> config)
+        private static double NormalizeAxis(double valueToNormalize, bool shouldConvert)
         {
-            var dPadUp = false;
-            var dPadRight = false;
-            var dPadDown = false;
-            var dPadLeft = false;
-
-            for (var i = 0; i < config.Count; i++)
-            {
-                if (config[i].Type == GamepadItemType.DPadUp)
-                    dPadUp = ConvertToButtonState(values[i]);
-
-                if (config[i].Type == GamepadItemType.DPadRight)
-                    dPadRight = ConvertToButtonState(values[i]);
-
-                if (config[i].Type == GamepadItemType.DPadDown)
-                    dPadDown = ConvertToButtonState(values[i]);
-
-                if (config[i].Type == GamepadItemType.DPadLeft)
-                    dPadLeft = ConvertToButtonState(values[i]);
-            }
-
-            var angle = -1;
-
-            if (dPadUp && dPadRight)
-                angle = 4500;
-            else if (dPadRight && dPadDown)
-                angle = 13500;
-            else if (dPadDown && dPadLeft)
-                angle = 22500;
-            else if (dPadLeft && dPadUp)
-                angle = 31500;
-            else if (dPadUp)
-                angle = 0;
-            else if (dPadRight)
-                angle = 9000;
-            else if (dPadDown)
-                angle = 18000;
-            else if (dPadLeft)
-                angle = 27000;
-
-
-            _vJoy.SetContPov(angle, _gamepadId, 1);
+            if (!shouldConvert) return valueToNormalize/byte.MaxValue;
+            if (valueToNormalize < byte.MaxValue/2.0)
+                return valueToNormalize/(byte.MaxValue/2.0);
+            return (valueToNormalize - byte.MaxValue)/(byte.MaxValue/2.0);
         }
 
-
-        private double NormalizeAxis(byte valueToNormalize, bool shouldConvert)
-        {
-            if (shouldConvert)
-            {
-                if (valueToNormalize < byte.MaxValue/2.0)
-                    return (valueToNormalize + byte.MaxValue/2.0)/byte.MaxValue;
-                return (valueToNormalize - byte.MaxValue/2.0)/byte.MaxValue;
-            }
-
-            return (double) valueToNormalize/byte.MaxValue;
-        }
-
-        private double InvertNormalizedAxis(double axisToInvert)
+        private static double InvertNormalizedAxis(double axisToInvert)
         {
             return 1.0 - axisToInvert;
         }
 
-        private bool ConvertToButtonState(byte value)
+        private static bool ConvertToButtonState(byte value)
         {
             return value > 0;
         }

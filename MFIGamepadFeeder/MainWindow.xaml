@@ -23,13 +23,13 @@
                     <ComboBox x:Name="HidDeviceCombobox" Width="350" SelectionChanged="HidDeviceCombobox_SelectionChanged" />
                 </StackPanel>
                 <StackPanel Margin="10,0">
-                    <Label x:Name="DeviceIdLabel" Content="vJoy Id" HorizontalAlignment="Center" />
+                    <Label x:Name="DeviceIdLabel" Content="XBox Gamepad Id" HorizontalAlignment="Center" />
                     <TextBox x:Name="DeviceIdTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"
-                             Width="59" TextChanged="DeviceIdTextBox_TextChanged" />
+                             Width="100" TextChanged="DeviceIdTextBox_TextChanged" />
                 </StackPanel>
                 <StackPanel Margin="0,0,10,0">
                     <Label x:Name="ConfigFileLabel" Content="Configuration file" HorizontalAlignment="Center" />
-                    <ComboBox x:Name="ConfigFileCombobox" Width="340" SelectionChanged="ConfigFileCombobox_SelectionChanged" />
+                    <ComboBox x:Name="ConfigFileCombobox" Width="300" SelectionChanged="ConfigFileCombobox_SelectionChanged" />
                 </StackPanel>
             </StackPanel>
             <Button Content="Refresh" Margin="10" Click="Button_Click" />

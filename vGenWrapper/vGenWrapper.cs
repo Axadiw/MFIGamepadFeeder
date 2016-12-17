@@ -1,77 +1,130 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace vGenWrapper
 {
-//
-//#define XINPUT_GAMEPAD_DPAD_UP          0x0001
-//#define XINPUT_GAMEPAD_DPAD_DOWN        0x0002
-//#define XINPUT_GAMEPAD_DPAD_LEFT        0x0004
-//#define XINPUT_GAMEPAD_DPAD_RIGHT       0x0008
-//#define XINPUT_GAMEPAD_START            0x0010
-//#define XINPUT_GAMEPAD_BACK             0x0020
-//#define XINPUT_GAMEPAD_LEFT_THUMB       0x0040
-//#define XINPUT_GAMEPAD_RIGHT_THUMB      0x0080
-//#define XINPUT_GAMEPAD_LEFT_SHOULDER    0x0100
-//#define XINPUT_GAMEPAD_RIGHT_SHOULDER   0x0200
-//#define XINPUT_GAMEPAD_A                0x1000
-//#define XINPUT_GAMEPAD_B                0x2000
-//#define XINPUT_GAMEPAD_X                0x4000
-//#define XINPUT_GAMEPAD_Y                0x8000
     public class VGenWrapper
     {
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern NtStatus isVBusExist();
 
-        public bool vbox_isVBusExist()
+        public NtStatus vbox_isVBusExist()
         {
-            var result = isVBusExist();
-            return result == NtStatus.Success;
+            return isVBusExist();
         }
 
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern NtStatus GetNumEmptyBusSlots([Out] uint[] nSlots);
+        private static extern NtStatus PlugIn(uint userIndex);
 
-        public uint vbox_GetNumEmptyBusSlots()
+        public NtStatus vbox_PlugIn(uint slotId)
         {
-            var nslots = new uint[1];
-            var result = GetNumEmptyBusSlots(nslots);
-
-            return nslots[0];
+            return PlugIn(slotId);
         }
 
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern NtStatus PlugIn(uint UserIndex);
+        private static extern NtStatus UnPlug(uint userIndex);
 
-        public NtStatus vbox_PlugIn(uint id)
+        public NtStatus vbox_UnPlug(uint slotId)
         {
-            return PlugIn(id);
-        }
-
-        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern NtStatus UnPlug(uint UserIndex);
-
-        public NtStatus vbox_UnPlug(uint id)
-        {
-            return UnPlug(id);
+            return UnPlug(slotId);
         }
 
 
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern NtStatus UnPlugForce(uint UserIndex);
+        private static extern NtStatus UnPlugForce(uint userIndex);
 
-        public NtStatus vbox_ForceUnPlug(uint id)
+        public NtStatus vbox_ForceUnPlug(uint slotId)
         {
-            return UnPlugForce(id);
+            return UnPlugForce(slotId);
         }
 
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus isControllerPluggedIn(uint userIndex, ref bool exists);
 
-        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
-        private static extern NtStatus SetButton(uint UserIndex,  ushort button, bool pressed);
-        public NtStatus vbox_SetBtn(UInt16 id, XInputGamepadButtons button, bool pressed)
+        public NtStatus vbox_isControllerPluggedIn(uint slotId, ref bool exists)
         {
-            return SetButton(id, (ushort) button, pressed);
+            return isControllerPluggedIn(slotId, ref exists);
         }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetButton(uint userIndex, ushort button, bool pressed);
+
+        public NtStatus vbox_SetButton(uint slotId, XInputGamepadButtons button, bool pressed)
+        {
+            return SetButton(slotId, (ushort) button, pressed);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetAxisLx(uint userIndex, short value);
+
+        public NtStatus vbox_SetAxisLx(uint slotId, short value)
+        {
+            return SetAxisLx(slotId, value);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetAxisLy(uint userIndex, short value);
+
+        public NtStatus vbox_SetAxisLy(uint slotId, short value)
+        {
+            return SetAxisLy(slotId, value);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetAxisRx(uint userIndex, short value);
+
+        public NtStatus vbox_SetAxisRx(uint slotId, short value)
+        {
+            return SetAxisRx(slotId, value);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetAxisRy(uint userIndex, short value);
+
+        public NtStatus vbox_SetAxisRy(uint slotId, short value)
+        {
+            return SetAxisRy(slotId, value);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetTriggerL(uint userIndex, byte value);
+
+        public NtStatus vbox_SetTriggerL(uint slotId, byte value)
+        {
+            return SetTriggerL(slotId, value);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetTriggerR(uint userIndex, byte value);
+
+        public NtStatus vbox_SetTriggerR(uint slotId, byte value)
+        {
+            return SetTriggerR(slotId, value);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus SetDpad(uint userIndex, ushort value);
+
+        public NtStatus vbox_SetDpad(uint slotId, XInputGamepadDPadButtons buttons)
+        {
+            return SetDpad(slotId, (ushort) buttons);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus ResetController(uint userIndex);
+
+        public NtStatus vbox_ResetController(uint slotId)
+        {
+            return ResetController(slotId);
+        }
+
+        [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NtStatus ResetAllControllers();
+
+        public NtStatus vbox_ResetAllControllers()
+        {
+            return ResetAllControllers();
+        }
+
     }
 }

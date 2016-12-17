@@ -10,28 +10,27 @@ using MFIGamepadFeeder.Properties;
 using MFIGamepadShared;
 using MFIGamepadShared.Configuration;
 using Newtonsoft.Json;
+using vGenWrapper;
 
 namespace MFIGamepadFeeder.Gamepads
 {
     internal class GamepadManager
     {
+        private readonly Thread _currentDeviceUpdateThread;
         private readonly HidDeviceLoader _hidDeviceLoader;
-
-        private readonly Thread _currentDeviceUpdateThread
-            ;
+        private readonly VGenWrapper _vGenWrapper;
 
         private Thread _currentGamepadThread;
 
         public GamepadManager()
         {
             _hidDeviceLoader = new HidDeviceLoader();
+            _vGenWrapper = new VGenWrapper();
             FoundDevices = new ObservableCollection<HidDeviceRepresentation>();
 
             SelectedDevice = JsonConvert.DeserializeObject<HidDeviceRepresentation>(Settings.Default.SelectedHidDevice);
-            if (SelectedDevice != null && !FoundDevices.Contains(SelectedDevice))
-            {
+            if ((SelectedDevice != null) && !FoundDevices.Contains(SelectedDevice))
                 FoundDevices.Add(SelectedDevice);
-            }
 
             _currentDeviceUpdateThread = new Thread(() =>
             {
@@ -42,12 +41,11 @@ namespace MFIGamepadFeeder.Gamepads
                         hidDevices.Select(hidDevice => new HidDeviceRepresentation(hidDevice)).ToList();
 
                     foreach (var newDevice in currentDevices.Where(device => !FoundDevices.Contains(device)))
-                    {
                         Application.Current.Dispatcher.Invoke(() => FoundDevices.Add(newDevice));
-                    }
 
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                 }
+                // ReSharper disable once FunctionNeverReturns
             });
             _currentDeviceUpdateThread.Start();
         }
@@ -68,12 +66,11 @@ namespace MFIGamepadFeeder.Gamepads
                 var selectedHidDevice = Settings.Default.SelectedHidDevice;
                 var vJoyId = Settings.Default.SelectedJoyId;
 
-                if (selectedConfigFile == string.Empty || selectedHidDevice == string.Empty)
+                if ((selectedConfigFile == string.Empty) || (selectedHidDevice == string.Empty))
                 {
                     Log("Configuration incomplete");
                     return;
-                }
-                ;
+                }                
 
                 GamepadConfiguration configuration = null;
                 HidDeviceRepresentation hidDeviceRepresentation = null;
@@ -91,6 +88,17 @@ namespace MFIGamepadFeeder.Gamepads
 
                 Log($"Using {hidDeviceRepresentation}, vJoy {vJoyId}, configuration file: {selectedConfigFile}");
 
+                var vBusExists = _vGenWrapper.vbox_isVBusExist();
+                if (vBusExists == NtStatus.Success)
+                {
+                    Log("XBox bus installed");
+                }
+                else
+                {
+                    Log($"XBox bus not installed ({vBusExists})");
+                }
+                
+
                 SetupGamepad(hidDeviceRepresentation, vJoyId, configuration);
             });
             _currentGamepadThread.Start();
@@ -107,52 +115,50 @@ namespace MFIGamepadFeeder.Gamepads
                         hidDeviceRepresentation.ProductId,
                         hidDeviceRepresentation.ProductVersion,
                         hidDeviceRepresentation.SerialNumber
-                        ).First();
+                    ).First();
 
 
-            if (device == null)
-            {
-                Log(@"Failed to open device.");
-                return;
-            }
-
-            HidStream stream;
-            if (!device.TryOpen(out stream))
-            {
-                Log("Failed to open device.");
-                return;
-            }
-
-            var gamepad = new Gamepad(config, gamePadId, Gamepad_ErrorOccuredEvent);
-
-            Log("Successfully initialized gamepad");
-
-            using (stream)
-            {
-                while (true)
+                if (device == null)
                 {
-                    var bytes = new byte[device.MaxInputReportLength];
-                    int count;
-                    try
+                    Log(@"Failed to open device.");
+                    return;
+                }
+
+                HidStream stream;
+                if (!device.TryOpen(out stream))
+                {
+                    Log("Failed to open device.");
+                    return;
+                }
+
+                var gamepad = new Gamepad(config, gamePadId, _vGenWrapper, Gamepad_ErrorOccuredEvent);
+
+                Log("Successfully initialized gamepad");
+
+                using (stream)
+                {
+                    while (true)
                     {
-                        count = stream.Read(bytes, 0, bytes.Length);
-                    }
-                    catch (TimeoutException)
-                    {
-                        continue;
-                    }
+                        var bytes = new byte[device.MaxInputReportLength];
+                        int count;
+                        try
+                        {
+                            count = stream.Read(bytes, 0, bytes.Length);
+                        }
+                        catch (TimeoutException)
+                        {
+                            continue;
+                        }
                         catch (Exception ex)
                         {
                             Log(ex.Message);
                             break;
                         }
 
-                    if (count > 0)
-                    {
-                        gamepad.UpdateState(bytes);
+                        if (count > 0)
+                            gamepad.UpdateState(bytes);
                     }
                 }
-            }
             }
             catch (Exception ex)
             {

@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using MFIGamepadFeeder.Gamepads.Configuration;
 using Newtonsoft.Json;
 
 namespace MFIGamepadShared.Configuration

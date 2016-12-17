@@ -136,10 +136,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HidSharp, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HidSharp.1.5\lib\net35\HidSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -207,22 +203,15 @@
       <Project>{35c01170-5735-4aac-bb97-aa52a735b5a5}</Project>
       <Name>MFIGamepadShared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="vJoySDK\x64\vJoyInterface.dll" Condition="'$(Platform)' == 'x64'">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="vJoySDK\x86\vJoyInterface.dll" Condition="'$(Platform)' == 'x86'">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\vGenWrapper\vGenWrapper.csproj">
+      <Project>{2E0670A9-6FE6-47B0-AD7A-E6C245522D8B}</Project>
+      <Name>vGenWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>MOVE /Y $(OutDir)\vJoySDK\$(PlatformName)\* $(OutDir)
-MOVE /Y $(OutDir)\vGenSDK\$(PlatformName)\* $(OutDir)
-
-rd /s /q "$(OutDir)\vJoySDK\"
-rd /s /q "$(OutDir)\vGenSDK\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
