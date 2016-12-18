@@ -6,110 +6,108 @@ namespace MFIGamepadConfigCreator
 {
     internal class ConfigCreator
     {
-        public GamepadConfiguration GetNimbusConfiguration()
+        public Collection<GamepadMappingItem> GetNimbusConfiguration()
         {
-            var configItems = new Collection<GamepadConfigurationItem>
+            return new Collection<GamepadMappingItem>
             {
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Empty
+                    Type = GamepadMappingItemType.Empty
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.DPad,
+                    Type = GamepadMappingItemType.DPad,
                     DPadType = XInputGamepadDPadButtons.DpadUp
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.DPad,
+                    Type = GamepadMappingItemType.DPad,
                     DPadType = XInputGamepadDPadButtons.DpadRight
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.DPad,
+                    Type = GamepadMappingItemType.DPad,
                     DPadType = XInputGamepadDPadButtons.DpadDown
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.DPad,
+                    Type = GamepadMappingItemType.DPad,
                     DPadType = XInputGamepadDPadButtons.DpadLeft
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.A
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.B
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.X
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.Y
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.LBumper
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.RBumper
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Axis,
+                    Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.LTrigger
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Axis,
+                    Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.RTrigger
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Button,
+                    Type = GamepadMappingItemType.Button,
                     ButtonType = XInputGamepadButtons.Start
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Axis,
+                    Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.Lx,
                     InvertAxis = false,
                     ConvertAxis = true
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Axis,
+                    Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.Ly,
                     InvertAxis = true,
                     ConvertAxis = true
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Axis,
+                    Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.Rx,
                     InvertAxis = false,
                     ConvertAxis = true
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    Type = GamepadItemType.Axis,
+                    Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.Ry,
                     InvertAxis = true,
                     ConvertAxis = true
                 }
-            };
-
-            return new GamepadConfiguration {ConfigItems = configItems};
+            };                
         }
     }
 }

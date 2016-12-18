@@ -55,9 +55,9 @@ Global
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release (Remote)|x64.Build.0 = Release (Remote)|x64
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release (Remote)|x86.ActiveCfg = Release (Remote)|x86
 		{35C01170-5735-4AAC-BB97-AA52A735B5A5}.Release (Remote)|x86.Build.0 = Release (Remote)|x86
-		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Local)|x64.ActiveCfg = Debug|x64
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Local)|x64.ActiveCfg = Debug (Local)|x64
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Local)|x64.Build.0 = Debug (Local)|x64
-		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Local)|x86.ActiveCfg = Debug|x86
+		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Local)|x86.ActiveCfg = Debug (Local)|x86
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Local)|x86.Build.0 = Debug (Local)|x86
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Remote)|x64.ActiveCfg = Debug (Remote)|x64
 		{2F83AD60-C696-42DC-9EDD-6F57D735DF2B}.Debug (Remote)|x64.Build.0 = Debug (Remote)|x64

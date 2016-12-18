@@ -2,7 +2,7 @@
 
 namespace MFIGamepadShared.Configuration
 {
-    public enum GamepadItemType
+    public enum GamepadMappingItemType
     {
         Axis,
         Button,
@@ -10,9 +10,9 @@ namespace MFIGamepadShared.Configuration
         Empty
     }
 
-    public class GamepadConfigurationItem
+    public class GamepadMappingItem
     {
-        public GamepadItemType Type { get; set; }
+        public GamepadMappingItemType Type { get; set; }
         public bool? InvertAxis { get; set; }
         public bool? ConvertAxis { get; set; }
         public XInputGamepadButtons? ButtonType { get; set; }

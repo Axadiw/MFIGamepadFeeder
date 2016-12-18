@@ -5,21 +5,16 @@ namespace MFIGamepadShared.Configuration
 {
     public class GamepadConfiguration
     {
-        public GamepadConfiguration()
-        {
-        }
+        public readonly uint GamepadId;
+        public readonly HidDeviceRepresentation HidDevice;
+        public readonly Collection<GamepadMappingItem> MappingItems;
 
-        public GamepadConfiguration(string jsonRepresentation)
+        public GamepadConfiguration(uint gamepadId, string mappingJsonRepresentation, HidDeviceRepresentation hidDevice)
         {
-            var loadedConfig = JsonConvert.DeserializeObject<GamepadConfiguration>(jsonRepresentation);
-            ConfigItems = loadedConfig.ConfigItems;
-        }
-
-        public Collection<GamepadConfigurationItem> ConfigItems { get; set; }
-
-        public string GetJsonRepresentation()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+            GamepadId = gamepadId;
+            HidDevice = hidDevice;
+            var loadedConfig = JsonConvert.DeserializeObject<Collection<GamepadMappingItem> >(mappingJsonRepresentation);
+            MappingItems = loadedConfig;
+        }        
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using MFIGamepadShared.Configuration;
+using Newtonsoft.Json;
 
 namespace MFIGamepadConfigCreator
 {
@@ -26,12 +28,12 @@ namespace MFIGamepadConfigCreator
             logLabel.Content += message + "\n";
         }
 
-        private static async Task SaveConfigurationToFile(GamepadConfiguration configuration, string filename)
+        private static async Task SaveConfigurationToFile(Collection<GamepadMappingItem> configuration, string filename)
         {
             var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             using (var outputFile = new StreamWriter(desktopPath + $"\\{filename}.mficonfiguration"))
             {
-                await outputFile.WriteAsync(configuration.GetJsonRepresentation());
+                await outputFile.WriteAsync(JsonConvert.SerializeObject(configuration, Formatting.Indented));
             }
         }
     }

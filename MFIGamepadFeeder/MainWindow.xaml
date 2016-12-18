@@ -6,35 +6,88 @@
         xmlns:local="clr-namespace:MFIGamepadFeeder"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="MFI Gamepad Feeder" Width="800" Height="200"  SizeToContent="WidthAndHeight"
-        ResizeMode="CanMinimize" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged">
+        Title="MFI Gamepad Feeder" Width="800" Height="350" SizeToContent="WidthAndHeight"
+        ResizeMode="CanResizeWithGrip" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterScreen"
+        StateChanged="Window_StateChanged" MinWidth="500" MinHeight="250">
     <Grid Loaded="Grid_Loaded">
-        <StackPanel>
+        <DockPanel>
             <tb:TaskbarIcon x:Name="NotifyIcon"
-                    Visibility="Collapsed"
-                    ToolTipText="MFI Gamepad Feeder"
-                    IconSource="Icon.ico"
-                    MenuActivation="LeftClick"
-                    PopupActivation="RightClick" ToolTip="MFI Gamepad" TrayLeftMouseDown="NotifyIcon_TrayLeftMouseDown" TrayRightMouseDown="NotifyIcon_TrayLeftMouseDown"/>
-            
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Margin="10,0,0,0">
-                    <Label x:Name="HidDeviceLabel" Content="Gamepad device" HorizontalAlignment="Center" />
-                    <ComboBox x:Name="HidDeviceCombobox" Width="350" SelectionChanged="HidDeviceCombobox_SelectionChanged" />
-                </StackPanel>
-                <StackPanel Margin="10,0">
-                    <Label x:Name="DeviceIdLabel" Content="XBox Gamepad Id" HorizontalAlignment="Center" />
-                    <TextBox x:Name="DeviceIdTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"
-                             Width="100" TextChanged="DeviceIdTextBox_TextChanged" />
-                </StackPanel>
-                <StackPanel Margin="0,0,10,0">
-                    <Label x:Name="ConfigFileLabel" Content="Configuration file" HorizontalAlignment="Center" />
-                    <ComboBox x:Name="ConfigFileCombobox" Width="300" SelectionChanged="ConfigFileCombobox_SelectionChanged" />
-                </StackPanel>
-            </StackPanel>
-            <Button Content="Refresh" Margin="10" Click="Button_Click" />
-            <TextBox x:Name="LogLabel" Text="" Height="100" Background="#FFF3F3F3" Width="800" TextWrapping="Wrap" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True" />
-        </StackPanel>
+                            Visibility="Collapsed"
+                            ToolTipText="MFI Gamepad Feeder"
+                            IconSource="Icon.ico"
+                            MenuActivation="LeftClick"
+                            PopupActivation="RightClick" ToolTip="MFI Gamepad"
+                            TrayLeftMouseDown="NotifyIcon_TrayLeftMouseDown"
+                            TrayRightMouseDown="NotifyIcon_TrayLeftMouseDown" />
+
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="HidDeviceLabel" Content="Gamepad device" Grid.Column="0" Grid.Row="0"
+                       HorizontalAlignment="Center" />
+                <Label x:Name="DeviceIdLabel" Content="Controller ID" HorizontalAlignment="Center" Grid.Column="1"
+                       Grid.Row="0" />
+                <Label x:Name="ConfigFileLabel" Content="Mapping file" HorizontalAlignment="Center"
+                       Grid.Column="2" Grid.Row="0" />
+                <Label x:Name="ActiveLabel" Content="Active" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="0" />
+
+                <ComboBox x:Name="HidDeviceCombobox1"
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" />
+                <ComboBox x:Name="HidDeviceCombobox2"
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="2" Margin="10,0,0,0" />
+                <ComboBox x:Name="HidDeviceCombobox3"
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="3" Margin="10,0,0,0" />
+                <ComboBox x:Name="HidDeviceCombobox4"
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="4" Margin="10,0,0,0" />
+
+                <ComboBox x:Name="DeviceIdComboBox1" Height="23"
+                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox1_SelectionChanged" Grid.Column="1"
+                          Grid.Row="1" />
+                <ComboBox x:Name="DeviceIdComboBox2" Height="23"
+                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox2_SelectionChanged" Grid.Column="1"
+                          Grid.Row="2" />
+                <ComboBox x:Name="DeviceIdComboBox3" Height="23"
+                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox3_SelectionChanged" Grid.Column="1"
+                          Grid.Row="3" />
+                <ComboBox x:Name="DeviceIdComboBox4" Height="23"
+                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox4_SelectionChanged" Grid.Column="1"
+                          Grid.Row="4" />
+
+                <ComboBox x:Name="MappingFileCombobox1"
+                          SelectionChanged="MappingFileCombobox_SelectionChanged" Grid.Column="2" Grid.Row="1" />
+                <ComboBox x:Name="MappingFileCombobox2"
+                          SelectionChanged="MappingFileCombobox_SelectionChanged" Grid.Column="2" Grid.Row="2" />
+                <ComboBox x:Name="MappingFileCombobox3"
+                          SelectionChanged="MappingFileCombobox_SelectionChanged" Grid.Column="2" Grid.Row="3" />
+                <ComboBox x:Name="MappingFileCombobox4"
+                          SelectionChanged="MappingFileCombobox_SelectionChanged" Grid.Column="2" Grid.Row="4" />
+
+                <CheckBox x:Name="ControllerActiveCheckbox1" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+                <CheckBox x:Name="ControllerActiveCheckbox2" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+                <CheckBox x:Name="ControllerActiveCheckbox3" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+                <CheckBox x:Name="ControllerActiveCheckbox4" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+            </Grid>
+
+            <Button x:Name="StartButton"  Content="Start" Margin="10" Click="StartButton_Click" DockPanel.Dock="Top" />
+            <TextBox x:Name="LogLabel" Text="" Background="#FFF3F3F3" DockPanel.Dock="Bottom" TextWrapping="Wrap"
+                     ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"
+                     HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True" />
+        </DockPanel>
 
     </Grid>
 </Window>
