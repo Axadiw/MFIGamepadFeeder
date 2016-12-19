@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -61,7 +60,10 @@ namespace MFIGamepadFeeder
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            //            WindowState = WindowState.Minimized;
+            if (Settings.Default.StartMinimized)
+            {
+                WindowState = WindowState.Minimized;
+            }
 
             HidDeviceCombobox1.ItemsSource = ViewModel.HidManager.FoundDevices;
             HidDeviceCombobox2.ItemsSource = ViewModel.HidManager.FoundDevices;
@@ -108,16 +110,33 @@ namespace MFIGamepadFeeder
             ControllerActiveCheckbox2.IsChecked = Settings.Default.ControllerActive2;
             ControllerActiveCheckbox3.IsChecked = Settings.Default.ControllerActive3;
             ControllerActiveCheckbox4.IsChecked = Settings.Default.ControllerActive4;
+
+            if (Settings.Default.AutoPlugIn)
+            {
+                StartButton_Click(null, null);
+            }
         }
 
         private void DeviceId_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                if (DeviceIdComboBox1.SelectedItem != null && ReferenceEquals(sender, DeviceIdComboBox1)) Settings.Default.SelectedControllerId1 = (uint)DeviceIdComboBox1.SelectedItem;
-                if (DeviceIdComboBox2.SelectedItem != null && ReferenceEquals(sender, DeviceIdComboBox2)) Settings.Default.SelectedControllerId2 = (uint)DeviceIdComboBox2.SelectedItem;
-                if (DeviceIdComboBox3.SelectedItem != null && ReferenceEquals(sender, DeviceIdComboBox3)) Settings.Default.SelectedControllerId3 = (uint)DeviceIdComboBox3.SelectedItem;
-                if (DeviceIdComboBox4.SelectedItem != null && ReferenceEquals(sender, DeviceIdComboBox4)) Settings.Default.SelectedControllerId4 = (uint)DeviceIdComboBox4.SelectedItem;
+                if ((DeviceIdComboBox1.SelectedItem != null) && ReferenceEquals(sender, DeviceIdComboBox1))
+                {
+                    Settings.Default.SelectedControllerId1 = (uint) DeviceIdComboBox1.SelectedItem;
+                }
+                if ((DeviceIdComboBox2.SelectedItem != null) && ReferenceEquals(sender, DeviceIdComboBox2))
+                {
+                    Settings.Default.SelectedControllerId2 = (uint) DeviceIdComboBox2.SelectedItem;
+                }
+                if ((DeviceIdComboBox3.SelectedItem != null) && ReferenceEquals(sender, DeviceIdComboBox3))
+                {
+                    Settings.Default.SelectedControllerId3 = (uint) DeviceIdComboBox3.SelectedItem;
+                }
+                if ((DeviceIdComboBox4.SelectedItem != null) && ReferenceEquals(sender, DeviceIdComboBox4))
+                {
+                    Settings.Default.SelectedControllerId4 = (uint) DeviceIdComboBox4.SelectedItem;
+                }
 
                 Settings.Default.Save();
             }
@@ -129,28 +148,64 @@ namespace MFIGamepadFeeder
 
         private void ControllerActiveCheckbox_IsCheckedChanged(object sender, RoutedEventArgs routedEventArgs)
         {
-            if (ControllerActiveCheckbox1.IsChecked != null && ReferenceEquals(sender, ControllerActiveCheckbox1)) Settings.Default.ControllerActive1 = ControllerActiveCheckbox1.IsChecked.Value;
-            if (ControllerActiveCheckbox2.IsChecked != null && ReferenceEquals(sender, ControllerActiveCheckbox2)) Settings.Default.ControllerActive2 = ControllerActiveCheckbox2.IsChecked.Value;
-            if (ControllerActiveCheckbox3.IsChecked != null && ReferenceEquals(sender, ControllerActiveCheckbox3)) Settings.Default.ControllerActive3 = ControllerActiveCheckbox3.IsChecked.Value;
-            if (ControllerActiveCheckbox4.IsChecked != null && ReferenceEquals(sender, ControllerActiveCheckbox4)) Settings.Default.ControllerActive4 = ControllerActiveCheckbox4.IsChecked.Value;
+            if ((ControllerActiveCheckbox1.IsChecked != null) && ReferenceEquals(sender, ControllerActiveCheckbox1))
+            {
+                Settings.Default.ControllerActive1 = ControllerActiveCheckbox1.IsChecked.Value;
+            }
+            if ((ControllerActiveCheckbox2.IsChecked != null) && ReferenceEquals(sender, ControllerActiveCheckbox2))
+            {
+                Settings.Default.ControllerActive2 = ControllerActiveCheckbox2.IsChecked.Value;
+            }
+            if ((ControllerActiveCheckbox3.IsChecked != null) && ReferenceEquals(sender, ControllerActiveCheckbox3))
+            {
+                Settings.Default.ControllerActive3 = ControllerActiveCheckbox3.IsChecked.Value;
+            }
+            if ((ControllerActiveCheckbox4.IsChecked != null) && ReferenceEquals(sender, ControllerActiveCheckbox4))
+            {
+                Settings.Default.ControllerActive4 = ControllerActiveCheckbox4.IsChecked.Value;
+            }
             Settings.Default.Save();
         }
 
         private void HidDeviceCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ReferenceEquals(sender, HidDeviceCombobox1)) Settings.Default.SelectedHidDevice1 = JsonConvert.SerializeObject(HidDeviceCombobox1.SelectedItem);
-            if (ReferenceEquals(sender, HidDeviceCombobox2)) Settings.Default.SelectedHidDevice2 = JsonConvert.SerializeObject(HidDeviceCombobox2.SelectedItem);
-            if (ReferenceEquals(sender, HidDeviceCombobox3)) Settings.Default.SelectedHidDevice3 = JsonConvert.SerializeObject(HidDeviceCombobox3.SelectedItem);
-            if (ReferenceEquals(sender, HidDeviceCombobox4)) Settings.Default.SelectedHidDevice4 = JsonConvert.SerializeObject(HidDeviceCombobox4.SelectedItem);
+            if (ReferenceEquals(sender, HidDeviceCombobox1))
+            {
+                Settings.Default.SelectedHidDevice1 = JsonConvert.SerializeObject(HidDeviceCombobox1.SelectedItem);
+            }
+            if (ReferenceEquals(sender, HidDeviceCombobox2))
+            {
+                Settings.Default.SelectedHidDevice2 = JsonConvert.SerializeObject(HidDeviceCombobox2.SelectedItem);
+            }
+            if (ReferenceEquals(sender, HidDeviceCombobox3))
+            {
+                Settings.Default.SelectedHidDevice3 = JsonConvert.SerializeObject(HidDeviceCombobox3.SelectedItem);
+            }
+            if (ReferenceEquals(sender, HidDeviceCombobox4))
+            {
+                Settings.Default.SelectedHidDevice4 = JsonConvert.SerializeObject(HidDeviceCombobox4.SelectedItem);
+            }
             Settings.Default.Save();
         }
 
         private void MappingFileCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ReferenceEquals(sender, MappingFileCombobox1)) Settings.Default.SelectedConfigFile1 = MappingFileCombobox1.SelectedItem as string;
-            if (ReferenceEquals(sender, MappingFileCombobox2)) Settings.Default.SelectedConfigFile2 = MappingFileCombobox2.SelectedItem as string;
-            if (ReferenceEquals(sender, MappingFileCombobox3)) Settings.Default.SelectedConfigFile3 = MappingFileCombobox3.SelectedItem as string;
-            if (ReferenceEquals(sender, MappingFileCombobox4)) Settings.Default.SelectedConfigFile4 = MappingFileCombobox4.SelectedItem as string;
+            if (ReferenceEquals(sender, MappingFileCombobox1))
+            {
+                Settings.Default.SelectedConfigFile1 = MappingFileCombobox1.SelectedItem as string;
+            }
+            if (ReferenceEquals(sender, MappingFileCombobox2))
+            {
+                Settings.Default.SelectedConfigFile2 = MappingFileCombobox2.SelectedItem as string;
+            }
+            if (ReferenceEquals(sender, MappingFileCombobox3))
+            {
+                Settings.Default.SelectedConfigFile3 = MappingFileCombobox3.SelectedItem as string;
+            }
+            if (ReferenceEquals(sender, MappingFileCombobox4))
+            {
+                Settings.Default.SelectedConfigFile4 = MappingFileCombobox4.SelectedItem as string;
+            }
 
             Settings.Default.Save();
         }
@@ -167,13 +222,10 @@ namespace MFIGamepadFeeder
                 LogLabel.Text += $"{DateTime.Now}: {message}{Environment.NewLine}";
                 LogLabel.ScrollToEnd();
             });
-        }        
+        }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            StartButton.Content = "Processing...";
-            StartButton.UpdateLayout();
-
             if (!ViewModel.IsRunning.Value)
             {
                 var activeGamepads = GamepadControls.Keys.Where(box => (box.IsChecked != null) && box.IsChecked.Value).ToList();
@@ -206,7 +258,7 @@ namespace MFIGamepadFeeder
             {
                 ViewModel.Stop();
             }
-        }        
+        }
 
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -235,5 +287,15 @@ namespace MFIGamepadFeeder
             }
         }
 
+        private void OptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var optionsWindow = new OptionsWindow();
+            optionsWindow.ShowDialog();
+        }
+
+        private void EditorButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MFI Gamepad Feeder" Width="800" Height="350"
         ResizeMode="CanResizeWithGrip" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterScreen"
-        StateChanged="Window_StateChanged" MinWidth="500" MinHeight="250">
+        StateChanged="Window_StateChanged" MinWidth="500" MinHeight="250"        
+        >
     <Grid Loaded="Grid_Loaded">
         <DockPanel>
             <tb:TaskbarIcon x:Name="NotifyIcon"
@@ -90,7 +91,20 @@
                           Unchecked="ControllerActiveCheckbox_IsCheckedChanged" />
             </Grid>
 
-            <Button x:Name="StartButton" Content="Start" Margin="10" Click="StartButton_Click" DockPanel.Dock="Top" />
+            <Grid DockPanel.Dock="Top" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" />
+                <Button x:Name="EditorButton" Content="Mapping editor" Click="EditorButton_Click" Grid.Column="1" Margin="10,0"/>
+                <Button x:Name="OptionsButton" Content="Options" Click="OptionsButton_Click" Grid.Column="2" />
+            </Grid>
+            
             <TextBox x:Name="LogLabel" Text="" Background="#FFF3F3F3" DockPanel.Dock="Bottom" TextWrapping="Wrap"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"
                      HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True" />

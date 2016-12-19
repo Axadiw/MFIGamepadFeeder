@@ -214,5 +214,29 @@ namespace MFIGamepadFeeder.Properties {
                 this["ControllerActive4"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StartMinimized {
+            get {
+                return ((bool)(this["StartMinimized"]));
+            }
+            set {
+                this["StartMinimized"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoPlugIn {
+            get {
+                return ((bool)(this["AutoPlugIn"]));
+            }
+            set {
+                this["AutoPlugIn"] = value;
+            }
+        }
     }
 }
