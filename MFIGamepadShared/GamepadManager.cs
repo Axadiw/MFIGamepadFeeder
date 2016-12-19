@@ -20,8 +20,8 @@ namespace MFIGamepadShared
             _hidManager = hidManager;
         }
 
-        public Exception GamepadStartException { get; set; }
-        public Exception NoXboxBusPresetException { get; set; }
+        public Exception GamepadStartException => new Exception();
+        public Exception NoXboxBusPresetException => new Exception();
         public event ErrorOccuredEventHandler ErrorOccuredEvent;
 
         public IObservable<uint> Start(List<GamepadConfiguration> gamepadConfigurations)
@@ -54,13 +54,13 @@ namespace MFIGamepadShared
                 }
                 else
                 {
-                    gamepad.Stop();
+                    gamepad.Dispose();
                     observer.OnError(GamepadStartException);
                 }
 
                 return Disposable.Create(() =>
                 {
-                    gamepad.Stop();
+                    gamepad.Dispose();
                     gamepad.ErrorOccuredEvent -= Gamepad_ErrorOccuredEvent;
                 });
             });

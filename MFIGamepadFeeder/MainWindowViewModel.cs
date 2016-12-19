@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 using MFIGamepadShared;
 using MFIGamepadShared.Configuration;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using vGenWrapper;
 
 namespace MFIGamepadFeeder
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel: IDisposable
     {
         private readonly GamepadManager _gamepadManager;
         public readonly ReactiveProperty<bool> IsRunning = new ReactiveProperty<bool>(false);
         private IDisposable _runningGamepadsDisposable;
-        public HidManager HidManager;
+        public HidManager HidManager;        
 
         public MainWindowViewModel()
         {
@@ -27,10 +28,11 @@ namespace MFIGamepadFeeder
 
             IsRunning.AsObservable().Where(b => !b).Subscribe(_ => _runningGamepadsDisposable?.Dispose());
         }
+        
 
         public event ErrorOccuredEventHandler ErrorOccuredEvent;
 
-        public async void Start(List<HidDeviceRepresentation> selectedHids, List<uint> selectedGamepadIds, List<string> selectedMappsingPaths)
+        public async void Start(HidDeviceRepresentation[] selectedHids, uint[] selectedGamepadIds, string[] selectedMappsingPaths)
         {
             try
             {
@@ -44,13 +46,14 @@ namespace MFIGamepadFeeder
                 var configs = selectedHids.Select((t, i) => new GamepadConfiguration(selectedGamepadIds[i], mappings[i], t)).ToList();
 
                 _runningGamepadsDisposable = _gamepadManager.Start(configs).Subscribe(
-                    gamepadId => { Log($"Started gamepad {gamepadId}"); },
+                    gamepadId => { },
                     exception => { IsRunning.Value = false; });
 
                 IsRunning.Value = true;
             }
             catch (Exception ex)
             {
+                IsRunning.Value = false;
                 Log(ex.Message);
             }
         }
@@ -71,6 +74,12 @@ namespace MFIGamepadFeeder
         protected virtual void Log(string errormessage)
         {
             ErrorOccuredEvent?.Invoke(this, errormessage);
+        }
+
+        public void Dispose()
+        {
+            Stop();
+            HidManager.Dispose();
         }
     }
 }

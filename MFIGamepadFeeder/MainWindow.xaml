@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MFIGamepadFeeder"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="MFI Gamepad Feeder" Width="800" Height="350" SizeToContent="WidthAndHeight"
+        Title="MFI Gamepad Feeder" Width="800" Height="350"
         ResizeMode="CanResizeWithGrip" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterScreen"
         StateChanged="Window_StateChanged" MinWidth="500" MinHeight="250">
     <Grid Loaded="Grid_Loaded">
@@ -29,9 +28,9 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" MaxWidth="500" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" MaxWidth="300" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label x:Name="HidDeviceLabel" Content="Gamepad device" Grid.Column="0" Grid.Row="0"
@@ -43,25 +42,29 @@
                 <Label x:Name="ActiveLabel" Content="Active" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="0" />
 
                 <ComboBox x:Name="HidDeviceCombobox1"
-                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" />
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="1"
+                          Margin="10,0,0,0" />
                 <ComboBox x:Name="HidDeviceCombobox2"
-                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="2" Margin="10,0,0,0" />
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="2"
+                          Margin="10,0,0,0" />
                 <ComboBox x:Name="HidDeviceCombobox3"
-                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="3" Margin="10,0,0,0" />
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="3"
+                          Margin="10,0,0,0" />
                 <ComboBox x:Name="HidDeviceCombobox4"
-                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="4" Margin="10,0,0,0" />
+                          SelectionChanged="HidDeviceCombobox_SelectionChanged" Grid.Column="0" Grid.Row="4"
+                          Margin="10,0,0,0" />
 
                 <ComboBox x:Name="DeviceIdComboBox1" Height="23"
-                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox1_SelectionChanged" Grid.Column="1"
+                          Margin="10,0,10,0" SelectionChanged="DeviceId_SelectionChanged" Grid.Column="1"
                           Grid.Row="1" />
                 <ComboBox x:Name="DeviceIdComboBox2" Height="23"
-                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox2_SelectionChanged" Grid.Column="1"
+                          Margin="10,0,10,0" SelectionChanged="DeviceId_SelectionChanged" Grid.Column="1"
                           Grid.Row="2" />
                 <ComboBox x:Name="DeviceIdComboBox3" Height="23"
-                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox3_SelectionChanged" Grid.Column="1"
+                          Margin="10,0,10,0" SelectionChanged="DeviceId_SelectionChanged" Grid.Column="1"
                           Grid.Row="3" />
                 <ComboBox x:Name="DeviceIdComboBox4" Height="23"
-                          Margin="10,0,10,0" SelectionChanged="DeviceIdTextBox4_SelectionChanged" Grid.Column="1"
+                          Margin="10,0,10,0" SelectionChanged="DeviceId_SelectionChanged" Grid.Column="1"
                           Grid.Row="4" />
 
                 <ComboBox x:Name="MappingFileCombobox1"
@@ -74,16 +77,20 @@
                           SelectionChanged="MappingFileCombobox_SelectionChanged" Grid.Column="2" Grid.Row="4" />
 
                 <CheckBox x:Name="ControllerActiveCheckbox1" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" />
+                          VerticalAlignment="Center" Checked="ControllerActiveCheckbox_IsCheckedChanged"
+                          Unchecked="ControllerActiveCheckbox_IsCheckedChanged" />
                 <CheckBox x:Name="ControllerActiveCheckbox2" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" />
+                          VerticalAlignment="Center" Checked="ControllerActiveCheckbox_IsCheckedChanged"
+                          Unchecked="ControllerActiveCheckbox_IsCheckedChanged" />
                 <CheckBox x:Name="ControllerActiveCheckbox3" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" />
+                          VerticalAlignment="Center" Checked="ControllerActiveCheckbox_IsCheckedChanged"
+                          Unchecked="ControllerActiveCheckbox_IsCheckedChanged" />
                 <CheckBox x:Name="ControllerActiveCheckbox4" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center"
-                          VerticalAlignment="Center" />
+                          VerticalAlignment="Center" Checked="ControllerActiveCheckbox_IsCheckedChanged"
+                          Unchecked="ControllerActiveCheckbox_IsCheckedChanged" />
             </Grid>
 
-            <Button x:Name="StartButton"  Content="Start" Margin="10" Click="StartButton_Click" DockPanel.Dock="Top" />
+            <Button x:Name="StartButton" Content="Start" Margin="10" Click="StartButton_Click" DockPanel.Dock="Top" />
             <TextBox x:Name="LogLabel" Text="" Background="#FFF3F3F3" DockPanel.Dock="Bottom" TextWrapping="Wrap"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"
                      HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="True" />

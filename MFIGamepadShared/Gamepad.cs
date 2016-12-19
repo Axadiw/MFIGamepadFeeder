@@ -9,7 +9,7 @@ public delegate void ErrorOccuredEventHandler(object sender, string errorMessage
 
 namespace MFIGamepadFeeder
 {
-    public class Gamepad
+    public class Gamepad: IDisposable
     {
         private readonly GamepadConfiguration _config;
         private readonly HidDeviceLoader _hidDeviceLoader;
@@ -21,9 +21,9 @@ namespace MFIGamepadFeeder
             _config = config;
             _vGenWrapper = vGenWrapper;
             _hidDeviceLoader = hidDeviceLoader;
-        }
+        }        
 
-        ~Gamepad()
+        public void Dispose()
         {
             Stop();
         }
@@ -38,7 +38,7 @@ namespace MFIGamepadFeeder
         public void Stop()
         {
             UnPlugXBoxController();
-            _gamepadUpdateThread.Abort();
+            _gamepadUpdateThread?.Abort();
         }
 
         private bool UnPlugXBoxController()
@@ -62,8 +62,10 @@ namespace MFIGamepadFeeder
                     {
                         Log($"Failed to force unplug gamepad {_config.GamepadId} ({forceUnplugStatus})!");
                         return false;
-                    }
+                    }                    
                 }
+
+                Log($"Successfully unplugged gamepad {_config.GamepadId}");
             }
 
             return true;
@@ -116,7 +118,7 @@ namespace MFIGamepadFeeder
                 return false;
             }
 
-            Log("Successfully initialized gamepad");
+            Log($"Successfully initialized gamepad {_config.GamepadId}");
 
             _gamepadUpdateThread?.Abort();
             _gamepadUpdateThread = new Thread(() =>
@@ -201,15 +203,15 @@ namespace MFIGamepadFeeder
 
             if (dPadStatus != NtStatus.Success)
             {
-                Log($"Failed to set DPad {dPadStatus} (${dPadStatus})");
+                Log($"Failed to set DPad {dPadStatus} (${dPadStatus}). Gamepad {_config.GamepadId}");
             }
             if (buttonPressState != NtStatus.Success)
             {
-                Log($"Failed to set buttons (Press) {buttonsState} (${buttonPressState})");
+                Log($"Failed to set buttons (Press) {buttonsState} (${buttonPressState}). Gamepad {_config.GamepadId}");
             }
             if (buttonReleaseState != NtStatus.Success)
             {
-                Log($"Failed to set buttons (Release) {~buttonsState} (${buttonReleaseState})");
+                Log($"Failed to set buttons (Release) {~buttonsState} (${buttonReleaseState}). Gamepad {_config.GamepadId}");
             }
         }
 
@@ -247,7 +249,7 @@ namespace MFIGamepadFeeder
 
             if (axisSetStatus != NtStatus.Success)
             {
-                Log($"Failed to set axis {configForCurrentItem.AxisType} (${axisSetStatus})");
+                Log($"Failed to set axis {configForCurrentItem.AxisType} (${axisSetStatus}). Gamepad {_config.GamepadId}");
             }
         }
 
