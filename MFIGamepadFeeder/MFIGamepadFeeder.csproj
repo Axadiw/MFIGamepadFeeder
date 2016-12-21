@@ -42,7 +42,7 @@
     <ManifestKeyFile>MFIGamepadFeeder_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -265,8 +265,6 @@
     <None Include="Configs\Nimbus.mfimapping">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="MFIGamepadFeeder_1_TemporaryKey.pfx" />
-    <None Include="MFIGamepadFeeder_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -308,8 +306,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>MOVE /Y "$(ProjectDir)$(OutDir)vGenSDK\$(PlatformName)\*" "$(ProjectDir)$(OutDir)"
+
+rd /q /s "$(ProjectDir)$(OutDir)vGenSDK"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
