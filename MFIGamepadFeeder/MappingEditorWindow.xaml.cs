@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using HidSharp;
 using MFIGamepadShared;
 using MFIGamepadShared.Configuration;
 using Microsoft.Win32;
@@ -26,14 +25,15 @@ namespace MFIGamepadFeeder
         private string OpenedFileName { get; set; }
 
         public ReactiveCollection<ListViewItem> ListViewMappingItems { get; set; }
-        private SimplifiedHidPreview SimplifiedHidPreview { get; set; }
+        public ReactiveCollection<ListViewItem> VirtualKeysListViewMappingItems { get; set; }
+        private SimplifiedHidPreview SimplifiedHidPreview { get; }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {            
+        {
             HidDeviceCombobox.ItemsSource = SimplifiedHidPreview.HidManager.FoundDevices;
             SimplifiedHidPreview.CurrentHidState
                 .ObserveOn(Application.Current.Dispatcher)
-                .Subscribe(s => HidPreviewLabel.Content = s.Length > 0 ? $"Preview: {s}": string.Empty);
+                .Subscribe(s => HidPreviewLabel.Content = s.Length > 0 ? $"Preview: {s}" : string.Empty);
         }
 
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
@@ -58,8 +58,24 @@ namespace MFIGamepadFeeder
             MappingItemsListView.ItemsSource = ListViewMappingItems;
             MappingItemsListView.AlternationCount = ListViewMappingItems.Count + 1;
 
+
+            VirtualKeysListViewMappingItems = new ReactiveCollection<ListViewItem>();
+            foreach (var virtualKeyMappingItem in mapping.VirtualKeysItems)
+            {
+                var item = new ListViewItem
+                {
+                    Content = virtualKeyMappingItem,
+                    ContentTemplate = (DataTemplate) FindResource("VirtualKeysItemTemplate")
+                };
+
+                VirtualKeysListViewMappingItems.Add(item);
+            }
+
+            VirtualKeysItemsListView.ItemsSource = VirtualKeysListViewMappingItems;
+
             SaveButton.IsEnabled = true;
             AddNewItemButton.IsEnabled = true;
+            AddNewVirtualKeyButton.IsEnabled = true;
         }
 
         private DataTemplate DataTemplateForMappingType(GamepadMappingItemType type)
@@ -81,7 +97,7 @@ namespace MFIGamepadFeeder
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            var newMapping = new GamepadMapping(new List<GamepadMappingItem>());
+            var newMapping = new GamepadMapping(new List<GamepadMappingItem>(), new List<VirtualKeyMappingItem>());
             SaveButton_Click(null, null);
             BindMappingToUi(newMapping);
         }
@@ -99,7 +115,8 @@ namespace MFIGamepadFeeder
             {
                 URLLabel.Content = openFileDialog.FileName;
                 OpenedFileName = openFileDialog.FileName;
-                var mapping = JsonConvert.DeserializeObject<GamepadMapping>(File.ReadAllText(openFileDialog.FileName));
+                var readAllText = File.ReadAllText(openFileDialog.FileName);
+                var mapping = JsonConvert.DeserializeObject<GamepadMapping>(readAllText);
                 BindMappingToUi(mapping);
             }
         }
@@ -115,8 +132,11 @@ namespace MFIGamepadFeeder
             {
                 using (var outputFile = new StreamWriter(saveFileDialog.FileName))
                 {
+                    URLLabel.Content = saveFileDialog.FileName;
                     var mappingItems = MappingItemsListView.Items.SourceCollection.Cast<ListViewItem>().Select(item => item.Content as GamepadMappingItem).ToList();
-                    var newMapping = new GamepadMapping(mappingItems);
+                    var virtualKeysMappingItems = VirtualKeysItemsListView.Items.SourceCollection.Cast<ListViewItem>().Select(item => item.Content as VirtualKeyMappingItem).ToList();
+
+                    var newMapping = new GamepadMapping(mappingItems, virtualKeysMappingItems);
 
                     await outputFile.WriteAsync(JsonConvert.SerializeObject(newMapping, Formatting.Indented));
                 }
@@ -127,6 +147,13 @@ namespace MFIGamepadFeeder
         {
             var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
             ListViewMappingItems.Remove(ListViewMappingItems.First(viewItem => viewItem.Content == item));
+        }
+
+
+        private void RemoveVirtualKeyItemClicked(object sender, RoutedEventArgs e)
+        {
+            var item = (VirtualKeyMappingItem) ((FrameworkElement) sender).DataContext;
+            VirtualKeysListViewMappingItems.Remove(VirtualKeysListViewMappingItems.First(viewItem => viewItem.Content == item));
         }
 
         private void MappingType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -199,8 +226,8 @@ namespace MFIGamepadFeeder
             }
             var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
-            var newDpadType = (XInputGamepadDPadButtons) ((ComboBox) sender).SelectedItem;
-            item.DPadType = newDpadType;
+            var newDpadType = (XInputGamepadButtons) ((ComboBox) sender).SelectedItem;
+            item.ButtonType = newDpadType;
         }
 
         private void AddNewMappingItem_Click(object sender, RoutedEventArgs e)
@@ -222,12 +249,69 @@ namespace MFIGamepadFeeder
             MappingItemsListView.AlternationCount = ListViewMappingItems.Count + 1;
         }
 
+
+        private void AddNewVirtualKeyItem_Click(object sender, RoutedEventArgs e)
+        {
+            var newVirtualKeyItem = new VirtualKeyMappingItem();
+
+            var newListViewItem = new ListViewItem
+            {
+                Content = newVirtualKeyItem,
+                ContentTemplate = (DataTemplate) FindResource("VirtualKeysItemTemplate")
+            };
+
+            VirtualKeysListViewMappingItems.Add(newListViewItem);
+        }
+
         private void HidDeviceCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (HidDeviceCombobox.SelectedItem != null)
             {
                 SimplifiedHidPreview.PlugInToHidDeviceAndStartLoop((HidDeviceRepresentation) HidDeviceCombobox.SelectedItem);
             }
+        }
+
+        private void VirtualSourceKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = ((ComboBox) sender).SelectedItem;
+            if (selectedItem == null)
+            {
+                return;
+            }
+
+
+            var item = (VirtualKeyMappingItem) ((FrameworkElement) sender).DataContext;
+            var virtualKeyIndex = Convert.ToInt32(((ComboBox) sender).Tag);
+            while (virtualKeyIndex > item.SourceKeys.Count - 1)
+            {
+                item.SourceKeys.Add(null);
+            }
+
+            item.SourceKeys[virtualKeyIndex] = selectedItem as XInputGamepadButtons?;
+        }
+
+        private void SelectVirtualKeyComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var keys = new List<object>()
+            {
+                "",
+                XInputGamepadButtons.Start,
+                XInputGamepadButtons.Back,
+                XInputGamepadButtons.LeftStick,
+                XInputGamepadButtons.RightStick,
+                XInputGamepadButtons.LBumper,
+                XInputGamepadButtons.RBumper,
+                XInputGamepadButtons.A,
+                XInputGamepadButtons.B,
+                XInputGamepadButtons.X,
+                XInputGamepadButtons.Y,
+                XInputGamepadButtons.DpadUp,
+                XInputGamepadButtons.DpadDown,
+                XInputGamepadButtons.DpadLeft,
+                XInputGamepadButtons.DpadRight,
+            };
+
+            ((ComboBox) sender).ItemsSource = keys;
         }
     }
 }

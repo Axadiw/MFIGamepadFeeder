@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using HidSharp;
@@ -15,12 +16,24 @@ namespace MFIGamepadFeeder
         private readonly HidDeviceLoader _hidDeviceLoader;
         private readonly VGenWrapper _vGenWrapper;
         private Thread _gamepadUpdateThread;
+        private IDictionary<XInputGamepadButtons, XInputGamepadButtons> _virtualMappings;
 
         public Gamepad(GamepadConfiguration config, VGenWrapper vGenWrapper, HidDeviceLoader hidDeviceLoader)
         {
             _config = config;
             _vGenWrapper = vGenWrapper;
             _hidDeviceLoader = hidDeviceLoader;
+            _virtualMappings = new Dictionary<XInputGamepadButtons, XInputGamepadButtons>();
+
+            foreach (var virtualMapping in _config.Mapping.VirtualKeysItems.Where(item => item.DestinationItem != null))
+            {
+                var virtualPattern = virtualMapping.SourceKeys
+                    .Where(sourceKey => sourceKey != null)
+                    .Aggregate((XInputGamepadButtons)0, (current, sourceKey) => current | sourceKey.Value);
+
+                // ReSharper disable once PossibleInvalidOperationException
+                _virtualMappings[virtualPattern] = (XInputGamepadButtons) virtualMapping.DestinationItem;
+            }
         }        
 
         public void Dispose()
@@ -174,7 +187,7 @@ namespace MFIGamepadFeeder
 //            Log(string.Join(" ", state));
 
             XInputGamepadButtons buttonsState = 0;
-            XInputGamepadDPadButtons dPadState = 0;
+            XInputGamepadButtons dPadState = 0;
 
             for (var i = 0; i < _config.Mapping.MappingItems.Count; i++)
             {
@@ -186,14 +199,23 @@ namespace MFIGamepadFeeder
                     UpdateAxis(itemValue, configForCurrentItem);
                 }
                 else if ((configForCurrentItem.Type == GamepadMappingItemType.DPad) && ConvertToButtonState(itemValue) &&
-                         (configForCurrentItem.DPadType != null))
+                         (configForCurrentItem.ButtonType != null))
                 {
-                    dPadState |= configForCurrentItem.DPadType.Value;
+                    dPadState |= configForCurrentItem.ButtonType.Value;
                 }
                 else if ((configForCurrentItem.Type == GamepadMappingItemType.Button) && ConvertToButtonState(itemValue) &&
                          (configForCurrentItem.ButtonType != null))
                 {
                     buttonsState |= configForCurrentItem.ButtonType.Value;
+                }
+            }
+            
+            foreach (var virtualMapping in _virtualMappings)
+            {
+                if ((virtualMapping.Key & (buttonsState | dPadState)) == virtualMapping.Key)
+                {
+                    buttonsState |= virtualMapping.Value;
+                    buttonsState ^= virtualMapping.Key;
                 }
             }
 

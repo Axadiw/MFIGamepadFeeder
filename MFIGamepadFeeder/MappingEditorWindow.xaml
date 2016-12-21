@@ -8,8 +8,45 @@
     xmlns:vGenWrapper="clr-namespace:vGenWrapper;assembly=vGenWrapper"
     x:Class="MFIGamepadFeeder.MappingEditorWindow"
     mc:Ignorable="d"
-    Title="Mapping Editor" Height="400" Width="800" WindowStartupLocation="CenterScreen" Icon="icon.ico">
+    Title="Mapping Editor" Height="400" Width="1000" WindowStartupLocation="CenterScreen" Icon="icon.ico">
     <Window.Resources>
+        <DataTemplate x:Key="VirtualKeysItemTemplate" DataType="configuration:VirtualKeyMappingItem">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Pressing</Label>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding Path=SourceKeys[0]}" SelectionChanged="VirtualSourceKey_SelectionChanged" Tag="0" Loaded="SelectVirtualKeyComboBox_Loaded" />
+                    <Label> and </Label>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding Path=SourceKeys[1]}" SelectionChanged="VirtualSourceKey_SelectionChanged" Tag="1"  Loaded="SelectVirtualKeyComboBox_Loaded" />
+                    <Label>and</Label>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding Path=SourceKeys[2]}" SelectionChanged="VirtualSourceKey_SelectionChanged" Tag="2"  Loaded="SelectVirtualKeyComboBox_Loaded" />
+                    <Label>and</Label>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding Path=SourceKeys[3]}" SelectionChanged="VirtualSourceKey_SelectionChanged" Tag="3"  Loaded="SelectVirtualKeyComboBox_Loaded" />
+                    <Label>and</Label>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding Path=SourceKeys[4]}" SelectionChanged="VirtualSourceKey_SelectionChanged" Tag="4"  Loaded="SelectVirtualKeyComboBox_Loaded" />
+                    <Label>will trigger</Label>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding Path=DestinationItem}">
+                        <vGenWrapper:XInputGamepadButtons>A</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>B</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>X</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>Y</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>Back</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>Start</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>LeftStick</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>RightStick</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>LBumper</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>RBumper</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadUp</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadRight</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadDown</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadLeft</vGenWrapper:XInputGamepadButtons>
+                    </ComboBox>
+                </StackPanel>
+
+                <Button HorizontalAlignment="Right" Width="60" Content="Delete" Click="RemoveVirtualKeyItemClicked" />
+            </Grid>
+        </DataTemplate>
+        
+        
         <DataTemplate x:Key="ButtonMappingItemTemplate" DataType="configuration:GamepadMappingItem">
             <Grid>
                 <StackPanel Orientation="Horizontal">
@@ -86,11 +123,11 @@
                     </ComboBox>
 
                     <Label Content="D-Pad direction: " VerticalAlignment="Center" Width="100" Margin="20,0,0,0" HorizontalContentAlignment="Right"/>
-                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding DPadType}" SelectionChanged="DPadType_SelectionChanged">
-                        <vGenWrapper:XInputGamepadDPadButtons>DpadUp</vGenWrapper:XInputGamepadDPadButtons>
-                        <vGenWrapper:XInputGamepadDPadButtons>DpadRight</vGenWrapper:XInputGamepadDPadButtons>
-                        <vGenWrapper:XInputGamepadDPadButtons>DpadDown</vGenWrapper:XInputGamepadDPadButtons>
-                        <vGenWrapper:XInputGamepadDPadButtons>DpadLeft</vGenWrapper:XInputGamepadDPadButtons>
+                    <ComboBox HorizontalAlignment="Left" Width="100" SelectedItem="{Binding ButtonType}" SelectionChanged="DPadType_SelectionChanged">
+                        <vGenWrapper:XInputGamepadButtons>DpadUp</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadRight</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadDown</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>DpadLeft</vGenWrapper:XInputGamepadButtons>
                     </ComboBox>
                 </StackPanel>
 
@@ -174,7 +211,30 @@
                
             </TabItem>
             <TabItem Header="Virtual keys">
-                <Label Content="TBD" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="VirtualKeysItemsListView" HorizontalContentAlignment="Stretch" AlternationCount="2000" SelectionMode="Single" Grid.Row="0">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="Focusable" Value="false"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+<!--                        <ListViewItem ContentTemplate="{StaticResource VirtualKeysItemTemplate}">-->
+<!--                            <system:String>fake</system:String>-->
+<!--                        </ListViewItem>-->
+<!--                        <ListViewItem ContentTemplate="{StaticResource VirtualKeysItemTemplate}">-->
+<!--                            <system:String>fake</system:String>-->
+<!--                        </ListViewItem>-->
+<!--                        <ListViewItem ContentTemplate="{StaticResource VirtualKeysItemTemplate}">-->
+<!--                            <system:String>fake</system:String>-->
+<!--                        </ListViewItem>-->
+                    </ListView>
+                    <Button x:Name="AddNewVirtualKeyButton" IsEnabled="False"  Content="Add new item" Grid.Row="1" Click="AddNewVirtualKeyItem_Click" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

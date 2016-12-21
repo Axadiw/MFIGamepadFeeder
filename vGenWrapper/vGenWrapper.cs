@@ -105,7 +105,7 @@ namespace vGenWrapper
         [DllImport("vGenInterface.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern NtStatus SetDpad(uint userIndex, ushort value);
 
-        public NtStatus vbox_SetDpad(uint slotId, XInputGamepadDPadButtons buttons)
+        public NtStatus vbox_SetDpad(uint slotId, XInputGamepadButtons buttons)
         {
             return SetDpad(slotId, (ushort) buttons);
         }

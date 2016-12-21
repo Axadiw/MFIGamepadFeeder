@@ -17,22 +17,22 @@ namespace MFIGamepadConfigCreator
                 new GamepadMappingItem
                 {
                     Type = GamepadMappingItemType.DPad,
-                    DPadType = XInputGamepadDPadButtons.DpadUp
+                    ButtonType = XInputGamepadButtons.DpadUp
                 },
                 new GamepadMappingItem
                 {
                     Type = GamepadMappingItemType.DPad,
-                    DPadType = XInputGamepadDPadButtons.DpadRight
+                    ButtonType = XInputGamepadButtons.DpadRight
                 },
                 new GamepadMappingItem
                 {
                     Type = GamepadMappingItemType.DPad,
-                    DPadType = XInputGamepadDPadButtons.DpadDown
+                    ButtonType = XInputGamepadButtons.DpadDown
                 },
                 new GamepadMappingItem
                 {
                     Type = GamepadMappingItemType.DPad,
-                    DPadType = XInputGamepadDPadButtons.DpadLeft
+                    ButtonType = XInputGamepadButtons.DpadLeft
                 },
                 new GamepadMappingItem
                 {
@@ -90,7 +90,7 @@ namespace MFIGamepadConfigCreator
                 {
                     Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.Ly,
-                    InvertAxis = true,
+                    InvertAxis = false,
                     ConvertAxis = true
                 },
                 new GamepadMappingItem
@@ -104,8 +104,38 @@ namespace MFIGamepadConfigCreator
                 {
                     Type = GamepadMappingItemType.Axis,
                     AxisType = AxisType.Ry,
-                    InvertAxis = true,
+                    InvertAxis = false,
                     ConvertAxis = true
+                }
+            }, new List<VirtualKeyMappingItem>()
+            {
+                new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.RBumper,
+                        XInputGamepadButtons.LBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.Back
+                },
+                           new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.LBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.LeftStick
+                },
+                                      new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.RBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.RightStick
                 }
             });
         }

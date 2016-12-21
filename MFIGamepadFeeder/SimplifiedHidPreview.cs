@@ -24,7 +24,7 @@ namespace MFIGamepadFeeder
         public void Dispose()
         {
             HidManager.Dispose();
-            _updateThread.Abort();
+            _updateThread?.Abort();
         }
 
         public bool PlugInToHidDeviceAndStartLoop(HidDeviceRepresentation representation)
