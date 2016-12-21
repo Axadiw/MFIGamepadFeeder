@@ -306,9 +306,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>MOVE /Y "$(ProjectDir)$(OutDir)vGenSDK\$(PlatformName)\*" "$(ProjectDir)$(OutDir)"
-
-rd /q /s "$(ProjectDir)$(OutDir)vGenSDK"</PostBuildEvent>
+    <PostBuildEvent>MOVE /Y "$(TargetDir)vGenSDK\$(PlatformName)\*" "$(TargetDir)"
+rd /q /s "$(TargetDir)vGenSDK"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
