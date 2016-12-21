@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{A536D1DC-9933-43CA-95B2-5AFA4BA11CD4}
+AppId={{F10E93AF-9FA9-4A28-A745-EF8F8ED7113E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -21,7 +21,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=MFIGamepadFeederInstaller_x64
+OutputBaseFilename=MFIGamepadFeederInstaller_x86
 SetupIconFile=.\icon.ico
 Compression=lzma
 SolidCompression=yes
@@ -33,9 +33,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\MFIGamepadFeeder\bin\x64\Release\MFIGamepadFeeder.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\MFIGamepadFeeder\bin\x64\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\ExternalResources\ScpVBus-x64\*"; DestDir: "{app}\scp"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\MFIGamepadFeeder\bin\x86\Release\MFIGamepadFeeder.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\MFIGamepadFeeder\bin\x86\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\ExternalResources\ScpVBus-x86\*"; DestDir: "{app}\scp"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
