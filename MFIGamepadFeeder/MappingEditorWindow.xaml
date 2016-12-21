@@ -113,7 +113,7 @@
             </Grid>
         </DataTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid Loaded="Grid_Loaded" Unloaded="Grid_Unloaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -134,15 +134,21 @@
             <Button x:Name="SaveButton" Content="Save" Grid.Column="3" Margin="10,0" Click="SaveButton_Click"
                     IsEnabled="False" />
         </Grid>
-
         <TabControl Grid.Row="1">
             <TabItem Header="General mapping">
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
-                    <ListView x:Name="MappingItemsListView" HorizontalContentAlignment="Stretch" AlternationCount="2000" SelectionMode="Single">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="10,0,0,0" VerticalAlignment="Center" >Select device to preview:</Label>
+                        <ComboBox Width="300" x:Name="HidDeviceCombobox" VerticalAlignment="Center" SelectionChanged="HidDeviceCombobox_SelectionChanged" Margin="10,0,0,0" />
+                        <Label x:Name="HidPreviewLabel" Margin="10,0,0,0" VerticalAlignment="Center" ></Label>
+                    </StackPanel>
+                    
+                    <ListView x:Name="MappingItemsListView" HorizontalContentAlignment="Stretch" AlternationCount="2000" SelectionMode="Single" Grid.Row="1">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -163,7 +169,7 @@
 <!--                            <system:String>fake</system:String>-->
 <!--                        </ListViewItem>-->
                     </ListView>
-                    <Button x:Name="AddNewItemButton" IsEnabled="False"  Content="Add new item" Grid.Row="1" Click="AddNewMappingItem_Click"></Button>
+                    <Button x:Name="AddNewItemButton" IsEnabled="False"  Content="Add new item" Grid.Row="2" Click="AddNewMappingItem_Click"></Button>
                 </Grid>
                
             </TabItem>

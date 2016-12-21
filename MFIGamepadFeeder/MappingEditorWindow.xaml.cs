@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using HidSharp;
+using MFIGamepadShared;
 using MFIGamepadShared.Configuration;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -17,11 +20,26 @@ namespace MFIGamepadFeeder
         public MappingEditorWindow()
         {
             InitializeComponent();
+            SimplifiedHidPreview = new SimplifiedHidPreview();
         }
 
         private string OpenedFileName { get; set; }
 
         public ReactiveCollection<ListViewItem> ListViewMappingItems { get; set; }
+        private SimplifiedHidPreview SimplifiedHidPreview { get; set; }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {            
+            HidDeviceCombobox.ItemsSource = SimplifiedHidPreview.HidManager.FoundDevices;
+            SimplifiedHidPreview.CurrentHidState
+                .ObserveOn(Application.Current.Dispatcher)
+                .Subscribe(s => HidPreviewLabel.Content = s.Length > 0 ? $"Preview: {s}": string.Empty);
+        }
+
+        private void Grid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SimplifiedHidPreview.Dispose();
+        }
 
         private void BindMappingToUi(GamepadMapping mapping)
         {
@@ -117,7 +135,7 @@ namespace MFIGamepadFeeder
             {
                 return;
             }
-            var item = (GamepadMappingItem)((FrameworkElement)sender).DataContext;
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
             var newItemType = (GamepadMappingItemType) ((ComboBox) sender).SelectedItem;
             item.Type = newItemType;
@@ -131,7 +149,7 @@ namespace MFIGamepadFeeder
             {
                 return;
             }
-            var item = (GamepadMappingItem)((FrameworkElement)sender).DataContext;
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
             var newAxisType = (AxisType) ((ComboBox) sender).SelectedItem;
             item.AxisType = newAxisType;
@@ -143,7 +161,7 @@ namespace MFIGamepadFeeder
             {
                 return;
             }
-            var item = (GamepadMappingItem)((FrameworkElement)sender).DataContext;
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
             var newIsChecked = ((CheckBox) sender).IsChecked;
             item.InvertAxis = newIsChecked;
@@ -155,7 +173,7 @@ namespace MFIGamepadFeeder
             {
                 return;
             }
-            var item = (GamepadMappingItem)((FrameworkElement)sender).DataContext;
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
             var newIsChecked = ((CheckBox) sender).IsChecked;
             item.ConvertAxis = newIsChecked;
@@ -167,7 +185,7 @@ namespace MFIGamepadFeeder
             {
                 return;
             }
-            var item = (GamepadMappingItem)((FrameworkElement)sender).DataContext;
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
             var newButtonType = (XInputGamepadButtons) ((ComboBox) sender).SelectedItem;
             item.ButtonType = newButtonType;
@@ -179,9 +197,9 @@ namespace MFIGamepadFeeder
             {
                 return;
             }
-            var item = (GamepadMappingItem)((FrameworkElement)sender).DataContext;
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
 
-            var newDpadType = (XInputGamepadDPadButtons) ((ComboBox) sender).SelectedItem;            
+            var newDpadType = (XInputGamepadDPadButtons) ((ComboBox) sender).SelectedItem;
             item.DPadType = newDpadType;
         }
 
@@ -203,6 +221,13 @@ namespace MFIGamepadFeeder
             ListViewMappingItems.Add(newListViewItem);
             MappingItemsListView.AlternationCount = ListViewMappingItems.Count + 1;
         }
-        
+
+        private void HidDeviceCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (HidDeviceCombobox.SelectedItem != null)
+            {
+                SimplifiedHidPreview.PlugInToHidDeviceAndStartLoop((HidDeviceRepresentation) HidDeviceCombobox.SelectedItem);
+            }
+        }
     }
 }
