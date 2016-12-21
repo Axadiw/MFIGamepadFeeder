@@ -54,7 +54,7 @@ namespace MFIGamepadFeeder
                         });
             }
 
-            ViewModel.IsRunning.AsObservable().Subscribe(b => StartButton.Content = b ? "Stop" : "Start");
+            ViewModel.IsRunning.AsObservable().ObserveOn(Application.Current.Dispatcher).Subscribe(b => StartButton.Content = b ? "Stop" : "Start");
         }
 
 
@@ -94,7 +94,7 @@ namespace MFIGamepadFeeder
 
             var configFiles =
                 Directory.GetFiles("Configs", "*.*", SearchOption.AllDirectories)
-                    .Where(s => s.EndsWith(".mficonfiguration"));
+                    .Where(s => s.EndsWith(".mfimapping"));
             var itemsSource = configFiles as string[] ?? configFiles.ToArray();
             MappingFileCombobox1.ItemsSource = itemsSource;
             MappingFileCombobox2.ItemsSource = itemsSource;
@@ -295,7 +295,8 @@ namespace MFIGamepadFeeder
 
         private void EditorButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            var mappingEditorWindow = new MappingEditorWindow();
+            mappingEditorWindow.ShowDialog();
         }
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFIGamepadFeeder"
         mc:Ignorable="d"
-        Title="OptionsWindow" Height="130" Width="300" ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
+        Title="Options" Height="130" Width="300" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Icon="icon.ico"
         >
     <Grid Loaded="Grid_Loaded">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

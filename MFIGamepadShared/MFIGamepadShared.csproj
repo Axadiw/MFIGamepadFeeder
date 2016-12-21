@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\GamepadConfiguration.cs" />
+    <Compile Include="Configuration\GamepadMapping.cs" />
     <Compile Include="Configuration\GamepadMappingItem.cs" />
     <Compile Include="GamepadManager.cs" />
     <Compile Include="Gamepad.cs" />

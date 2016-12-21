@@ -28,10 +28,10 @@ namespace MFIGamepadConfigCreator
             logLabel.Content += message + "\n";
         }
 
-        private static async Task SaveConfigurationToFile(Collection<GamepadMappingItem> configuration, string filename)
+        private static async Task SaveConfigurationToFile(GamepadMapping configuration, string filename)
         {
             var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            using (var outputFile = new StreamWriter(desktopPath + $"\\{filename}.mficonfiguration"))
+            using (var outputFile = new StreamWriter(desktopPath + $"\\{filename}.mfimapping"))
             {
                 await outputFile.WriteAsync(JsonConvert.SerializeObject(configuration, Formatting.Indented));
             }

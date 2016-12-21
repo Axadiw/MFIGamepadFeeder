@@ -176,9 +176,9 @@ namespace MFIGamepadFeeder
             XInputGamepadButtons buttonsState = 0;
             XInputGamepadDPadButtons dPadState = 0;
 
-            for (var i = 0; i < _config.MappingItems.Count; i++)
+            for (var i = 0; i < _config.Mapping.MappingItems.Count; i++)
             {
-                var configForCurrentItem = _config.MappingItems[i];
+                var configForCurrentItem = _config.Mapping.MappingItems[i];
                 var itemValue = state[i];
 
                 if (configForCurrentItem.Type == GamepadMappingItemType.Axis)

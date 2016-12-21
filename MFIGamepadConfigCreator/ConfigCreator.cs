@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using MFIGamepadShared.Configuration;
 using vGenWrapper;
 
@@ -6,9 +6,9 @@ namespace MFIGamepadConfigCreator
 {
     internal class ConfigCreator
     {
-        public Collection<GamepadMappingItem> GetNimbusConfiguration()
+        public GamepadMapping GetNimbusConfiguration()
         {
-            return new Collection<GamepadMappingItem>
+            return new GamepadMapping(new List<GamepadMappingItem>
             {
                 new GamepadMappingItem
                 {
@@ -107,7 +107,7 @@ namespace MFIGamepadConfigCreator
                     InvertAxis = true,
                     ConvertAxis = true
                 }
-            };                
+            });
         }
     }
 }
