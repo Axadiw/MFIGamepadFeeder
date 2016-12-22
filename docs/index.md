@@ -80,19 +80,27 @@ Pressing **RBumper**, **LBumper** and **Start** together will be changed to **Ba
 
 **LBumper** + **Start** will end up with **LeftStick** press, whilst **RBumper** + **Start** will be **RightStick** press.
 
-# Application development
-
-I've started with support for SteelSeries Nimbus controller only, if you'd like to add support for other game controller, post pull request with mapping file on [GitHub issues page](https://github.com/Axadiw/MFIGamepadFeeder/issues).
-
-## Supported gamepads
+# Supported gamepads
 
 * SteelSeries Nimbus (only via Bluetooth)
 
-#### Not compatibile:
+### Not compatibile:
 
 * Mad Catz Micro C.T.R.L i
 
 Keep in mind that all controllers without **HID** interface won't be compatible with *MFIGamepadFeeder*.
+
+# Connecting gamepads via Bluetooth
+In order to connect your gamepad via bluetooth you need to:
+
+1. Turn on your gamepad (and press bluetooth pairing button)
+2. Select the Start menu, then select Settings > Devices > Bluetooth.
+3. Turn on Bluetooth > select the device > Pair.
+4. Follow any more instructions if they appear.
+
+# Application development
+
+I've started with support for SteelSeries Nimbus controller only, if you'd like to add support for other game controller, post pull request with mapping file on [GitHub issues page](https://github.com/Axadiw/MFIGamepadFeeder/issues).
 
 # Special thanks
 

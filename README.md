@@ -1,3 +1,6 @@
+---
+---
+
 # MFI Gamepad Feeder
 
 Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With *MFI Gamepad Feeder* it's possible!
@@ -20,7 +23,7 @@ Application was tested on Windows 10, but it should work on older systems as wel
 ## Installation
 
 1. Download and install [MFI Gamepad Feeder](https://github.com/Axadiw/MFIGamepadFeeder/releases/latest "MFI Gamepad Feeder") (restart required)
-![](docs/mfi_images/MainScreen.PNG)
+![](mfi_images/MainScreen.PNG)
 2. Plug in your controllers (check compatibility list). If necessary you may need to pair them via Bluetooth.
 2. Launch *MFI Gamepad Feeder* application and select:
 3. Click "Active" checkbox on the right next to the first row
@@ -36,14 +39,14 @@ In order to support different types of MFI controllers you can use included mapp
 
 ### HID -> XBox 360 translation
 
-In order to create goot gamepad mapping you need to understand how **MFIGamepadFeeder** is transforming HID controllers to XBox 360 ones.
+In order to create good gamepad mapping you need to understand how **MFIGamepadFeeder** is transforming HID controllers to XBox 360 ones.
 
 Every time you press a button / touch analog stick on you controller, your PC is receiving a small set of numbers that are describing current state of the device.
 
 For example *SteelSeries Nimbus* is sending 18 numbers, each one is responsible for different button / axis. In order to translate these numbers, so **MFIGamepadFeeder** would be able to understand them, you need to specify meaning of each of them.
 
 ### Editor
-![](docs/mfi_images/Mappings editor.PNG)
+![](mfi_images/Mappings editor.PNG)
 
 In order to create a new mapping:
 
@@ -69,7 +72,7 @@ You can access *Virtual Keys* from the second tab in the *Mapping Editor*. Manua
 
 For example this configuration:
 
-![](docs/mfi_images/Mappings editor_virtual keys.PNG)
+![](mfi_images/Mappings editor_virtual keys.PNG)
 
 will result in:
 
@@ -77,19 +80,27 @@ Pressing **RBumper**, **LBumper** and **Start** together will be changed to **Ba
 
 **LBumper** + **Start** will end up with **LeftStick** press, whilst **RBumper** + **Start** will be **RightStick** press.
 
-# Application development
-
-I've started with support for SteelSeries Nimbus controller only, if you'd like to add support for other game controller, post pull request with mapping file on [GitHub issues page](https://github.com/Axadiw/MFIGamepadFeeder/issues).
-
-## Supported gamepads
+# Supported gamepads
 
 * SteelSeries Nimbus (only via Bluetooth)
 
-#### Not compatibile:
+### Not compatibile:
 
 * Mad Catz Micro C.T.R.L i
 
-Keep in mind that all controllers without **HID** interface won't be compatibile with *MFIGamepadFeeder*.
+Keep in mind that all controllers without **HID** interface won't be compatible with *MFIGamepadFeeder*.
+
+# Connecting gamepads via Bluetooth
+In order to connect your gamepad via bluetooth you need to:
+
+1. Turn on your gamepad (and press bluetooth pairing button)
+2. Select the Start menu, then select Settings > Devices > Bluetooth.
+3. Turn on Bluetooth > select the device > Pair.
+4. Follow any more instructions if they appear.
+
+# Application development
+
+I've started with support for SteelSeries Nimbus controller only, if you'd like to add support for other game controller, post pull request with mapping file on [GitHub issues page](https://github.com/Axadiw/MFIGamepadFeeder/issues).
 
 # Special thanks
 
