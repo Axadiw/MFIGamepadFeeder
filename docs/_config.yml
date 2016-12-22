@@ -1,0 +1,8 @@
+title: MFI Gamepad Feeder
+description: vJoy feeder for MFI Gamepads
+google_analytics: UA-231768-10
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
