@@ -130,15 +130,22 @@ namespace MFIGamepadFeeder
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                using (var outputFile = new StreamWriter(saveFileDialog.FileName))
+                try
                 {
-                    URLLabel.Content = saveFileDialog.FileName;
-                    var mappingItems = MappingItemsListView.Items.SourceCollection.Cast<ListViewItem>().Select(item => item.Content as GamepadMappingItem).ToList();
-                    var virtualKeysMappingItems = VirtualKeysItemsListView.Items.SourceCollection.Cast<ListViewItem>().Select(item => item.Content as VirtualKeyMappingItem).ToList();
+                    using (var outputFile = new StreamWriter(saveFileDialog.FileName))
+                    {
+                        URLLabel.Content = saveFileDialog.FileName;
+                        var mappingItems = MappingItemsListView.Items.SourceCollection.Cast<ListViewItem>().Select(item => item.Content as GamepadMappingItem).ToList();
+                        var virtualKeysMappingItems = VirtualKeysItemsListView.Items.SourceCollection.Cast<ListViewItem>().Select(item => item.Content as VirtualKeyMappingItem).ToList();
 
-                    var newMapping = new GamepadMapping(mappingItems, virtualKeysMappingItems);
+                        var newMapping = new GamepadMapping(mappingItems, virtualKeysMappingItems);
 
-                    await outputFile.WriteAsync(JsonConvert.SerializeObject(newMapping, Formatting.Indented));
+                        await outputFile.WriteAsync(JsonConvert.SerializeObject(newMapping, Formatting.Indented));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -292,7 +299,7 @@ namespace MFIGamepadFeeder
 
         private void SelectVirtualKeyComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            var keys = new List<object>()
+            var keys = new List<object>
             {
                 "",
                 XInputGamepadButtons.Start,
@@ -308,7 +315,7 @@ namespace MFIGamepadFeeder
                 XInputGamepadButtons.DpadUp,
                 XInputGamepadButtons.DpadDown,
                 XInputGamepadButtons.DpadLeft,
-                XInputGamepadButtons.DpadRight,
+                XInputGamepadButtons.DpadRight
             };
 
             ((ComboBox) sender).ItemsSource = keys;
