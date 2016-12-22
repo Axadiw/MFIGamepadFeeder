@@ -1,162 +1,143 @@
-﻿using System.Collections.ObjectModel;
-using MFIGamepadFeeder.Gamepads.Configuration;
+﻿using System.Collections.Generic;
 using MFIGamepadShared.Configuration;
+using vGenWrapper;
 
 namespace MFIGamepadConfigCreator
 {
     internal class ConfigCreator
     {
-        public GamepadConfiguration GetNimbusConfiguration()
+        public GamepadMapping GetNimbusConfiguration()
         {
-            var configItems = new Collection<GamepadConfigurationItem>
+            return new GamepadMapping(new List<GamepadMappingItem>
             {
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Empty
+                    Type = GamepadMappingItemType.Empty
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadUp
+                    Type = GamepadMappingItemType.DPad,
+                    ButtonType = XInputGamepadButtons.DpadUp
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadRight
+                    Type = GamepadMappingItemType.DPad,
+                    ButtonType = XInputGamepadButtons.DpadRight
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadDown
+                    Type = GamepadMappingItemType.DPad,
+                    ButtonType = XInputGamepadButtons.DpadDown
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.DPadLeft
+                    Type = GamepadMappingItemType.DPad,
+                    ButtonType = XInputGamepadButtons.DpadLeft
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 1,
-                    Type = GamepadItemType.Button
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.A
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 2,
-                    Type = GamepadItemType.Button
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.B
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 3,
-                    Type = GamepadItemType.Button
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.X
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 4,
-                    Type = GamepadItemType.Button
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.Y
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 5,
-                    Type = GamepadItemType.Button
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.LBumper
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 6,
-                    Type = GamepadItemType.Button
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.RBumper
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_SL0,
+                    Type = GamepadMappingItemType.Axis,
+                    AxisType = AxisType.LTrigger
+                },
+                new GamepadMappingItem
+                {
+                    Type = GamepadMappingItemType.Axis,
+                    AxisType = AxisType.RTrigger
+                },
+                new GamepadMappingItem
+                {
+                    Type = GamepadMappingItemType.Button,
+                    ButtonType = XInputGamepadButtons.Start
+                },
+                new GamepadMappingItem
+                {
+                    Type = GamepadMappingItemType.Axis,
+                    AxisType = AxisType.Lx,
                     InvertAxis = false,
-                    ConvertAxis = false,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_SL1,
+                    Type = GamepadMappingItemType.Axis,
+                    AxisType = AxisType.Ly,
                     InvertAxis = false,
-                    ConvertAxis = false,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = null,
-                    InvertAxis = null,
-                    ConvertAxis = null,
-                    TargetButtonId = 7,
-                    Type = GamepadItemType.Button
-                },
-                new GamepadConfigurationItem
-                {
-                    TargetUsage = HID_USAGES.HID_USAGE_X,
+                    Type = GamepadMappingItemType.Axis,
+                    AxisType = AxisType.Rx,
                     InvertAxis = false,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 },
-                new GamepadConfigurationItem
+                new GamepadMappingItem
                 {
-                    TargetUsage = HID_USAGES.HID_USAGE_Y,
-                    InvertAxis = true,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
-                },
-                new GamepadConfigurationItem
-                {
-                    TargetUsage = HID_USAGES.HID_USAGE_RX,
+                    Type = GamepadMappingItemType.Axis,
+                    AxisType = AxisType.Ry,
                     InvertAxis = false,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
-                },
-                new GamepadConfigurationItem
-                {
-                    TargetUsage = HID_USAGES.HID_USAGE_RY,
-                    InvertAxis = true,
-                    ConvertAxis = true,
-                    TargetButtonId = null,
-                    Type = GamepadItemType.Axis
+                    ConvertAxis = true
                 }
-            };
-
-            return new GamepadConfiguration {ConfigItems = configItems};
+            }, new List<VirtualKeyMappingItem>()
+            {
+                new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.RBumper,
+                        XInputGamepadButtons.LBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.Back
+                },
+                           new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.LBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.LeftStick
+                },
+                                      new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.RBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.RightStick
+                }
+            });
         }
     }
 }

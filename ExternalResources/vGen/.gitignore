@@ -1,0 +1,42 @@
+# Manually added
+vGenTest/vXboxTest/Release/
+*.tlog
+*.idb
+*.exp
+*.db
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.opendb
+External/gen-versioninfo.h
+Win32/
+gen-versioninfo.h
+x64/
+docs/vGenInterface.pdf
