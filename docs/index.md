@@ -1,6 +1,3 @@
----
----
-
 # MFI Gamepad Feeder
 
 Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With *MFI Gamepad Feeder* it's possible!
