@@ -91,9 +91,12 @@ Keep in mind that all controllers without **HID** interface won't be compatible 
 In order to connect your gamepad via bluetooth you need to:
 
 1. Turn on your gamepad (and press bluetooth pairing button)
-2. Select the Start menu, then select Settings > Devices > Bluetooth.
-3. Turn on Bluetooth > select the device > Pair.
+2. Select the Start menu, then select Settings > Devices > Other devices.
+3. Turn on Bluetooth > select the device > Ready to pair.
 4. Follow any more instructions if they appear.
+
+![](mfi_images/Bluetooth.PNG)
+
 
 # Application development
 
