@@ -3,7 +3,5 @@ description: Use your MFI (Made for iPhone/iPad) Gamepad on Windows!
 google_analytics: UA-231768-10
 show_downloads: true
 theme: jekyll-theme-architect
-releases_url: https://github.com/Axadiw/MFIGamepadFeeder/releases/
-
 gems:
   - jekyll-mentions

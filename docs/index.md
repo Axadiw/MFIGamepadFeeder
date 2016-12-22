@@ -1,3 +1,6 @@
+---
+---
+
 # MFI Gamepad Feeder
 
 Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With *MFI Gamepad Feeder* it's possible!
@@ -6,7 +9,7 @@ Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller unde
 
 *MFI Gamepad Feeder* is a special program that works in tandem with [vGen](https://github.com/shauleiz/vGen) and [ScpVBus](https://github.com/shauleiz/ScpVBus) that creates virtual Xbox 360 controller device in your system.
 
-It looks like modern MFI game controllers are recognized as standrad HID gamepads under Windows, but they're not visible in "USB Game Controllers", so games won't be able to use them. *MFI Gamepad Feeder* is connecing to these "HID gamepads", and it's redirecting raw input from them, directly to the ScpVBus devices.
+It looks like modern MFI game controllers are recognized as standard HID gamepads under Windows, but they're not visible in "USB Game Controllers", so games won't be able to use them. *MFI Gamepad Feeder* is connecting to these "HID gamepads", and it's redirecting raw input from them, directly to the ScpVBus devices.
 
 ## Requirements
 
@@ -15,7 +18,7 @@ Current version of *MFI Gamepad Feeder* requires
 * Latest [Xbox 360 drivers](https://www.microsoft.com/accessories/pl-pl/d/xbox-360-controller-for-windows) first (Windows 7 Only).
 * supported MFI Gamepad (see list of supported gamepads is listed below)
 
-Application was tested on WIndows 10, but it should work on older systems as well.
+Application was tested on Windows 10, but it should work on older systems as well.
 
 ## Installation
 
@@ -24,10 +27,10 @@ Application was tested on WIndows 10, but it should work on older systems as wel
 2. Plug in your controllers (check compatibility list). If necessary you may need to pair them via Bluetooth.
 2. Launch *MFI Gamepad Feeder* application and select:
 3. Click "Active" checkbox on the right next to the first row
-4. Select your gamepad from "Gamepad device" list. In my case (Steelseries Nimbus gamepad), gamepad wasn't advertising itself with correct Product name / Manufacturer Name, so I've had to guess which one it was
+4. Select your gamepad from "Gamepad device" list. In my case (SteelSeries Nimbus gamepad), gamepad wasn't advertising itself with correct Product name / Manufacturer Name, so I've had to guess which one it was
 5. Select ID of your controller (1-4)
 6. Select capping file (All configuration files are stored in the "Configs" folder in the application folder
-7. Hit Start button <br/>
+7. Hit Start button
 8. Play your favorite games!
 
 ## Mappings editor
@@ -36,9 +39,9 @@ In order to support different types of MFI controllers you can use included mapp
 
 ### HID -> XBox 360 translation
 
-In order to create goot gamepad mapping you need to understand how **MFIGamepadFeeder** is transforming HID controllers to XBox 360 ones.
+In order to create good gamepad mapping you need to understand how **MFIGamepadFeeder** is transforming HID controllers to XBox 360 ones.
 
-Every time you press a button / touch analog stick on you controller, your PC is recieving a small set of numbers that are describing current state of the device.
+Every time you press a button / touch analog stick on you controller, your PC is receiving a small set of numbers that are describing current state of the device.
 
 For example *SteelSeries Nimbus* is sending 18 numbers, each one is responsible for different button / axis. In order to translate these numbers, so **MFIGamepadFeeder** would be able to understand them, you need to specify meaning of each of them.
 
@@ -49,7 +52,7 @@ In order to create a new mapping:
 
 1. Select correct HID device in the "General mapping" tab. This will allow you to see preview of all the data that is coming form the controller.
 2. Hit *New* button in the right top corner of the screen.
-3. Create as many mapping items as neccessary using "Add new item" button at the bottom
+3. Create as many mapping items as necessary using "Add new item" button at the bottom
 4. Specify type of each item:
 	* Button (for all buttons on the controller)
 	* DPad
@@ -79,7 +82,7 @@ Pressing **RBumper**, **LBumper** and **Start** together will be changed to **Ba
 
 # Application development
 
-I've started with support for Steelseries Nimbus controller only, if you'd like to add support for other game controller, post pull request with mapping file on [GitHub issues page](https://github.com/Axadiw/MFIGamepadFeeder/issues).
+I've started with support for SteelSeries Nimbus controller only, if you'd like to add support for other game controller, post pull request with mapping file on [GitHub issues page](https://github.com/Axadiw/MFIGamepadFeeder/issues).
 
 ## Supported gamepads
 
@@ -89,7 +92,7 @@ I've started with support for Steelseries Nimbus controller only, if you'd like 
 
 * Mad Catz Micro C.T.R.L i
 
-Keep in mind that all controllers without **HID** interface won't be compatibile with *MFIGamepadFeeder*.
+Keep in mind that all controllers without **HID** interface won't be compatible with *MFIGamepadFeeder*.
 
 # Special thanks
 

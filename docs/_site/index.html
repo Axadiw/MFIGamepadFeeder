@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>  </title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>  </h1>
+        <h2>Open Source version of the GitHub Pages theme, now for Jekyll</h2>
+        <a href="https://github.com/pietromenna/jekyll-architect-theme" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+          <h1 id="mfi-gamepad-feeder">MFI Gamepad Feeder</h1>
+
+<p>Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With <em>MFI Gamepad Feeder</em> it’s possible!</p>
+
+<h2 id="how-it-works">How it works?</h2>
+
+<p><em>MFI Gamepad Feeder</em> is a special program that works in tandem with <a href="https://github.com/shauleiz/vGen">vGen</a> and <a href="https://github.com/shauleiz/ScpVBus">ScpVBus</a> that creates virtual Xbox 360 controller device in your system.</p>
+
+<p>It looks like modern MFI game controllers are recognized as standard HID gamepads under Windows, but they’re not visible in “USB Game Controllers”, so games won’t be able to use them. <em>MFI Gamepad Feeder</em> is connecting to these “HID gamepads”, and it’s redirecting raw input from them, directly to the ScpVBus devices.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>Current version of <em>MFI Gamepad Feeder</em> requires</p>
+
+<ul>
+  <li>Latest <a href="https://www.microsoft.com/accessories/pl-pl/d/xbox-360-controller-for-windows">Xbox 360 drivers</a> first (Windows 7 Only).</li>
+  <li>supported MFI Gamepad (see list of supported gamepads is listed below)</li>
+</ul>
+
+<p>Application was tested on Windows 10, but it should work on older systems as well.</p>
+
+<h2 id="installation">Installation</h2>
+
+<ol>
+  <li>Download and install <a href="https://github.com/Axadiw/MFIGamepadFeeder/releases/latest" title="MFI Gamepad Feeder">MFI Gamepad Feeder</a> (restart required)
+<img src="mfi_images/MainScreen.PNG" alt="" /></li>
+  <li>Plug in your controllers (check compatibility list). If necessary you may need to pair them via Bluetooth.</li>
+  <li>Launch <em>MFI Gamepad Feeder</em> application and select:</li>
+  <li>Click “Active” checkbox on the right next to the first row</li>
+  <li>Select your gamepad from “Gamepad device” list. In my case (SteelSeries Nimbus gamepad), gamepad wasn’t advertising itself with correct Product name / Manufacturer Name, so I’ve had to guess which one it was</li>
+  <li>Select ID of your controller (1-4)</li>
+  <li>Select capping file (All configuration files are stored in the “Configs” folder in the application folder</li>
+  <li>Hit Start button</li>
+  <li>Play your favorite games!</li>
+</ol>
+
+<h2 id="mappings-editor">Mappings editor</h2>
+
+<p>In order to support different types of MFI controllers you can use included mappings editor.</p>
+
+<h3 id="hid---xbox-360-translation">HID -&gt; XBox 360 translation</h3>
+
+<p>In order to create good gamepad mapping you need to understand how <strong>MFIGamepadFeeder</strong> is transforming HID controllers to XBox 360 ones.</p>
+
+<p>Every time you press a button / touch analog stick on you controller, your PC is receiving a small set of numbers that are describing current state of the device.</p>
+
+<p>For example <em>SteelSeries Nimbus</em> is sending 18 numbers, each one is responsible for different button / axis. In order to translate these numbers, so <strong>MFIGamepadFeeder</strong> would be able to understand them, you need to specify meaning of each of them.</p>
+
+<h3 id="editor">Editor</h3>
+<p><img src="mfi_images/Mappings editor.PNG" alt="" /></p>
+
+<p>In order to create a new mapping:</p>
+
+<ol>
+  <li>Select correct HID device in the “General mapping” tab. This will allow you to see preview of all the data that is coming form the controller.</li>
+  <li>Hit <em>New</em> button in the right top corner of the screen.</li>
+  <li>Create as many mapping items as necessary using “Add new item” button at the bottom</li>
+  <li>Specify type of each item:
+    <ul>
+      <li>Button (for all buttons on the controller)</li>
+      <li>DPad</li>
+      <li>Axis (for analog sticks and triggers)</li>
+      <li>Empty (for unused parameters)</li>
+    </ul>
+  </li>
+  <li>For each item select what XBox controller role it would acquire (accordingly to the previously selected type)</li>
+  <li>Hit Save button</li>
+</ol>
+
+<h3 id="virtual-keys">Virtual keys</h3>
+
+<p>Because it isn’t physically impossible to emulate all Xbox 360 buttons, even on extended MFI controllers (for example there is only “Menu” button on MFI, whilst there is “Back” and “Start” on X360), only way to use them all is using “virtual keys”.</p>
+
+<p><em>Virtual Keys</em> are allowing you to translate even complicated button combinations to different button presses.</p>
+
+<p>You can access <em>Virtual Keys</em> from the second tab in the <em>Mapping Editor</em>. Manual for this part of the editor is rather straightforward.</p>
+
+<p>For example this configuration:</p>
+
+<p><img src="mfi_images/Mappings editor_virtual keys.PNG" alt="" /></p>
+
+<p>will result in:</p>
+
+<p>Pressing <strong>RBumper</strong>, <strong>LBumper</strong> and <strong>Start</strong> together will be changed to <strong>Back</strong> button.</p>
+
+<p><strong>LBumper</strong> + <strong>Start</strong> will end up with <strong>LeftStick</strong> press, whilst <strong>RBumper</strong> + <strong>Start</strong> will be <strong>RightStick</strong> press.</p>
+
+<h1 id="application-development">Application development</h1>
+
+<p>I’ve started with support for SteelSeries Nimbus controller only, if you’d like to add support for other game controller, post pull request with mapping file on <a href="https://github.com/Axadiw/MFIGamepadFeeder/issues">GitHub issues page</a>.</p>
+
+<h2 id="supported-gamepads">Supported gamepads</h2>
+
+<ul>
+  <li>SteelSeries Nimbus (only via Bluetooth)</li>
+</ul>
+
+<h4 id="not-compatibile">Not compatibile:</h4>
+
+<ul>
+  <li>Mad Catz Micro C.T.R.L i</li>
+</ul>
+
+<p>Keep in mind that all controllers without <strong>HID</strong> interface won’t be compatible with <em>MFIGamepadFeeder</em>.</p>
+
+<h1 id="special-thanks">Special thanks</h1>
+
+<p>Special thanks goes to:</p>
+
+<p><strong>Shauleiz</strong> (<a href="https://github.com/shauleiz">https://github.com/shauleiz</a>) for vJoy and vGen</p>
+
+<p><strong>Nefarius</strong> for <a href="https://github.com/nefarius/ScpVBus">https://github.com/nefarius/ScpVBus</a></p>
+
+<p><strong>b23prodtm</strong> (<a href="https://github.com/b23prodtm">https://github.com/b23prodtm</a>) for inspiring me to integrate XBox controllers</p>
+
+<p><strong>HidSharp</strong> <a href="http://www.zer7.com/software/hidsharp">http://www.zer7.com/software/hidsharp</a></p>
+
+<h1 id="icon">Icon</h1>
+
+<p>Program icon made by Freepik (www.flaticon.com), licensed by CC BY 3.0</p>
+
+<h1 id="license">License</h1>
+
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2015-2016 Michał Mizera</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/Axadiw/MFIGamepadFeeder/releases/download/2.0/MFIGamepadFeederInstaller_x64.exe" class="button">
+            <small>Download 2.0.0</small>
+            x64 (64 bit)
+          </a>
+          <a href="https://github.com/Axadiw/MFIGamepadFeeder/releases/download/2.0/MFIGamepadFeederInstaller_x86.exe" class="button">
+            <small>Download 2.0.0</small>
+            x86 (32 bit)
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/jasonlong/architect-theme">architect-theme</a> is maintained by <a href="https://github.com/jasonlong">jasonlong</a>.</p>
+
+          <p class="repo-owner"><a href="https://github.com/pietromenna/jekyll-architect-theme">jekyll-architect-theme</a> is maintained by <a href="https://github.com/pietromenna">pietromenna</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  </body>
+</html>
