@@ -12,8 +12,8 @@ It looks like modern MFI game controllers are recognized as standard HID gamepad
 
 Current version of *MFI Gamepad Feeder* requires
 
-* Latest [Xbox 360 drivers](https://www.microsoft.com/accessories/pl-pl/d/xbox-360-controller-for-windows) first (Windows 7 Only).
-* supported MFI Gamepad (see list of supported gamepads is listed below)
+* latest [Xbox 360 drivers](https://www.microsoft.com/accessories/pl-pl/d/xbox-360-controller-for-windows) first (Windows 7 Only).
+* supported MFI Gamepad (list of supported gamepads listed below)
 
 Application was tested on Windows 10, but it should work on older systems as well.
 
