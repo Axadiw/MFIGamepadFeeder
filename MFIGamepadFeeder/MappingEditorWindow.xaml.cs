@@ -29,7 +29,7 @@ namespace MFIGamepadFeeder
         private SimplifiedHidPreview SimplifiedHidPreview { get; }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
+        {            
             HidDeviceCombobox.ItemsSource = SimplifiedHidPreview.HidManager.FoundDevices;
             SimplifiedHidPreview.CurrentHidState
                 .ObserveOn(Application.Current.Dispatcher)
