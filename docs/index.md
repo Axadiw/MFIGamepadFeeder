@@ -26,7 +26,7 @@ Application was tested on Windows 10, but it should work on older systems as wel
 3. Click "Active" checkbox on the right next to the first row
 4. Select your gamepad from "Gamepad device" list. In my case (SteelSeries Nimbus gamepad), gamepad wasn't advertising itself with correct Product name / Manufacturer Name, so I've had to guess which one it was
 5. Select ID of your controller (1-4)
-6. Select capping file (All configuration files are stored in the "Configs" folder in the application folder
+6. Select mapping file (All configuration files are stored in the "Configs" folder in the application folder)
 7. Hit Start button
 8. Play your favorite games!
 
