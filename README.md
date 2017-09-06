@@ -43,7 +43,7 @@ Every time you press a button / touch analog stick on you controller, your PC is
 For example *SteelSeries Nimbus* is sending 18 numbers, each one is responsible for different button / axis. In order to translate these numbers, so **MFIGamepadFeeder** would be able to understand them, you need to specify meaning of each of them.
 
 ### Editor
-![](mfi_images/Mappings editor.PNG)
+![](mfi_images/Mappings%20editor.PNG)
 
 In order to create a new mapping:
 
@@ -69,7 +69,7 @@ You can access *Virtual Keys* from the second tab in the *Mapping Editor*. Manua
 
 For example this configuration:
 
-![](mfi_images/Mappings editor_virtual keys.PNG)
+![](mfi_images/Mappings%20editor_virtual%20keys.PNG)
 
 will result in:
 
