@@ -1,26 +1,21 @@
 ﻿using System.Collections.ObjectModel;
-using MFIGamepadFeeder.Gamepads.Configuration;
 using Newtonsoft.Json;
 
 namespace MFIGamepadShared.Configuration
 {
     public class GamepadConfiguration
     {
-        public GamepadConfiguration()
-        {
-        }
+        public readonly uint GamepadId;
+        public readonly HidDeviceRepresentation HidDevice;
+        public readonly GamepadMapping Mapping;
+        
 
-        public GamepadConfiguration(string jsonRepresentation)
+        public GamepadConfiguration(uint gamepadId, string mappingJsonRepresentation, HidDeviceRepresentation hidDevice)
         {
-            var loadedConfig = JsonConvert.DeserializeObject<GamepadConfiguration>(jsonRepresentation);
-            ConfigItems = loadedConfig.ConfigItems;
-        }
-
-        public Collection<GamepadConfigurationItem> ConfigItems { get; set; }
-
-        public string GetJsonRepresentation()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+            GamepadId = gamepadId;
+            HidDevice = hidDevice;
+            var loadedMapping = JsonConvert.DeserializeObject<GamepadMapping>(mappingJsonRepresentation);
+            Mapping = loadedMapping;
+        }        
     }
 }
