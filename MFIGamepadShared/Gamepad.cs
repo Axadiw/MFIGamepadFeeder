@@ -16,6 +16,7 @@ namespace MFIGamepadFeeder
         private readonly HidDeviceLoader _hidDeviceLoader;
         private readonly VGenWrapper _vGenWrapper;
         private Thread _gamepadUpdateThread;
+        private Thread _gamepadAliveThread;
         private IDictionary<XInputGamepadButtons, XInputGamepadButtons> _virtualMappings;
 
         public Gamepad(GamepadConfiguration config, VGenWrapper vGenWrapper, HidDeviceLoader hidDeviceLoader)
@@ -107,6 +108,49 @@ namespace MFIGamepadFeeder
             ErrorOccuredEvent?.Invoke(this, message);
         }
 
+        private void _deviceStream(HidDevice device, HidStream stream)
+        {
+            Thread.CurrentThread.IsBackground = true;
+
+            try
+            {
+                using (stream)
+                {
+                    while (true)
+                    {
+                        if (!Thread.CurrentThread.IsAlive)
+                        {
+                            break;
+                        }
+
+                        var bytes = new byte[device.MaxInputReportLength];
+                        int count;
+                        try
+                        {
+                            count = stream.Read(bytes, 0, bytes.Length);
+                        }
+                        catch (TimeoutException)
+                        {
+                            continue;
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(ex.Message);
+                            break;
+                        }
+
+                        if (count > 0)
+                        {
+                            UpdateState(bytes);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
+            }
+        }
         private bool PlugInToHidDeviceAndStartLoop()
         {
             var device =
@@ -136,49 +180,30 @@ namespace MFIGamepadFeeder
             _gamepadUpdateThread?.Abort();
             _gamepadUpdateThread = new Thread(() =>
             {
-                Thread.CurrentThread.IsBackground = true;
-
-                try
-                {
-                    using (stream)
-                    {
-                        while (true)
-                        {
-                            if (!Thread.CurrentThread.IsAlive)
-                            {
-                                break;
-                            }
-
-                            var bytes = new byte[device.MaxInputReportLength];
-                            int count;
-                            try
-                            {
-                                count = stream.Read(bytes, 0, bytes.Length);
-                            }
-                            catch (TimeoutException)
-                            {
-                                continue;
-                            }
-                            catch (Exception ex)
-                            {
-                                Log(ex.Message);
-                                break;
-                            }
-
-                            if (count > 0)
-                            {
-                                UpdateState(bytes);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log(ex.Message);
-                }
+                _deviceStream(device, stream);
             });
             _gamepadUpdateThread.Start();
-
+            _gamepadAliveThread?.Abort();
+            _gamepadAliveThread = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                while (_gamepadUpdateThread.IsAlive)
+                {
+                    _gamepadUpdateThread.Join();
+                    Log($"Lost connection. Waiting for the device...");
+                    while (!device.TryOpen(out stream))
+                    {
+                        Thread.Sleep(1000);
+                    }
+                    _gamepadUpdateThread = new Thread(() =>
+                    {
+                        Log($"Stream was resumed.");
+                        _deviceStream(device, stream);
+                    });
+                    _gamepadUpdateThread.Start();
+                }
+            });
+            _gamepadAliveThread.Start();
             return true;
         }
 
