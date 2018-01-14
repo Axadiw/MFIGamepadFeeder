@@ -78,18 +78,18 @@
       "AxisType": null
     },
     {
-      "Type": 0,
+      "Type": 1,
       "InvertAxis": false,
       "ConvertAxis": false,
-      "ButtonType": null,
-      "AxisType": 4
+      "ButtonType": 1024,
+      "AxisType": null
     },
     {
-      "Type": 0,
+      "Type": 1,
       "InvertAxis": false,
       "ConvertAxis": false,
-      "ButtonType": null,
-      "AxisType": 8
+      "ButtonType": 2048,
+      "AxisType": null
     },
     {
       "Type": 1,

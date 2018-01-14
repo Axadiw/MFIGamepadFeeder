@@ -141,7 +141,7 @@ namespace MFIGamepadFeeder
 
                         if (count > 0)
                         {
-                            UpdateState(bytes);
+                            UpdateState(bytes, 0, 0, 0, 0);
                         }
                     }
                 }
@@ -207,20 +207,18 @@ namespace MFIGamepadFeeder
             return true;
         }
 
-        public void UpdateState(byte[] state)
+        public void UpdateState(byte[] state, XInputGamepadButtons buttonsState, XInputGamepadButtons dPadState, XInputGamepadButtons triggerState, int i)
         {
-//            Log(string.Join(" ", state));
-
-            XInputGamepadButtons buttonsState = 0;
-            XInputGamepadButtons dPadState = 0;
-
-            for (var i = 0; i < _config.Mapping.MappingItems.Count; i++)
+            // UpdateState recurses state.count + 1 times (17)
+            if (i < _config.Mapping.MappingItems.Count && i < state.Count())
             {
                 var configForCurrentItem = _config.Mapping.MappingItems[i];
                 var itemValue = state[i];
-
+                
                 if (configForCurrentItem.Type == GamepadMappingItemType.Axis)
                 {
+                    if (ConvertToButtonState(itemValue))
+                        triggerState |= (XInputGamepadButtons)((int)XInputGamepadButtons.All & ((int)configForCurrentItem.AxisType.Value << 8));
                     UpdateAxis(itemValue, configForCurrentItem);
                 }
                 else if ((configForCurrentItem.Type == GamepadMappingItemType.DPad) && ConvertToButtonState(itemValue) &&
@@ -233,11 +231,13 @@ namespace MFIGamepadFeeder
                 {
                     buttonsState |= configForCurrentItem.ButtonType.Value;
                 }
+                UpdateState(state, buttonsState, dPadState, triggerState, i + 1);
+                return;
             }
             
             foreach (var virtualMapping in _virtualMappings)
             {
-                if ((virtualMapping.Key & (buttonsState | dPadState)) == virtualMapping.Key)
+                if ((virtualMapping.Key & (buttonsState | dPadState | triggerState)) == virtualMapping.Key)
                 {
                     buttonsState |= virtualMapping.Value;
                     buttonsState ^= virtualMapping.Key;
@@ -272,32 +272,29 @@ namespace MFIGamepadFeeder
             }
 
             var axisSetStatus = NtStatus.Success;
-            switch (configForCurrentItem.AxisType)
-            {
-                case AxisType.Rx:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisRx(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.Ry:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisRy(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.Lx:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisLx(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.Ly:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisLy(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.LTrigger:
-                    axisSetStatus = _vGenWrapper.vbox_SetTriggerL(_config.GamepadId, (byte) (value*byte.MaxValue));
-                    break;
-                case AxisType.RTrigger:
-                    axisSetStatus = _vGenWrapper.vbox_SetTriggerR(_config.GamepadId, (byte) (value*byte.MaxValue));
-                    break;
-            }
-
+            axisSetStatus = SetVBoxStat(configForCurrentItem, value, axisSetStatus);
             if (axisSetStatus != NtStatus.Success)
             {
                 Log($"Failed to set axis {configForCurrentItem.AxisType} (${axisSetStatus}). Gamepad {_config.GamepadId}");
             }
+        }
+
+        private NtStatus SetVBoxStat(GamepadMappingItem configForCurrentItem, double value, NtStatus axisSetStatus)
+        {
+            // NOTE : if else are faster than switch cases
+            if (AxisType.Rx == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisRx(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.Ry == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisRy(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.Lx == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisLx(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.Ly == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisLy(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.LTrigger == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetTriggerL(_config.GamepadId, (byte)(value * byte.MaxValue));
+            else if (AxisType.RTrigger == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetTriggerR(_config.GamepadId, (byte)(value * byte.MaxValue));
+            return axisSetStatus;
         }
 
         private static double NormalizeAxis(double valueToNormalize, bool shouldConvert)
@@ -315,7 +312,7 @@ namespace MFIGamepadFeeder
 
         private static double InvertNormalizedAxis(double axisToInvert)
         {
-            return 1.0 - axisToInvert;
+            return -axisToInvert;
         }
 
         private static bool ConvertToButtonState(byte value)

@@ -35,6 +35,8 @@
                         <vGenWrapper:XInputGamepadButtons>RightStick</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>LBumper</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RBumper</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>LTrigger</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>RTrigger</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>DpadUp</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>DpadRight</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>DpadDown</vGenWrapper:XInputGamepadButtons>
@@ -71,6 +73,8 @@
                         <vGenWrapper:XInputGamepadButtons>RightStick</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>LBumper</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RBumper</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>LTrigger</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>RTrigger</vGenWrapper:XInputGamepadButtons>
                     </ComboBox>
 
                 </StackPanel>

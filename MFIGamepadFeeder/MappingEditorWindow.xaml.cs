@@ -308,6 +308,8 @@ namespace MFIGamepadFeeder
                 XInputGamepadButtons.RightStick,
                 XInputGamepadButtons.LBumper,
                 XInputGamepadButtons.RBumper,
+                XInputGamepadButtons.LTrigger,
+                XInputGamepadButtons.RTrigger,
                 XInputGamepadButtons.A,
                 XInputGamepadButtons.B,
                 XInputGamepadButtons.X,
