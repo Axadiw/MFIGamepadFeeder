@@ -1,28 +1,29 @@
 echo off
 SET VS=14.0
+SET SLN_CFG=Release %28Remote%29
 SET BUILDER=%ProgramFiles(x86)%\MSBuild\%VS%\Bin\MSBuild.exe
 SET InnoCompiler=%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe
 
 
 :build32
 echo %DATE% %TIME%: Cleaning MFIGamepadFeeder (x86) 
-"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:1 /t:clean /p:Platform=x86;Configuration="Release (Local)"
+"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:1 /t:clean /p:Platform=x86;Configuration="%SLN_CFG%"
 set BUILD_STATUS=%ERRORLEVEL%
 if not %BUILD_STATUS%==0 goto fail
 
 echo %DATE% %TIME%: Building MFIGamepadFeeder (x86)
-"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:4  /p:Platform=x86;Configuration="Release (Local)"
+"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:4  /p:Platform=x86;Configuration="%SLN_CFG%"
 set BUILD_STATUS=%ERRORLEVEL%
 if not %BUILD_STATUS%==0 goto fail
 
 :build64
 echo %DATE% %TIME%: Cleaning MFIGamepadFeeder (x64)
-"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:1 /t:clean /p:Platform=x64;Configuration="Release (Local)"
+"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:1 /t:clean /p:Platform=x64;Configuration="%SLN_CFG%"
 set BUILD_STATUS=%ERRORLEVEL%
 if not %BUILD_STATUS%==0 goto fail
 
 echo %DATE% %TIME%: Building MFIGamepadFeeder (x64)
-"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:4  /p:Platform=x64;Configuration="Release (Local)"
+"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:4  /p:Platform=x64;Configuration="%SLN_CFG%"
 set BUILD_STATUS=%ERRORLEVEL%
 if not %BUILD_STATUS%==0 goto fail
 
