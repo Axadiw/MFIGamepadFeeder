@@ -1,6 +1,6 @@
 echo off
 SET VS=14.0
-SET SLN_CFG=Release %28Remote%29
+SET SLN_CFG=Release
 SET BUILDER=%ProgramFiles(x86)%\MSBuild\%VS%\Bin\MSBuild.exe
 SET InnoCompiler=%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe
 

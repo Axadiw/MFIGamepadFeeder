@@ -6,7 +6,7 @@ namespace MFIGamepadConfigCreator
 {
     internal class ConfigCreator
     {
-        /* Creates a configuration as to the device specific 
+        /* Creates a configuration as to the device specific
          * stream bytes configuration (XInputGamepadButtons)
          */
         public GamepadMapping GetNimbusConfiguration()
@@ -112,6 +112,16 @@ namespace MFIGamepadConfigCreator
                 }
             }, new List<VirtualKeyMappingItem>()
             {
+                new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.RBumper,
+                        XInputGamepadButtons.LBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.Back
+                },
                 new VirtualKeyMappingItem()
                 {
                     SourceKeys = new List<XInputGamepadButtons?>()
@@ -246,6 +256,16 @@ namespace MFIGamepadConfigCreator
                 }
             }, new List<VirtualKeyMappingItem>()
             {
+                new VirtualKeyMappingItem()
+                {
+                    SourceKeys = new List<XInputGamepadButtons?>()
+                    {
+                        XInputGamepadButtons.RBumper,
+                        XInputGamepadButtons.LBumper,
+                        XInputGamepadButtons.Start
+                    },
+                    DestinationItem = XInputGamepadButtons.Back
+                },
                 new VirtualKeyMappingItem()
                 {
                     SourceKeys = new List<XInputGamepadButtons?>()

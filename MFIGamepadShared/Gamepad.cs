@@ -35,7 +35,7 @@ namespace MFIGamepadFeeder
                 // ReSharper disable once PossibleInvalidOperationException
                 _virtualMappings[virtualPattern] = (XInputGamepadButtons) virtualMapping.DestinationItem;
             }
-        }        
+        }
 
         public void Dispose()
         {
@@ -76,7 +76,7 @@ namespace MFIGamepadFeeder
                     {
                         Log($"Failed to force unplug gamepad {_config.GamepadId} ({forceUnplugStatus})!");
                         return false;
-                    }                    
+                    }
                 }
 
                 Log($"Successfully unplugged gamepad {_config.GamepadId}");
@@ -214,11 +214,11 @@ namespace MFIGamepadFeeder
             {
                 var configForCurrentItem = _config.Mapping.MappingItems[i];
                 var itemValue = state[i];
-                
+
                 if (configForCurrentItem.Type == GamepadMappingItemType.Axis)
                 {
                     if (ConvertToButtonState(itemValue))
-                        triggerState |= (XInputGamepadButtons)((int)XInputGamepadButtons.All & ((int)configForCurrentItem.AxisType.Value << 8));
+                        triggerState |= (XInputGamepadButtons)((int)XInputGamepadButtons.All & (((int)configForCurrentItem.AxisType.Value & 0xE) << 4));
                     UpdateAxis(itemValue, configForCurrentItem);
                 }
                 else if ((configForCurrentItem.Type == GamepadMappingItemType.DPad) && ConvertToButtonState(itemValue) &&
@@ -234,7 +234,7 @@ namespace MFIGamepadFeeder
                 UpdateState(state, buttonsState, dPadState, triggerState, i + 1);
                 return;
             }
-            
+
             foreach (var virtualMapping in _virtualMappings)
             {
                 if ((virtualMapping.Key & (buttonsState | dPadState | triggerState)) == virtualMapping.Key)

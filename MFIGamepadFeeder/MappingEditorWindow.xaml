@@ -35,6 +35,7 @@
                         <vGenWrapper:XInputGamepadButtons>RightStick</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>LBumper</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RBumper</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>Guide</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>LTrigger</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RTrigger</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>DpadUp</vGenWrapper:XInputGamepadButtons>
@@ -47,8 +48,8 @@
                 <Button HorizontalAlignment="Right" Width="60" Content="Delete" Click="RemoveVirtualKeyItemClicked" />
             </Grid>
         </DataTemplate>
-        
-        
+
+
         <DataTemplate x:Key="ButtonMappingItemTemplate" DataType="configuration:GamepadMappingItem">
             <Grid>
                 <StackPanel Orientation="Horizontal">
@@ -73,6 +74,7 @@
                         <vGenWrapper:XInputGamepadButtons>RightStick</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>LBumper</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RBumper</vGenWrapper:XInputGamepadButtons>
+                        <vGenWrapper:XInputGamepadButtons>Guide</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>LTrigger</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RTrigger</vGenWrapper:XInputGamepadButtons>
                     </ComboBox>
@@ -188,14 +190,14 @@
                         <ComboBox Width="300" x:Name="HidDeviceCombobox" VerticalAlignment="Center" SelectionChanged="HidDeviceCombobox_SelectionChanged" Margin="10,0,0,0" />
                         <Label x:Name="HidPreviewLabel" Margin="10,0,0,0" VerticalAlignment="Center" ></Label>
                     </StackPanel>
-                    
+
                     <ListView x:Name="MappingItemsListView" HorizontalContentAlignment="Stretch" AlternationCount="2000" SelectionMode="Single" Grid.Row="1">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="Focusable" Value="false"/>
                             </Style>
-                            
+
                         </ListView.ItemContainerStyle>
 <!--                        <ListViewItem ContentTemplate="{StaticResource AxisMappingItemTemplate}">-->
 <!--                            <system:String>fake</system:String>-->
@@ -212,7 +214,7 @@
                     </ListView>
                     <Button x:Name="AddNewItemButton" IsEnabled="False"  Content="Add new item" Grid.Row="2" Click="AddNewMappingItem_Click"></Button>
                 </Grid>
-               
+
             </TabItem>
             <TabItem Header="Virtual keys">
                 <Grid>

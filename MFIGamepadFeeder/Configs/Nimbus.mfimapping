@@ -82,14 +82,14 @@
       "InvertAxis": false,
       "ConvertAxis": false,
       "ButtonType": null,
-      "AxisType": 4
+      "AxisType": 4096
     },
     {
       "Type": 0,
       "InvertAxis": false,
       "ConvertAxis": false,
       "ButtonType": null,
-      "AxisType": 8
+      "AxisType": 8192
     },
     {
       "Type": 1,
@@ -103,49 +103,57 @@
       "InvertAxis": false,
       "ConvertAxis": true,
       "ButtonType": null,
-      "AxisType": 2
+      "AxisType": 4
     },
     {
       "Type": 0,
       "InvertAxis": false,
       "ConvertAxis": true,
       "ButtonType": null,
-      "AxisType": 3
+      "AxisType": 5
     },
     {
       "Type": 0,
       "InvertAxis": false,
       "ConvertAxis": true,
       "ButtonType": null,
-      "AxisType": 0
+      "AxisType": 8
     },
     {
       "Type": 0,
       "InvertAxis": false,
       "ConvertAxis": true,
       "ButtonType": null,
-      "AxisType": 1
+      "AxisType": 9
     }
   ],
   "VirtualKeysItems": [
     {
       "SourceKeys": [
-        2048,
-        1024,
-        16
+        512,
+        16,
+        null
+      ],
+      "DestinationItem": 1024
+    },
+    {
+      "SourceKeys": [
+        256,
+        16,
+        null
       ],
       "DestinationItem": 32
     },
     {
       "SourceKeys": [
-        1024,
+        65536,
         16
       ],
       "DestinationItem": 64
     },
     {
       "SourceKeys": [
-        2048,
+        133120,
         16
       ],
       "DestinationItem": 128
