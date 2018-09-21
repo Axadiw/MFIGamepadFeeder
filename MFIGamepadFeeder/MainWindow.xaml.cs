@@ -1,15 +1,16 @@
-﻿using System;
+﻿using MFIGamepadFeeder.Properties;
+using MFIGamepadShared;
+using Newtonsoft.Json;
+using Reactive.Bindings.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using MFIGamepadFeeder.Properties;
-using MFIGamepadShared;
-using Newtonsoft.Json;
-using Reactive.Bindings.Extensions;
 
 namespace MFIGamepadFeeder
 {
@@ -20,7 +21,6 @@ namespace MFIGamepadFeeder
             InitializeComponent();
             ViewModel = new MainWindowViewModel();
             ViewModel.ErrorOccuredEvent += CurrentGamepadManager_ErrorOccuredEvent;
-
             SetupUi();
         }
 
@@ -223,36 +223,61 @@ namespace MFIGamepadFeeder
                 LogLabel.ScrollToEnd();
             });
         }
+        private Thread _deviceConfigThread;
+        private bool AutoStartConfig()
+        {
+            var activeGamepads = GamepadControls.Keys.Where(box => (box.IsChecked != null) && box.IsChecked.Value).ToList();
+            var allComboboxes = new List<ComboBox>();
+            activeGamepads.ForEach(box => allComboboxes.AddRange(GamepadControls[box]));
+            var doesAllSelectedItemsHaveValue = allComboboxes.All(box => box.SelectedItem != null);
+
+            if (!doesAllSelectedItemsHaveValue)
+            {
+                if (_deviceConfigThread != null)
+                {
+                    if (_deviceConfigThread.IsAlive)
+                    {
+                        return true;
+                    }
+                }
+                Log("Configuration incomplete.");
+                _deviceConfigThread = new Thread(() =>
+                {
+                    Log("Waiting for a device...");
+                    do
+                    {
+                        Thread.Sleep(1000);
+                    } while (Application.Current.Dispatcher.Invoke<Boolean>(() =>
+                       {
+                           return AutoStartConfig();
+                       }));
+                });
+                _deviceConfigThread.Start();
+                return false;
+            }
+
+            var hidDevices = activeGamepads.Select(activeGamepad => GamepadControls[activeGamepad][0]).Select(box => box.SelectedItem as HidDeviceRepresentation).ToArray();
+            var devicesIds = activeGamepads.Select(activeGamepad => GamepadControls[activeGamepad][1]).Select(box => (uint)box.SelectedItem).ToArray();
+            var hidMappingPaths = activeGamepads.Select(activeGamepad => GamepadControls[activeGamepad][2]).Select(box => box.SelectedItem as string).ToArray();
+
+            var areThereAnyDuplicatesInDevicesIds = devicesIds.GroupBy(x => x).Count(x => x.Count() > 1) > 0;
+
+
+            if (areThereAnyDuplicatesInDevicesIds)
+            {
+                Log("You can't use the same controller ID twice!");
+                return false;
+            }
+
+            ViewModel.Start(hidDevices, devicesIds, hidMappingPaths);
+            return false;
+        }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ViewModel.IsRunning.Value)
             {
-                var activeGamepads = GamepadControls.Keys.Where(box => (box.IsChecked != null) && box.IsChecked.Value).ToList();
-                var allComboboxes = new List<ComboBox>();
-                activeGamepads.ForEach(box => allComboboxes.AddRange(GamepadControls[box]));
-                var doesAllSelectedItemsHaveValue = allComboboxes.All(box => box.SelectedItem != null);
-
-                if (!doesAllSelectedItemsHaveValue)
-                {
-                    Log("Configuration incomplete");
-                    return;
-                }
-
-                var hidDevices = activeGamepads.Select(activeGamepad => GamepadControls[activeGamepad][0]).Select(box => box.SelectedItem as HidDeviceRepresentation).ToArray();
-                var devicesIds = activeGamepads.Select(activeGamepad => GamepadControls[activeGamepad][1]).Select(box => (uint) box.SelectedItem).ToArray();
-                var hidMappingPaths = activeGamepads.Select(activeGamepad => GamepadControls[activeGamepad][2]).Select(box => box.SelectedItem as string).ToArray();
-
-                var areThereAnyDuplicatesInDevicesIds = devicesIds.GroupBy(x => x).Count(x => x.Count() > 1) > 0;
-
-
-                if (areThereAnyDuplicatesInDevicesIds)
-                {
-                    Log("You can't use the same controller ID twice!");
-                    return;
-                }
-
-                ViewModel.Start(hidDevices, devicesIds, hidMappingPaths);
+                AutoStartConfig();
             }
             else
             {
