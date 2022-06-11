@@ -1,4 +1,5 @@
 .vs/
+.idea/
 MFIGamepadShared/obj/
 MFIGamepadShared/bin/
 ipch/
