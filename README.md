@@ -1,3 +1,8 @@
+> This specific version adds the ability to set a custom index and value for buttons on the controller.
+> This is mandatory to use MFI Gamepads that supply multiple buttons through one channel. For Example the **Nimbus+**
+> transmits the DPAD and A/B/X/Y buttons through one channel. (example config below)
+![](mfi_images/nimbus+.jpg)
+
 # MFI Gamepad Feeder
 
 Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With *MFI Gamepad Feeder* it's possible!

@@ -72,6 +72,11 @@
                         <vGenWrapper:XInputGamepadButtons>LBumper</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>RBumper</vGenWrapper:XInputGamepadButtons>
                     </ComboBox>
+                    
+                    <Label Content="CustomIndex: " VerticalAlignment="Center" Width="100" Margin="20,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox HorizontalAlignment="Left" Width="100" Text="{Binding CustomIndex}" TextChanged="CustomIndex_TextChanged"/>
+                    <Label Content="CustomValue: " VerticalAlignment="Center" Width="100" Margin="20,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox HorizontalAlignment="Left" Width="100" Text="{Binding CustomValue}" TextChanged="CustomValue_TextChanged"/>
 
                 </StackPanel>
 
@@ -129,6 +134,12 @@
                         <vGenWrapper:XInputGamepadButtons>DpadDown</vGenWrapper:XInputGamepadButtons>
                         <vGenWrapper:XInputGamepadButtons>DpadLeft</vGenWrapper:XInputGamepadButtons>
                     </ComboBox>
+                    
+                    <Label Content="CustomIndex: " VerticalAlignment="Center" Width="100" Margin="20,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox HorizontalAlignment="Left" Width="100" Text="{Binding CustomIndex}" TextChanged="CustomIndex_TextChanged"/>
+                    <Label Content="CustomValue: " VerticalAlignment="Center" Width="100" Margin="20,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox HorizontalAlignment="Left" Width="100" Text="{Binding CustomValue}" TextChanged="CustomValue_TextChanged"/>
+
                 </StackPanel>
 
                 <Button HorizontalAlignment="Right" Width="60" Content="Delete" Click="RemoveMappingItemClicked" />
@@ -193,18 +204,18 @@
                             </Style>
                             
                         </ListView.ItemContainerStyle>
-<!--                        <ListViewItem ContentTemplate="{StaticResource AxisMappingItemTemplate}">-->
-<!--                            <system:String>fake</system:String>-->
-<!--                        </ListViewItem>-->
-<!--                        <ListViewItem ContentTemplate="{StaticResource ButtonMappingItemTemplate}">-->
-<!--                            <system:String>fake</system:String>-->
-<!--                        </ListViewItem>-->
-<!--                        <ListViewItem ContentTemplate="{StaticResource DpadMappingItemTemplate}">-->
-<!--                            <system:String>fake</system:String>-->
-<!--                        </ListViewItem>-->
-<!--                        <ListViewItem ContentTemplate="{StaticResource EmptyMappingItemTemplate}">-->
-<!--                            <system:String>fake</system:String>-->
-<!--                        </ListViewItem>-->
+                        <!-- <ListViewItem ContentTemplate="{StaticResource AxisMappingItemTemplate}"> -->
+                        <!--     <system:String>fake</system:String> -->
+                        <!-- </ListViewItem> -->
+                        <!-- <ListViewItem ContentTemplate="{StaticResource ButtonMappingItemTemplate}"> -->
+                        <!--     <system:String>fake</system:String> -->
+                        <!-- </ListViewItem> -->
+                        <!-- <ListViewItem ContentTemplate="{StaticResource DpadMappingItemTemplate}"> -->
+                        <!--     <system:String>fake</system:String> -->
+                        <!-- </ListViewItem> -->
+                        <!-- <ListViewItem ContentTemplate="{StaticResource EmptyMappingItemTemplate}"> -->
+                        <!--     <system:String>fake</system:String> -->
+                        <!-- </ListViewItem> -->
                     </ListView>
                     <Button x:Name="AddNewItemButton" IsEnabled="False"  Content="Add new item" Grid.Row="2" Click="AddNewMappingItem_Click"></Button>
                 </Grid>
