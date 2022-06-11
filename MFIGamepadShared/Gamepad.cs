@@ -184,7 +184,7 @@ namespace MFIGamepadFeeder
 
         public void UpdateState(byte[] state)
         {
-//            Log(string.Join(" ", state));
+            //Log(string.Join(" ", state));
 
             XInputGamepadButtons buttonsState = 0;
             XInputGamepadButtons dPadState = 0;
@@ -192,21 +192,43 @@ namespace MFIGamepadFeeder
             for (var i = 0; i < _config.Mapping.MappingItems.Count; i++)
             {
                 var configForCurrentItem = _config.Mapping.MappingItems[i];
-                var itemValue = state[i];
+                var itemValue = state[configForCurrentItem.CustomIndex ?? i];
+                
+                
 
                 if (configForCurrentItem.Type == GamepadMappingItemType.Axis)
                 {
                     UpdateAxis(itemValue, configForCurrentItem);
                 }
-                else if ((configForCurrentItem.Type == GamepadMappingItemType.DPad) && ConvertToButtonState(itemValue) &&
-                         (configForCurrentItem.ButtonType != null))
+                
+                if (itemValue == 0)
                 {
-                    dPadState |= configForCurrentItem.ButtonType.Value;
+                    continue;
+                }
+
+                if ((configForCurrentItem.Type == GamepadMappingItemType.DPad) && ConvertToButtonState(itemValue) &&
+                    (configForCurrentItem.ButtonType != null))
+                {
+                    if (configForCurrentItem.CustomValue != null && configForCurrentItem.CustomIndex != null)
+                    {
+                        dPadState |= GetButtonState(itemValue, configForCurrentItem);
+                    }
+                    else
+                    {
+                        dPadState |= configForCurrentItem.ButtonType.Value;
+                    }
                 }
                 else if ((configForCurrentItem.Type == GamepadMappingItemType.Button) && ConvertToButtonState(itemValue) &&
                          (configForCurrentItem.ButtonType != null))
                 {
-                    buttonsState |= configForCurrentItem.ButtonType.Value;
+                    if (configForCurrentItem.CustomValue != null && configForCurrentItem.CustomIndex != null)
+                    {
+                        buttonsState |= GetButtonState(itemValue, configForCurrentItem);
+                    }
+                    else
+                    {
+                        buttonsState |= configForCurrentItem.ButtonType.Value;
+                    }
                 }
             }
             
@@ -296,6 +318,11 @@ namespace MFIGamepadFeeder
         private static bool ConvertToButtonState(byte value)
         {
             return value > 0;
+        }
+
+        private static XInputGamepadButtons GetButtonState(byte value, GamepadMappingItem configForCurrentItem)
+        {
+            return (value & configForCurrentItem.CustomValue) == configForCurrentItem.CustomValue ? configForCurrentItem.ButtonType.Value : 0;
         }
     }
 }

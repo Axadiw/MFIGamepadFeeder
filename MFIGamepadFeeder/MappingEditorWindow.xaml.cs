@@ -224,6 +224,34 @@ namespace MFIGamepadFeeder
             var newButtonType = (XInputGamepadButtons) ((ComboBox) sender).SelectedItem;
             item.ButtonType = newButtonType;
         }
+        
+        private void CustomIndex_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
+
+            var newButtonIndex = ((TextBox) sender).Text;
+            // check if the newButtonIndex is a number
+            if (int.TryParse(newButtonIndex, out var newButtonIndexInt))
+            {
+                item.CustomIndex = newButtonIndexInt;
+            } else {
+                item.CustomIndex = null;
+            }
+        }
+        
+        private void CustomValue_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var item = (GamepadMappingItem) ((FrameworkElement) sender).DataContext;
+
+            var newButtonValue = ((TextBox) sender).Text;
+            // check if the newButtonIndex is a number
+            if (int.TryParse(newButtonValue, out var newButtonValueInt))
+            {
+                item.CustomValue = newButtonValueInt;
+            } else {
+                item.CustomValue = null;
+            }
+        }
 
         private void DPadType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

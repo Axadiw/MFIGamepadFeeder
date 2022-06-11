@@ -27,5 +27,10 @@ namespace MFIGamepadShared.Configuration
         public bool? ConvertAxis { get; set; }
         public XInputGamepadButtons? ButtonType { get; set; }
         public AxisType? AxisType { get; set; }
+        public int? CustomIndex { get; set; }
+        
+        // a GamepadMappingItem can have a value like 2, 32, 64, etc.
+        // when multiple buttons are pressed on one index, the value is the sum of the pressed buttons
+        public int? CustomValue { get; set; }
     }
 }
