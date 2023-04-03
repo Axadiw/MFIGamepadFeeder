@@ -3,8 +3,8 @@
 
 #define MyAppName "MFIGamepadFeeder"
 #define MyAppVersion "2.0"
-#define MyAppPublisher "Micha³ Mizera"
-#define MyAppURL "https://axadiw.github.io/MFIGamepadFeeder/"
+#define MyAppPublisher "TBRKT"
+#define MyAppURL "https://b23prodtm.github.io/MFIGamepadFeeder/"
 #define MyAppExeName "MFIGamepadFeeder.exe"
 
 [Setup]

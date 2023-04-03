@@ -1,13 +1,13 @@
 echo off
-SET VS=14.0
+SET VS=Microsoft Visual Studio\2022\Community
 SET SLN_CFG=Release
-SET BUILDER=%ProgramFiles(x86)%\MSBuild\%VS%\Bin\MSBuild.exe
-SET InnoCompiler=%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe
+SET BUILDER=%ProgramFiles%\%VS%\MSBuild\Current\Bin\MSBuild.exe
+SET InnoCompiler=%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe
 
 
 :build32
 echo %DATE% %TIME%: Cleaning MFIGamepadFeeder (x86) 
-"%BUILDER%"  MFIGamepadFeeder.sln  /maxcpucount:1 /t:clean /p:Platform=x86;Configuration="%SLN_CFG%"
+"%BUILDER%" MFIGamepadFeeder.sln  /maxcpucount:1 /t:clean /p:Platform=x86;Configuration="%SLN_CFG%"
 set BUILD_STATUS=%ERRORLEVEL%
 if not %BUILD_STATUS%==0 goto fail
 
