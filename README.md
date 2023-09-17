@@ -1,4 +1,6 @@
 # MFI Gamepad Feeder
+[![Build status](https://ci.appveyor.com/api/projects/status/78ue8tbxov3uf57a?svg=true)](https://ci.appveyor.com/project/b23prodtm/mfigamepadfeeder)
+
 
 Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With *MFI Gamepad Feeder* it's possible!
 

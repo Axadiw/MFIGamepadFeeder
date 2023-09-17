@@ -16,6 +16,7 @@ namespace MFIGamepadFeeder
         private readonly HidDeviceLoader _hidDeviceLoader;
         private readonly VGenWrapper _vGenWrapper;
         private Thread _gamepadUpdateThread;
+        private Thread _gamepadAliveThread;
         private IDictionary<XInputGamepadButtons, XInputGamepadButtons> _virtualMappings;
 
         public Gamepad(GamepadConfiguration config, VGenWrapper vGenWrapper, HidDeviceLoader hidDeviceLoader)
@@ -34,7 +35,7 @@ namespace MFIGamepadFeeder
                 // ReSharper disable once PossibleInvalidOperationException
                 _virtualMappings[virtualPattern] = (XInputGamepadButtons) virtualMapping.DestinationItem;
             }
-        }        
+        }
 
         public void Dispose()
         {
@@ -75,7 +76,7 @@ namespace MFIGamepadFeeder
                     {
                         Log($"Failed to force unplug gamepad {_config.GamepadId} ({forceUnplugStatus})!");
                         return false;
-                    }                    
+                    }
                 }
 
                 Log($"Successfully unplugged gamepad {_config.GamepadId}");
@@ -107,6 +108,49 @@ namespace MFIGamepadFeeder
             ErrorOccuredEvent?.Invoke(this, message);
         }
 
+        private void _deviceStream(HidDevice device, HidStream stream)
+        {
+            Thread.CurrentThread.IsBackground = true;
+
+            try
+            {
+                using (stream)
+                {
+                    while (true)
+                    {
+                        if (!Thread.CurrentThread.IsAlive)
+                        {
+                            break;
+                        }
+
+                        var bytes = new byte[device.MaxInputReportLength];
+                        int count;
+                        try
+                        {
+                            count = stream.Read(bytes, 0, bytes.Length);
+                        }
+                        catch (TimeoutException)
+                        {
+                            continue;
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(ex.Message);
+                            break;
+                        }
+
+                        if (count > 0)
+                        {
+                            UpdateState(bytes, 0, 0, 0, 0);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
+            }
+        }
         private bool PlugInToHidDeviceAndStartLoop()
         {
             var device =
@@ -136,66 +180,45 @@ namespace MFIGamepadFeeder
             _gamepadUpdateThread?.Abort();
             _gamepadUpdateThread = new Thread(() =>
             {
-                Thread.CurrentThread.IsBackground = true;
-
-                try
-                {
-                    using (stream)
-                    {
-                        while (true)
-                        {
-                            if (!Thread.CurrentThread.IsAlive)
-                            {
-                                break;
-                            }
-
-                            var bytes = new byte[device.MaxInputReportLength];
-                            int count;
-                            try
-                            {
-                                count = stream.Read(bytes, 0, bytes.Length);
-                            }
-                            catch (TimeoutException)
-                            {
-                                continue;
-                            }
-                            catch (Exception ex)
-                            {
-                                Log(ex.Message);
-                                break;
-                            }
-
-                            if (count > 0)
-                            {
-                                UpdateState(bytes);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log(ex.Message);
-                }
+                _deviceStream(device, stream);
             });
             _gamepadUpdateThread.Start();
-
+            _gamepadAliveThread?.Abort();
+            _gamepadAliveThread = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                while (_gamepadUpdateThread.IsAlive)
+                {
+                    _gamepadUpdateThread.Join();
+                    Log($"Lost connection. Waiting for the device...");
+                    while (!device.TryOpen(out stream))
+                    {
+                        Thread.Sleep(1000);
+                    }
+                    _gamepadUpdateThread = new Thread(() =>
+                    {
+                        Log($"Stream was resumed.");
+                        _deviceStream(device, stream);
+                    });
+                    _gamepadUpdateThread.Start();
+                }
+            });
+            _gamepadAliveThread.Start();
             return true;
         }
 
-        public void UpdateState(byte[] state)
+        public void UpdateState(byte[] state, XInputGamepadButtons buttonsState, XInputGamepadButtons dPadState, XInputGamepadButtons triggerState, int i)
         {
-//            Log(string.Join(" ", state));
-
-            XInputGamepadButtons buttonsState = 0;
-            XInputGamepadButtons dPadState = 0;
-
-            for (var i = 0; i < _config.Mapping.MappingItems.Count; i++)
+            // UpdateState recurses state.count + 1 times (17)
+            if (i < _config.Mapping.MappingItems.Count && i < state.Count())
             {
                 var configForCurrentItem = _config.Mapping.MappingItems[i];
                 var itemValue = state[i];
 
                 if (configForCurrentItem.Type == GamepadMappingItemType.Axis)
                 {
+                    if (ConvertToButtonState(itemValue))
+                        triggerState |= (XInputGamepadButtons)((int)XInputGamepadButtons.All & (((int)configForCurrentItem.AxisType.Value & 0xE) << 4));
                     UpdateAxis(itemValue, configForCurrentItem);
                 }
                 else if ((configForCurrentItem.Type == GamepadMappingItemType.DPad) && ConvertToButtonState(itemValue) &&
@@ -208,11 +231,13 @@ namespace MFIGamepadFeeder
                 {
                     buttonsState |= configForCurrentItem.ButtonType.Value;
                 }
+                UpdateState(state, buttonsState, dPadState, triggerState, i + 1);
+                return;
             }
-            
+
             foreach (var virtualMapping in _virtualMappings)
             {
-                if ((virtualMapping.Key & (buttonsState | dPadState)) == virtualMapping.Key)
+                if ((virtualMapping.Key & (buttonsState | dPadState | triggerState)) == virtualMapping.Key)
                 {
                     buttonsState |= virtualMapping.Value;
                     buttonsState ^= virtualMapping.Key;
@@ -247,32 +272,29 @@ namespace MFIGamepadFeeder
             }
 
             var axisSetStatus = NtStatus.Success;
-            switch (configForCurrentItem.AxisType)
-            {
-                case AxisType.Rx:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisRx(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.Ry:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisRy(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.Lx:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisLx(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.Ly:
-                    axisSetStatus = _vGenWrapper.vbox_SetAxisLy(_config.GamepadId, (short) (value*short.MaxValue));
-                    break;
-                case AxisType.LTrigger:
-                    axisSetStatus = _vGenWrapper.vbox_SetTriggerL(_config.GamepadId, (byte) (value*byte.MaxValue));
-                    break;
-                case AxisType.RTrigger:
-                    axisSetStatus = _vGenWrapper.vbox_SetTriggerR(_config.GamepadId, (byte) (value*byte.MaxValue));
-                    break;
-            }
-
+            axisSetStatus = SetVBoxStat(configForCurrentItem, value, axisSetStatus);
             if (axisSetStatus != NtStatus.Success)
             {
                 Log($"Failed to set axis {configForCurrentItem.AxisType} (${axisSetStatus}). Gamepad {_config.GamepadId}");
             }
+        }
+
+        private NtStatus SetVBoxStat(GamepadMappingItem configForCurrentItem, double value, NtStatus axisSetStatus)
+        {
+            // NOTE : if else are faster than switch cases
+            if (AxisType.Rx == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisRx(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.Ry == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisRy(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.Lx == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisLx(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.Ly == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetAxisLy(_config.GamepadId, (short)(value * short.MaxValue));
+            else if (AxisType.LTrigger == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetTriggerL(_config.GamepadId, (byte)(value * byte.MaxValue));
+            else if (AxisType.RTrigger == configForCurrentItem.AxisType)
+                axisSetStatus = _vGenWrapper.vbox_SetTriggerR(_config.GamepadId, (byte)(value * byte.MaxValue));
+            return axisSetStatus;
         }
 
         private static double NormalizeAxis(double valueToNormalize, bool shouldConvert)
@@ -290,7 +312,7 @@ namespace MFIGamepadFeeder
 
         private static double InvertNormalizedAxis(double axisToInvert)
         {
-            return 1.0 - axisToInvert;
+            return -axisToInvert;
         }
 
         private static bool ConvertToButtonState(byte value)

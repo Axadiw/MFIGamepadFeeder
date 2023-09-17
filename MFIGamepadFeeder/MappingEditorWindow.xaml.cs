@@ -29,7 +29,7 @@ namespace MFIGamepadFeeder
         private SimplifiedHidPreview SimplifiedHidPreview { get; }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {            
+        {
             HidDeviceCombobox.ItemsSource = SimplifiedHidPreview.HidManager.FoundDevices;
             SimplifiedHidPreview.CurrentHidState
                 .ObserveOn(Application.Current.Dispatcher)
@@ -308,6 +308,9 @@ namespace MFIGamepadFeeder
                 XInputGamepadButtons.RightStick,
                 XInputGamepadButtons.LBumper,
                 XInputGamepadButtons.RBumper,
+                XInputGamepadButtons.Guide,
+                XInputGamepadButtons.LTrigger,
+                XInputGamepadButtons.RTrigger,
                 XInputGamepadButtons.A,
                 XInputGamepadButtons.B,
                 XInputGamepadButtons.X,

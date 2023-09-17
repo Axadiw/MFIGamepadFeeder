@@ -78,18 +78,18 @@
       "AxisType": null
     },
     {
-      "Type": 0,
+      "Type": 1,
       "InvertAxis": false,
       "ConvertAxis": false,
-      "ButtonType": null,
-      "AxisType": 4096
+      "ButtonType": 65536,
+      "AxisType": null
     },
     {
-      "Type": 0,
+      "Type": 1,
       "InvertAxis": false,
       "ConvertAxis": false,
-      "ButtonType": null,
-      "AxisType": 8192
+      "ButtonType": 133120,
+      "AxisType": null
     },
     {
       "Type": 1,
@@ -130,17 +130,9 @@
   "VirtualKeysItems": [
     {
       "SourceKeys": [
-        512,
-        16,
-        null
-      ],
-      "DestinationItem": 1024
-    },
-    {
-      "SourceKeys": [
-        256,
-        16,
-        null
+        65536,
+        133120,
+        16
       ],
       "DestinationItem": 32
     },
