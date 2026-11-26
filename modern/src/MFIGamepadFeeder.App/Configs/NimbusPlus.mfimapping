@@ -1,0 +1,28 @@
+{
+  "Deadzone": 0.06,
+  "ButtonThreshold": 1,
+  "MappingItems": [
+    { "Type": 3, "InvertAxis": false, "ConvertAxis": false },
+    { "Type": 0, "InvertAxis": false, "ConvertAxis": true,  "AxisType": 2 },
+    { "Type": 0, "InvertAxis": false, "ConvertAxis": true,  "AxisType": 3 },
+    { "Type": 0, "InvertAxis": false, "ConvertAxis": true,  "AxisType": 0 },
+    { "Type": 0, "InvertAxis": false, "ConvertAxis": true,  "AxisType": 1 },
+    { "Type": 0, "InvertAxis": false, "ConvertAxis": false, "AxisType": 4 },
+    { "Type": 0, "InvertAxis": false, "ConvertAxis": false, "AxisType": 5 },
+    { "Type": 2, "ButtonType": 1,     "CustomIndex": 7, "CustomValue": 1 },
+    { "Type": 2, "ButtonType": 8,     "CustomIndex": 7, "CustomValue": 2 },
+    { "Type": 2, "ButtonType": 2,     "CustomIndex": 7, "CustomValue": 4 },
+    { "Type": 2, "ButtonType": 4,     "CustomIndex": 7, "CustomValue": 8 },
+    { "Type": 1, "ButtonType": 4096,  "CustomIndex": 7, "CustomValue": 16 },
+    { "Type": 1, "ButtonType": 8192,  "CustomIndex": 7, "CustomValue": 32 },
+    { "Type": 1, "ButtonType": 16384, "CustomIndex": 7, "CustomValue": 64 },
+    { "Type": 1, "ButtonType": 32768, "CustomIndex": 7, "CustomValue": 128 },
+    { "Type": 1, "ButtonType": 256,   "CustomIndex": 8, "CustomValue": 1 },
+    { "Type": 1, "ButtonType": 512,   "CustomIndex": 8, "CustomValue": 2 },
+    { "Type": 1, "ButtonType": 64,    "CustomIndex": 8, "CustomValue": 4 },
+    { "Type": 1, "ButtonType": 128,   "CustomIndex": 8, "CustomValue": 8 },
+    { "Type": 1, "ButtonType": 32,    "CustomIndex": 8, "CustomValue": 32 },
+    { "Type": 1, "ButtonType": 16,    "CustomIndex": 8, "CustomValue": 64 }
+  ],
+  "VirtualKeysItems": []
+}

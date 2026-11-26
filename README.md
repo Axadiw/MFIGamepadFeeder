@@ -2,6 +2,14 @@
 
 Have you ever wanted to use your MFI (Made for iPhone/iPad) game controller under Windows? With *MFI Gamepad Feeder* it's possible!
 
+## Experimental modern Windows build
+
+An additive .NET 10 x64 implementation and standalone Nimbus input tester are
+available in [`modern/`](modern/README.md). The tester reads physical HID input
+without creating a virtual controller. See that directory for build instructions,
+driver requirements, and measurement limits. The original application and build
+instructions below remain separate.
+
 ## How it works?
 
 *MFI Gamepad Feeder* is a special program that works in tandem with [vGen](https://github.com/shauleiz/vGen) and [ScpVBus](https://github.com/shauleiz/ScpVBus) that creates virtual Xbox 360 controller device in your system.

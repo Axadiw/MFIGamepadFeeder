@@ -1,0 +1,19 @@
+# Build output and local IDE state
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+
+# Test/publish output and local diagnostics
+TestResults/
+artifacts/
+*.log
+latest-hid-capture.json
+
+# Local credentials and signing keys
+.env
+.env.*
+*.pfx
+*.p12
