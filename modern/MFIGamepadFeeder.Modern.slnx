@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MFIGamepadFeeder.App/MFIGamepadFeeder.App.csproj" />
+    <Project Path="src/MFIGamepadFeeder.Core/MFIGamepadFeeder.Core.csproj" />
+    <Project Path="src/MFIGamepadFeeder.Tester/MFIGamepadFeeder.Tester.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MFIGamepadFeeder.Tests/MFIGamepadFeeder.Tests.csproj" />
+  </Folder>
+</Solution>

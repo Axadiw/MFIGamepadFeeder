@@ -1,0 +1,128 @@
+<Window x:Class="MFIGamepadFeeder.Tester.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MFIGamepadFeeder.Tester"
+        Title="Nimbus Input Tester" Width="1000" Height="820" MinWidth="760" MinHeight="600"
+        WindowStartupLocation="CenterScreen" FontFamily="Segoe UI" FontSize="14"
+        Foreground="#17212B" Background="#F4F6F8" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="MinHeight" Value="36" />
+        </Style>
+        <Style TargetType="Expander">
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <Style x:Key="Panel" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#D7DEE7" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+        <Style x:Key="Secondary" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#526174" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="26">
+            <TextBlock Text="Nimbus input tester" FontSize="25" FontWeight="SemiBold" />
+            <TextBlock Text="Press buttons, move both sticks, and squeeze the triggers." Style="{StaticResource Secondary}" Margin="0,5,0,20" />
+
+            <Grid Margin="0,0,0,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Label Content="Controller" Target="{Binding ElementName=DeviceComboBox}" Padding="0,0,0,5" />
+                    <ComboBox x:Name="DeviceComboBox" DisplayMemberPath="KnownProfile.DisplayName" MinHeight="36"
+                              VerticalContentAlignment="Center" SelectionChanged="DeviceComboBox_SelectionChanged"
+                              AutomationProperties.Name="Physical Nimbus controller" />
+                </StackPanel>
+                <Button x:Name="RefreshButton" Grid.Column="1" Content="Refresh devices" Margin="10,0,8,0"
+                        VerticalAlignment="Bottom" Click="RefreshButton_Click" />
+                <Button x:Name="ListenButton" Grid.Column="2" Content="Start test" MinWidth="106"
+                        VerticalAlignment="Bottom" IsEnabled="False" Click="ListenButton_Click" />
+            </Grid>
+
+            <Border Background="#E8EEF7" CornerRadius="7" Padding="13,11" Margin="0,0,0,18">
+                <StackPanel>
+                    <TextBlock x:Name="StatusText" Text="Checking for a Nimbus…" FontWeight="SemiBold" TextWrapping="Wrap" />
+                    <TextBlock x:Name="StatusDetail" Text="The tester reads physical input without creating a virtual controller."
+                               Style="{StaticResource Secondary}" Margin="0,3,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource Panel}">
+                    <StackPanel>
+                        <TextBlock Text="Direct Nimbus input" FontSize="17" FontWeight="SemiBold" />
+                        <TextBlock Text="No added deadzone or button combinations." Style="{StaticResource Secondary}" FontSize="12" Margin="0,4,0,18" />
+                        <local:GamepadView x:Name="DirectView" />
+                        <TextBlock Text="The original Nimbus has no physical Back, L3, or R3 buttons." Style="{StaticResource Secondary}" FontSize="12" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Panel}">
+                    <StackPanel>
+                        <TextBlock Text="Button history" FontSize="17" FontWeight="SemiBold" />
+                        <TextBlock Text="Quick taps stay here after you release." Style="{StaticResource Secondary}" FontSize="12" Margin="0,4,0,14" />
+                        <TextBlock x:Name="CountsText" Text="0 presses · 0 releases" FontWeight="SemiBold" Margin="0,0,0,9" />
+                        <TextBlock x:Name="HistoryHint" Text="Press A to begin." Style="{StaticResource Secondary}" Margin="0,0,0,8" />
+                        <ListBox x:Name="HistoryList" Height="239" BorderThickness="0" Background="Transparent"
+                                 FontSize="12" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 AutomationProperties.Name="Recent physical button presses and releases" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <TextBlock x:Name="ReportText" Text="Waiting for input reports." Style="{StaticResource Secondary}" Margin="2,13,0,0" />
+
+            <Expander x:Name="XboxExpander" Header="Compare existing Xbox input (optional)">
+                <Border Style="{StaticResource Panel}" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Start the feeder separately and enable its Xbox output. This view only reads existing Xbox controllers."
+                                   Style="{StaticResource Secondary}" Margin="0,0,0,12" />
+                        <DockPanel Margin="0,0,0,12">
+                            <ComboBox x:Name="XboxSlotCombo" Width="115" DockPanel.Dock="Right" SelectedIndex="0"
+                                      AutomationProperties.Name="Xbox controller slot">
+                                <ComboBoxItem Content="Xbox slot 1" />
+                                <ComboBoxItem Content="Xbox slot 2" />
+                                <ComboBoxItem Content="Xbox slot 3" />
+                                <ComboBoxItem Content="Xbox slot 4" />
+                            </ComboBox>
+                            <TextBlock x:Name="XboxStatusText" Text="Checking Xbox controllers…" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,12,0" VerticalAlignment="Center" />
+                        </DockPanel>
+                        <local:GamepadView x:Name="XboxView" />
+                        <TextBlock Text="Seeing physical and virtual input here does not prove a game processes both."
+                                   Style="{StaticResource Secondary}" FontSize="12" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+            </Expander>
+
+            <Expander x:Name="RawExpander" Header="Report details">
+                <Border Style="{StaticResource Panel}" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock x:Name="DeviceDetailsText" Text="No active HID interface selected." TextWrapping="Wrap" />
+                        <TextBlock x:Name="CadenceText" Text="Report timing appears after input arrives." Margin="0,8,0,0" TextWrapping="Wrap" />
+                        <TextBlock x:Name="UiTimingText" Text="Move a stick to measure HID receipt → UI update time." Margin="0,6,0,0" TextWrapping="Wrap" />
+                        <TextBlock Text="UI timing covers the latest changed state after the HID read returns; Bluetooth delivery and actual screen presentation are outside this measurement."
+                                   Style="{StaticResource Secondary}" FontSize="12" Margin="0,6,0,0" />
+                        <TextBlock Text="Report intervals measure incoming data cadence, not button-to-screen latency. Direct HID decoding does not establish GameInput compatibility."
+                                   Style="{StaticResource Secondary}" FontSize="12" Margin="0,6,0,12" />
+                        <TextBlock Text="Latest raw report (hex)" FontWeight="SemiBold" Margin="0,0,0,5" />
+                        <TextBlock x:Name="RawText" Text="No report yet." FontFamily="Consolas" FontSize="12" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
